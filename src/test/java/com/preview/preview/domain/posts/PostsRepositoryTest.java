@@ -1,5 +1,8 @@
 package com.preview.preview.domain.posts;
 
+import com.preview.preview.domain.user.Role;
+import com.preview.preview.domain.user.User;
+import com.preview.preview.domain.user.UserRepository;
 import org.aspectj.lang.annotation.After;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -11,6 +14,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -21,6 +25,8 @@ class PostsRepositoryTest {
 
     @Autowired
     PostsRepository postsRepository;
+    @Autowired
+    UserRepository userRepository;
 
     @After("전체 지우기")
     public void cleanup(){
@@ -33,20 +39,33 @@ class PostsRepositoryTest {
         String title = "테스트 게시글";
         String content = "테스트 본문";
 
+        User user = User.oauth2Register()
+                .username("박태순")
+                .email("xotns0518@naver.com")
+                .password("123")
+                .provider("kakao")
+                .providerId("1a2b")
+                .role(Role.ROLE_USER)
+                .build();
+
+        userRepository.save(user);
+
         postsRepository.save(Posts.builder()
+                        .id(1L)
+                        .user(user)
                         .title(title)
                         .content(content)
-                        .author("tovbskvb@daum.net")
+                        .author(user.getEmail())
                         .build());
 
         //when
-        List<Posts> postsList = postsRepository.findAll();
+        Posts posts1 = postsRepository.findByTitle(title);
 
         //then
-        Posts posts = postsList.get(0);
+        //Posts posts = postsList.get(0);
 
-        assertThat(posts.getTitle()).isEqualTo(title);
-        assertThat(posts.getContent()).isEqualTo(content);
+        assertThat(posts1.getTitle()).isEqualTo(title);
+        assertThat(posts1.getContent()).isEqualTo(content);
     }
 
     @Test
