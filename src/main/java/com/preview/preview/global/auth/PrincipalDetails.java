@@ -1,22 +1,48 @@
 package com.preview.preview.global.auth;
 
 import com.preview.preview.domain.user.User;
+import com.preview.preview.global.auth.userinfo.OAuth2UserInfo;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 
-public class PrincipalDetails implements UserDetails {
+@Getter
+public class PrincipalDetails implements UserDetails, OAuth2User {
 
     private User user;
+    private Map<String, Object> attributes;
+    private OAuth2UserInfo oAuth2UserInfo;
 
-    public PrincipalDetails(User user){
+    //UserDetails : Form 로그인 시 사용
+    public PrincipalDetails(User user) {
         this.user = user;
     }
 
+    //OAuth2User : OAuth2 로그인 시 사용
+    public PrincipalDetails(User user, Map<String, Object> attributes) {
+        //PrincipalOauth2UserService 참고
+        this.user = user;
+        this.attributes = attributes;
+    }
+
+    public PrincipalDetails(User user, OAuth2UserInfo oAuth2UserInfo) {
+        this.user = user;
+        this.oAuth2UserInfo = oAuth2UserInfo;
+    }
+
+
+    /**
+     * UserDetails 구현
+     * 해당 유저의 권한목록 리턴
+     */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+
         Collection<GrantedAuthority> collect = new ArrayList<>();
         collect.add(new GrantedAuthority() {
             @Override
@@ -27,11 +53,19 @@ public class PrincipalDetails implements UserDetails {
         return collect;
     }
 
+    /**
+     * UserDetails 구현
+     * 비밀번호를 리턴
+     */
     @Override
     public String getPassword() {
         return user.getPassword();
     }
 
+    /**
+     * UserDetails 구현
+     * PK값을 반환해준다
+     */
     @Override
     public String getUsername() {
         return user.getName();
@@ -79,5 +113,27 @@ public class PrincipalDetails implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+
+    /**
+     * OAuth2User 구현
+     * @return
+     */
+    @Override
+    public Map<String, Object> getAttributes() {
+        //return attributes;
+        return oAuth2UserInfo.getAttributes();
+    }
+
+    /**
+     * OAuth2User 구현
+     * @return
+     */
+    @Override
+    public String getName() {
+        //String sub = attributes.get("sub").toString();
+        //return sub;
+        return oAuth2UserInfo.getProviderId();
     }
 }

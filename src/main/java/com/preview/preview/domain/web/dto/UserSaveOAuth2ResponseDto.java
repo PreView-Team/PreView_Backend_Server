@@ -29,13 +29,4 @@ public class UserSaveOAuth2ResponseDto {
         this.providerId = providerId;
     }
 
-    public User toEntity(){
-        return User.builder()
-                .username(name)
-                .content(content)
-                .author(author)
-                .build();
-    }
-
-
 }
