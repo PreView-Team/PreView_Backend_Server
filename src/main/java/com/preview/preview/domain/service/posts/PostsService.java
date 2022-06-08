@@ -2,6 +2,7 @@ package com.preview.preview.domain.service.posts;
 
 import com.preview.preview.domain.posts.Posts;
 import com.preview.preview.domain.posts.PostsRepository;
+import com.preview.preview.domain.user.User;
 import com.preview.preview.domain.web.dto.PostsResponseDto;
 import com.preview.preview.domain.web.dto.PostsSaveRequestDto;
 import com.preview.preview.domain.web.dto.PostsUpdateRequestDto;
@@ -15,8 +16,9 @@ public class PostsService {
     private final PostsRepository postsRepository;
 
     @Transactional
-    public Long save(PostsSaveRequestDto requestDto){
-           return postsRepository.save(requestDto.toEntity()).getId();
+    public Long save(PostsSaveRequestDto requestDto, User user){
+        requestDto.setUser(user);
+        return postsRepository.save(requestDto.toEntity()).getId();
     }
 
     @Transactional

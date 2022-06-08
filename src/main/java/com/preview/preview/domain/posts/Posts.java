@@ -1,8 +1,10 @@
 package com.preview.preview.domain.posts;
 
 import com.preview.preview.domain.BaseTimeEntity;
+import com.preview.preview.domain.user.Role;
 import com.preview.preview.domain.user.User;
 import com.preview.preview.global.auth.PrincipalOauth2UserService;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +12,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 
 import javax.persistence.*;
 
+@Builder
 @Getter
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 public class Posts extends BaseTimeEntity {
@@ -26,6 +30,10 @@ public class Posts extends BaseTimeEntity {
     private String content;
 
     private String author;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "userId")
+    private User user;
 
     public void update(String title, String content){
         this.title = title;
