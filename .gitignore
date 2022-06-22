@@ -31,3 +31,6 @@ hs_err_pid*
 
 # IntelliJ IDEA #
 application-kakao.properties
+application.properties
+
+*.p12
