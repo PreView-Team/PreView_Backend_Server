@@ -4,7 +4,7 @@ import com.preview.preview.domain.authority.Authority;
 import com.preview.preview.domain.user.User;
 import com.preview.preview.domain.user.UserRepository;
 import com.preview.preview.domain.web.dto.UserDto;
-import com.preview.preview.util.SecurityUtil;
+import com.preview.preview.global.util.SecurityUtil;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

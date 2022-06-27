@@ -1,4 +1,4 @@
-package com.preview.preview.util;
+package com.preview.preview.global.util;
 
 import com.preview.preview.domain.user.User;
 import com.preview.preview.domain.user.UserRepository;

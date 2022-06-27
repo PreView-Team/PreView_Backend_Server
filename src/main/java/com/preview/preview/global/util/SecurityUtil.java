@@ -1,4 +1,4 @@
-package com.preview.preview.util;
+package com.preview.preview.global.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
