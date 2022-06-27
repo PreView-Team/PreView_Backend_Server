@@ -4,7 +4,6 @@ import com.preview.preview.domain.service.posts.PostsService;
 import com.preview.preview.domain.web.dto.PostsResponseDto;
 import com.preview.preview.domain.web.dto.PostsSaveRequestDto;
 import com.preview.preview.domain.web.dto.PostsUpdateRequestDto;
-import com.preview.preview.global.auth.PrincipalDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -19,11 +18,6 @@ public class PostsApiController {
         @GetMapping("/board")
         public String index(){
                 return "board";
-        }
-
-        @PostMapping("/api/v1/posts")
-        public Long save(@RequestBody PostsSaveRequestDto requestDto, @AuthenticationPrincipal PrincipalDetails principalDetails){
-                return postsService.save(requestDto, principalDetails.getUser());
         }
 
         @PutMapping("/api/v1/posts/{id}")

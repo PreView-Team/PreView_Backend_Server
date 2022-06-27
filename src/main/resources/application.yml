@@ -1,0 +1,44 @@
+spring:
+  h2:
+    console:
+      enabled: true
+
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+    defer-datasource-initialization: true
+
+  jwt:
+    header: Authorization
+    secret: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
+    token-validity-in-seconds: 86400
+
+
+
+
+#spring.jpa.show-sql=true
+#spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+#spring.jpa.hibernate.ddl-auto=create-drop
+#spring.h2.console.enabled=true
+#spring.h2.console.path=/h2-console
+#spring.datasource.url=jdbc:h2:mem:testdb
+
+#spring.profiles.active = kakao
+#server.port = 8080
+
+# ssl
+#server.ssl.key-store=classpath:keystore.p12
+#server.ssl.key-store-type=PKCS12
+#server.ssl.key-store-password=1234
+#server.http2.enabled=true
