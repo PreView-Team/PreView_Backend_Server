@@ -2,12 +2,13 @@ package com.preview.preview.domain.web.controller;
 
 import com.preview.preview.domain.service.posts.PostsService;
 import com.preview.preview.domain.web.dto.PostsResponseDto;
-import com.preview.preview.domain.web.dto.PostsSaveRequestDto;
 import com.preview.preview.domain.web.dto.PostsUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @RequiredArgsConstructor
 @Controller

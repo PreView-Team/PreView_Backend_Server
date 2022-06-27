@@ -1,6 +1,6 @@
 package com.preview.preview.domain.service.user;
 
-import com.preview.preview.domain.user.Authority;
+import com.preview.preview.domain.authority.Authority;
 import com.preview.preview.domain.user.User;
 import com.preview.preview.domain.user.UserRepository;
 import com.preview.preview.domain.web.dto.UserDto;
@@ -9,7 +9,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.swing.text.html.Option;
 import java.util.Collections;
 import java.util.Optional;
 

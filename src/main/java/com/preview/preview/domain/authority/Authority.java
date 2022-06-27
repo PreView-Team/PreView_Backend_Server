@@ -1,4 +1,4 @@
-package com.preview.preview.domain.user;
+package com.preview.preview.domain.authority;
 
 import lombok.*;
 

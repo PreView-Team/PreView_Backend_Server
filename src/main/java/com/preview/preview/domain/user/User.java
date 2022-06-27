@@ -1,6 +1,7 @@
 package com.preview.preview.domain.user;
 
 import com.preview.preview.domain.BaseTimeEntity;
+import com.preview.preview.domain.authority.Authority;
 import lombok.*;
 import net.minidev.json.annotate.JsonIgnore;
 
