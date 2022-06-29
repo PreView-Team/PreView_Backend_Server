@@ -6,6 +6,6 @@ import lombok.Getter;
 @Getter
 public class KakaoLoginInfoDto {
     private Long id; // 회원번호
-    private KakaoAccountDto kakaoAccount;
-    private KakaoProfileDto kakaoProfile;
+    private KakaoAccountDto kakao_account;
+    private KakaoProfileDto properties;
 }
