@@ -1,6 +1,6 @@
 package com.preview.preview.global.auth.jwt;
 
-import com.preview.preview.domain.web.dto.LoginDto;
+import com.preview.preview.domain.web.dto.user.LoginDto;
 import com.preview.preview.domain.web.dto.TokenDto;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

@@ -1,4 +1,4 @@
-package com.preview.preview.domain.web.dto;
+package com.preview.preview.domain.web.dto.user;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;

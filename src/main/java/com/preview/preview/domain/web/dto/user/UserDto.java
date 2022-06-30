@@ -1,7 +1,8 @@
-package com.preview.preview.domain.web.dto;
+package com.preview.preview.domain.web.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.preview.preview.domain.user.User;
+import com.preview.preview.domain.web.dto.AuthorityDto;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;

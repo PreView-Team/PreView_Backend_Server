@@ -22,19 +22,21 @@ public class User extends BaseTimeEntity {
     @Column(name = "user_id")
     private Long id;
 
-    @Column(nullable = false, name = "username")
+    @Column(nullable = true, name = "username")
     private String name;
 
-    @Column(nullable = false, name = "nickname")
-    private String nickname;
-
+    @Column(nullable = true, name = "nickname")
+    private String nickname; // 닉네임
 
     @Column(nullable = true, name = "email")
-    private String email;
+    private String email; // 이메일
+
+    @Column(nullable = false, name = "kakao_id")
+    private Long kakaoId;
 
     @Setter
     @Column(name = "password")
-    private String password;
+    private String password; // 비밀번호
 
     //private String provider;    // oauth2를 이용할 경우 어떤 플랫폼을 이용하는지
 

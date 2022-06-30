@@ -2,9 +2,10 @@ package com.preview.preview.domain.web.controller;
 
 import com.preview.preview.domain.service.social.KakaoServiceImpl;
 import com.preview.preview.domain.service.user.UserServiceImpl;
-import com.preview.preview.domain.web.dto.UserDto;
 import com.preview.preview.domain.web.dto.social.kakao.KakaoLoginInfoDto;
+import com.preview.preview.domain.web.dto.user.UserDto;
 import com.preview.preview.domain.web.dto.social.kakao.KakaoLoginRequestDto;
+import com.preview.preview.domain.web.dto.user.UserLoginDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +26,12 @@ public class UserController {
     }
 
     @PostMapping("/user/kakao/login")
-    public KakaoLoginInfoDto login(@RequestBody KakaoLoginRequestDto token){
-        return kakaoService.getProfile(token);
+    public ResponseEntity<UserLoginDto> login(@RequestBody KakaoLoginRequestDto token){
+        KakaoLoginInfoDto kakaoLoginInfoDto = kakaoService.getProfile(token);
+        UserLoginDto userLoginDto = new UserLoginDto();
+        userLoginDto.setNickname(token.getNickname());
+        userLoginDto.setKakaoId(kakaoLoginInfoDto.getId());
+        return ResponseEntity.ok(userService.save(userLoginDto));
     }
 
     @PostMapping("/signup")

@@ -37,7 +37,6 @@ public class TokenProvider implements InitializingBean {
         this.tokenValidityInMilliseconds = tokenValidityInMilliseconds * 1000;
     }
 
-
     @Override
     public void afterPropertiesSet(){
         byte[] keyBytes = Decoders.BASE64.decode(secret);
@@ -59,8 +58,6 @@ public class TokenProvider implements InitializingBean {
                 .setExpiration(validity)
                 .compact();
     }
-
-
 
     public Authentication getAuthentication(String token){
         Claims claims = Jwts
