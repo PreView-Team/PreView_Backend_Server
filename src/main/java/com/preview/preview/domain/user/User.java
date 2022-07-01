@@ -2,6 +2,7 @@ package com.preview.preview.domain.user;
 
 import com.preview.preview.domain.BaseTimeEntity;
 import com.preview.preview.domain.authority.Authority;
+import com.preview.preview.domain.likedjob.LikedJob;
 import lombok.*;
 import net.minidev.json.annotate.JsonIgnore;
 
@@ -52,5 +53,9 @@ public class User extends BaseTimeEntity {
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")})
     private Set<Authority> authorities;
+
+    @OneToMany(mappedBy = "user")
+    Set<LikedJob> likedJobs;
+
 
 }
