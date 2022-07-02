@@ -1,6 +1,8 @@
 package com.preview.preview.global.auth.jwt;
 
-import com.preview.preview.domain.web.dto.user.LoginDto;
+import com.preview.preview.domain.service.social.KakaoServiceImpl;
+import com.preview.preview.domain.web.dto.social.kakao.KakaoLoginInfoDto;
+import com.preview.preview.domain.web.dto.social.kakao.KakaoLoginRequestDto;
 import com.preview.preview.domain.web.dto.TokenDto;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -23,19 +25,25 @@ public class AuthRestController{
 
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
+    private final KakaoServiceImpl kakaoService;
 
 
-    public AuthRestController(TokenProvider tokenProvider, AuthenticationManagerBuilder authenticationManagerBuilder) {
+    public AuthRestController(TokenProvider tokenProvider, AuthenticationManagerBuilder authenticationManagerBuilder, KakaoServiceImpl kakaoService) {
         this.tokenProvider = tokenProvider;
         this.authenticationManagerBuilder = authenticationManagerBuilder;
+        this.kakaoService = kakaoService;
     }
 
-    @PostMapping("/authenticate")
-    public ResponseEntity<TokenDto> authorize(@Valid @RequestBody LoginDto loginDto){
+    @PostMapping("/login")
+    public ResponseEntity<TokenDto> authorize(@Valid @RequestBody KakaoLoginRequestDto kakaoLoginRequestDto){
+
+        KakaoLoginInfoDto kakaoLoginInfoDto = kakaoService.getProfile(kakaoLoginRequestDto.getToken());
+
         UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
+                new UsernamePasswordAuthenticationToken(kakaoLoginInfoDto.getId().toString(), "xxxx");
 
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String jwt = tokenProvider.createToken(authentication);

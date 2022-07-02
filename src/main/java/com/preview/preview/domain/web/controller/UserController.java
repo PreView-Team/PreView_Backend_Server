@@ -25,7 +25,7 @@ public class UserController {
     }
 
     @PostMapping("/user/kakao/signup")
-    public ResponseEntity<UserDto> signup(@RequestBody KakaoSignupRequestDto kakaoSignupRequestDto){
+    public ResponseEntity<String> signup(@RequestBody KakaoSignupRequestDto kakaoSignupRequestDto){
         KakaoLoginInfoDto kakaoLoginInfoDto = kakaoService.getProfile(kakaoSignupRequestDto.getToken());
 
         UserDto userDto = new UserDto();
@@ -39,8 +39,8 @@ public class UserController {
 //            Job job = jobRepository.findByName(s);
 //            likedJobRepository.save(LikedJob.builder().job(job).user(user.get()).build());
 //        }
-
-        return ResponseEntity.ok(userService.save(userDto));
+        userService.save(userDto);
+        return ResponseEntity.ok("가입 성공");
     }
 
     @GetMapping("/user")
@@ -53,6 +53,11 @@ public class UserController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<UserDto> getUserInfo(@PathVariable String username){
         return ResponseEntity.ok(userService.getUserWithAuthorities(username));
+    }
+
+    @GetMapping("/user/nickname/{nickname}")
+    public ResponseEntity<Boolean> isExisedNickname(@PathVariable String nickname){
+        return userService.checkNicknameDuplicate(nickname);
     }
 
 }

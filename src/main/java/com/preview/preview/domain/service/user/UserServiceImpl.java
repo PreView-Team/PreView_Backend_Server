@@ -5,6 +5,7 @@ import com.preview.preview.domain.user.User;
 import com.preview.preview.domain.user.UserRepository;
 import com.preview.preview.domain.web.dto.user.UserDto;
 import com.preview.preview.global.util.SecurityUtil;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,6 +44,11 @@ public class UserServiceImpl implements UserService{
                 .build();
 
         return UserDto.from(userRepository.save(user));
+    }
+
+    @Override
+    public ResponseEntity<Boolean> checkNicknameDuplicate(String name) {
+        return ResponseEntity.ok(userRepository.existsByNickname(name));
     }
 
     @Transactional

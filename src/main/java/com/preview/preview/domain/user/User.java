@@ -2,6 +2,7 @@ package com.preview.preview.domain.user;
 
 import com.preview.preview.domain.BaseTimeEntity;
 import com.preview.preview.domain.authority.Authority;
+import com.preview.preview.domain.likedEnterprise.LikedEnterprise;
 import com.preview.preview.domain.likedjob.LikedJob;
 import lombok.*;
 import net.minidev.json.annotate.JsonIgnore;
@@ -53,6 +54,9 @@ public class User extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "user")
     Set<LikedJob> likedJobs;
+
+    @OneToMany(mappedBy = "user")
+    Set<LikedEnterprise> likedEnterprises;
 
 
 }

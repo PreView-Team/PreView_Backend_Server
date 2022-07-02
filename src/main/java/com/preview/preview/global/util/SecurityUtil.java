@@ -16,7 +16,7 @@ public class SecurityUtil {
 
     }
 
-    public static Optional<String> getCurrentUsername(){
+    public static Optional<Long> getCurrentUsername(){
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication == null){
@@ -31,6 +31,6 @@ public class SecurityUtil {
         } else if(authentication.getPrincipal() instanceof String){
             username = (String) authentication.getPrincipal();
         }
-        return Optional.ofNullable(username);
+        return Optional.ofNullable(Long.parseLong(username));
     }
 }
