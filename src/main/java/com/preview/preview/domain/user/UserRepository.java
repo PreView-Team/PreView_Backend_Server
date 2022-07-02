@@ -9,13 +9,9 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     Optional<User> findByEmail(String email);
 
-    User findByName(String name);
-
     @EntityGraph(attributePaths = "authorities")
-    Optional<User> findOneWithAuthoritiesByName(String username);
+    Optional<User> findOneWithAuthoritiesByNickname(String nickname);
 
     @EntityGraph(attributePaths = "authorities")
     Optional<User> findOneWithAuthoritiesByKakaoId(Long kakaoId);
-
-
 }

@@ -23,11 +23,11 @@ public class KakaoServiceImpl implements KakaoService {
 
     // token만 가지고 정보 얻을 수 있음.
     @Override
-    public KakaoLoginInfoDto getProfile(KakaoLoginRequestDto kakaoLoginRequestDto) {
+    public KakaoLoginInfoDto getProfile(String token) {
         ResponseEntity<String> response = null;
         HttpHeaders header = new HttpHeaders();
         header.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        header.set("Authorization", "Bearer " + kakaoLoginRequestDto.getToken());
+        header.set("Authorization", "Bearer " + token);
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(null, header);
 

@@ -17,10 +17,6 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class UserDto {
 
-    @NotNull
-    @Size(min = 3, max = 50)
-    private String username;
-
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @NotNull
     @Size(min = 3, max = 100)
@@ -30,13 +26,16 @@ public class UserDto {
     @Size(min = 3, max = 50)
     private String nickname;
 
+    @NotNull
+    private long kakaoId;
+
     private Set<AuthorityDto> authorityDtoSet;
 
     public static UserDto from(User user){
         if (user == null) return null;
         return UserDto.builder()
-                .username(user.getName())
                 .nickname(user.getNickname())
+                .kakaoId(user.getKakaoId())
                 .authorityDtoSet(user.getAuthorities().stream()
                         .map(authority -> AuthorityDto.builder().authorityName(authority.getAuthorityName()).build())
                         .collect(Collectors.toSet()))
