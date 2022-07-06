@@ -1,8 +1,12 @@
 package com.preview.preview.domain.service.user;
 
 import com.preview.preview.domain.authority.Authority;
+import com.preview.preview.domain.enterprise.Enterprise;
+import com.preview.preview.domain.job.Job;
 import com.preview.preview.domain.user.User;
 import com.preview.preview.domain.user.UserRepository;
+import com.preview.preview.domain.web.dto.enterprise.EnterpriseDto;
+import com.preview.preview.domain.web.dto.job.JobDto;
 import com.preview.preview.domain.web.dto.user.UserDto;
 import com.preview.preview.global.util.SecurityUtil;
 import org.springframework.http.ResponseEntity;
@@ -10,8 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -62,12 +65,23 @@ public class UserServiceImpl implements UserService{
                 .authorityName("ROLE_USER")
                 .build();
 
+        Set<Job> jobs = new HashSet<>();
+        for (JobDto s : userDto.getJobDtoSet()){
+            jobs.add(Job.builder().name(s.getJobName()).build());
+        }
+
+        Set<Enterprise> enterprises = new HashSet<>();
+
+        for (EnterpriseDto s : userDto.getEnterpriseDtoSet()){
+            enterprises.add(Enterprise.builder().name(s.getEnterpriseName()).build());
+        }
 
         User user = User.builder()
                 .password(passwordEncoder.encode("xxxx")) // 추 후 확장, 지금 서비스에선 필요 x
                 .nickname(userDto.getNickname())
                 .authorities(Collections.singleton(authority))
-
+                .likedJobs(jobs)
+                .likedEnterprises(enterprises)
                 .kakaoId(userDto.getKakaoId())
                 .activated(true)
                 .build();

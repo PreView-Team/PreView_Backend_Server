@@ -1,7 +1,10 @@
 package com.preview.preview.domain.web.controller;
 
+import com.preview.preview.domain.enterprise.Enterprise;
 import com.preview.preview.domain.service.social.KakaoServiceImpl;
 import com.preview.preview.domain.service.user.UserServiceImpl;
+import com.preview.preview.domain.web.dto.enterprise.EnterpriseDto;
+import com.preview.preview.domain.web.dto.job.JobDto;
 import com.preview.preview.domain.web.dto.social.kakao.KakaoLoginInfoDto;
 import com.preview.preview.domain.web.dto.social.kakao.KakaoSignupRequestDto;
 import com.preview.preview.domain.web.dto.user.UserDto;
@@ -10,6 +13,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @RestController
@@ -31,14 +37,8 @@ public class UserController {
         UserDto userDto = new UserDto();
         userDto.setNickname(kakaoSignupRequestDto.getNickname());
         userDto.setKakaoId(kakaoLoginInfoDto.getId());
-         // 회원가입
-
-        //Job job = jobRepository.findByName(token.getJobName());
-//        for (String s : token.getJobName()){
-//            Optional<User> user = userRepository.findOneWithAuthoritiesByKakaoId(userLoginDto.getKakaoId());
-//            Job job = jobRepository.findByName(s);
-//            likedJobRepository.save(LikedJob.builder().job(job).user(user.get()).build());
-//        }
+        userDto.setEnterpriseDtoSet(Set.copyOf(kakaoSignupRequestDto.getEnterpriseNames()));
+        userDto.setJobDtoSet(Set.copyOf(kakaoSignupRequestDto.getJobNames()));
 
         userService.save(userDto);
         return ResponseEntity.ok("가입 성공");

@@ -1,8 +1,11 @@
 package com.preview.preview.domain.web.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.preview.preview.domain.enterprise.Enterprise;
 import com.preview.preview.domain.user.User;
 import com.preview.preview.domain.web.dto.AuthorityDto;
+import com.preview.preview.domain.web.dto.enterprise.EnterpriseDto;
+import com.preview.preview.domain.web.dto.job.JobDto;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;
@@ -29,7 +32,12 @@ public class UserDto {
     @NotNull
     private long kakaoId;
 
+    private Set<JobDto> jobDtoSet;
+
+    private Set<EnterpriseDto> enterpriseDtoSet;
+
     private Set<AuthorityDto> authorityDtoSet;
+
 
     public static UserDto from(User user){
         if (user == null) return null;
