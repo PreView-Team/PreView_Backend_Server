@@ -12,3 +12,8 @@ insert into job (job_id, name) values (1, '마케터');
 insert into job (job_id, name) values (2, '프로그래머');
 insert into job (job_id, name) values (3, '직무1');
 insert into job (job_id, name) values (4, '직무2');
+
+insert into enterprise (enterprise_id, name) values (1, '카카오');
+insert into enterprise (enterprise_id, name) values (2, '네이버');
+insert into enterprise (enterprise_id, name) values (3, '라인');
+insert into enterprise (enterprise_id, name) values (4, '삼성전자');

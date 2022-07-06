@@ -91,4 +91,8 @@ public class UserServiceImpl implements UserService{
     public Optional<User> findByKakaoId(Long id){
         return userRepository.findOneWithAuthoritiesByKakaoId(id);
     }
+
+    public boolean existedByEmail(String email){
+        return userRepository.existsByEmail(email);
+    }
 }
