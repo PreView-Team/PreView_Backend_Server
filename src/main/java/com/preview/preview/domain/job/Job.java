@@ -1,6 +1,4 @@
 package com.preview.preview.domain.job;
-
-import com.preview.preview.domain.likedjob.LikedJob;
 import lombok.*;
 
 import javax.persistence.*;
@@ -16,13 +14,6 @@ import java.util.Set;
 public class Job {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "job_id")
-    private Long id;
-
-    @Column(name = "name")
+    @Column(name = "job_name")
     private String name;
-
-    @OneToMany(mappedBy = "job")
-    Set<LikedJob> likedJobs;
 }

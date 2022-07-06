@@ -39,6 +39,7 @@ public class UserController {
 //            Job job = jobRepository.findByName(s);
 //            likedJobRepository.save(LikedJob.builder().job(job).user(user.get()).build());
 //        }
+
         userService.save(userDto);
         return ResponseEntity.ok("가입 성공");
     }

@@ -2,8 +2,8 @@ package com.preview.preview.domain.user;
 
 import com.preview.preview.domain.BaseTimeEntity;
 import com.preview.preview.domain.authority.Authority;
-import com.preview.preview.domain.likedEnterprise.LikedEnterprise;
-import com.preview.preview.domain.likedjob.LikedJob;
+import com.preview.preview.domain.enterprise.Enterprise;
+import com.preview.preview.domain.job.Job;
 import lombok.*;
 import net.minidev.json.annotate.JsonIgnore;
 
@@ -52,11 +52,20 @@ public class User extends BaseTimeEntity {
             inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")})
     private Set<Authority> authorities;
 
-    @OneToMany(mappedBy = "user")
-    Set<LikedJob> likedJobs;
+    @ManyToMany
+    @JoinTable(
+            name = "user_job",
+            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "job_name", referencedColumnName = "job_name")}
+    )
+    private Set<Job> likedJobs;
 
-    @OneToMany(mappedBy = "user")
-    Set<LikedEnterprise> likedEnterprises;
-
+    @ManyToMany
+    @JoinTable(
+            name = "user_enterprise",
+            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "enterprise_name", referencedColumnName = "enterprise_name")}
+    )
+    Set<Enterprise> likedEnterprises;
 
 }

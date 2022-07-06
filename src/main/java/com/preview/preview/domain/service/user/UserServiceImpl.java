@@ -62,10 +62,12 @@ public class UserServiceImpl implements UserService{
                 .authorityName("ROLE_USER")
                 .build();
 
+
         User user = User.builder()
                 .password(passwordEncoder.encode("xxxx")) // 추 후 확장, 지금 서비스에선 필요 x
                 .nickname(userDto.getNickname())
                 .authorities(Collections.singleton(authority))
+
                 .kakaoId(userDto.getKakaoId())
                 .activated(true)
                 .build();
