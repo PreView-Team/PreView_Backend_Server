@@ -2,12 +2,15 @@ package com.preview.preview.domain.service.user;
 
 import com.preview.preview.domain.authority.Authority;
 import com.preview.preview.domain.enterprise.Enterprise;
+import com.preview.preview.domain.exception.CustomException;
+import com.preview.preview.domain.exception.ErrorCode;
 import com.preview.preview.domain.job.Job;
 import com.preview.preview.domain.user.User;
 import com.preview.preview.domain.user.UserRepository;
 import com.preview.preview.domain.web.dto.enterprise.EnterpriseDto;
 import com.preview.preview.domain.web.dto.job.JobDto;
 import com.preview.preview.domain.web.dto.user.UserDto;
+import com.preview.preview.domain.web.dto.user.VaildedNicknameDto;
 import com.preview.preview.global.util.SecurityUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -28,37 +31,18 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public VaildedNicknameDto checkNicknameDuplicate(String name) {
+        VaildedNicknameDto vaildedNicknameDto = new VaildedNicknameDto();
+        Boolean isExisted = userRepository.existsByNickname(name);
+        vaildedNicknameDto.setIsValidNickname(isExisted);
+        return vaildedNicknameDto;
+    }
+
     @Transactional
     public UserDto signup(UserDto userDto){
-        if (userRepository.findOneWithAuthoritiesByKakaoId(userDto.getKakaoId()).orElse(null) != null){
-            throw new RuntimeException("이미 가입되어 있는 유저입니다.");
-        }
-
-        Authority authority = Authority.builder()
-                .authorityName("ROLE_USER")
-                .build();
-
-        User user = User.builder()
-                .password(passwordEncoder.encode(userDto.getPassword()))
-                .nickname(userDto.getNickname())
-                .kakaoId(userDto.getKakaoId())
-                .authorities(Collections.singleton(authority))
-                .activated(true)
-                .build();
-
-        return UserDto.from(userRepository.save(user));
-    }
-
-    @Override
-    public ResponseEntity<Boolean> checkNicknameDuplicate(String name) {
-        return ResponseEntity.ok(userRepository.existsByNickname(name));
-    }
-
-    @Transactional
-    public UserDto save(UserDto userDto){
 
         if (userRepository.findOneWithAuthoritiesByKakaoId(userDto.getKakaoId()).orElse(null) != null){
-            throw new RuntimeException("이미 가입되어 있는 유저입니다.");
+            throw new CustomException(ErrorCode.DUPLICATE_SIGNUP_RESOURCE);
         }
 
         Authority authority = Authority.builder()
@@ -70,18 +54,13 @@ public class UserServiceImpl implements UserService{
             jobs.add(Job.builder().name(s.getJobName()).build());
         }
 
-        Set<Enterprise> enterprises = new HashSet<>();
-
-        for (EnterpriseDto s : userDto.getEnterpriseDtoSet()){
-            enterprises.add(Enterprise.builder().name(s.getEnterpriseName()).build());
-        }
-
         User user = User.builder()
                 .password(passwordEncoder.encode("xxxx")) // 추 후 확장, 지금 서비스에선 필요 x
                 .nickname(userDto.getNickname())
                 .authorities(Collections.singleton(authority))
+                .email(userDto.getEmail())
                 .likedJobs(jobs)
-                .likedEnterprises(enterprises)
+                .likedEnterprises(null)
                 .kakaoId(userDto.getKakaoId())
                 .activated(true)
                 .build();

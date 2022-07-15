@@ -3,19 +3,12 @@ spring:
     console:
       enabled: true
 
-  # h2
+   #h2
   datasource:
     url: jdbc:h2:mem:testdb
     driver-class-name: org.h2.Driver
     username: sa
     password:
-
-  # aws rds 연결 db
-  #datasource:
-    #url: jdbc:mysql://database-1.ctgi2uzl1y9g.ap-northeast-2.rds.amazonaws.com:3306/preview
-    #username: taesunpark
-    #password: tnsxoqkr1
-    #driver-class-name: com.mysql.jdbc.Driver
 
 #H2
   jpa:
@@ -27,9 +20,6 @@ spring:
         format_sql: true
         show_sql: true
     defer-datasource-initialization: true
-# RDS
-  #jpa:
-    #ddl-auto: update
 
   jwt:
     header: Authorization
@@ -42,15 +32,38 @@ spring:
     host: smtp.naver.com
     port: 465
     # 본인 naver 계정정보 삽입
-    username: xotns0518@naver.com
-    password: P@ssw0rd
+    username: previewteam@naver.com
+    password: Preview123
     #전송하기 위한 prop으로 ssl의 신뢰, 권한 등 사용허가
     properties:
       mail.smtp.auth: true
       mail.smtp.ssl.enable: true
       mail.smtp.ssl.trust: smtp.naver.com
 
+    # aws rds 연결 db
 
+    #datasource:
+    # url: jdbc:mysql://database-1.ctgi2uzl1y9g.ap-northeast-2.rds.amazonaws.com:3306/preview
+    # username: preview
+    # password: tnsxoqkr1
+    # driver-class-name: com.mysql.cj.jdbc.Driver
+
+      # RDS
+      #jpa:
+      # properties:
+      #  hibernate:
+      #   format_sql: true
+      #hibernate:
+      # ddl-auto: update
+
+#server:
+ # http2:
+  #  enabled: true
+  #port: 8080
+ # ssl:
+  #  key-store: classpath:keystore.p12
+  #  key-store-type: PKCS12
+  #  key-store-password: 1234
 
 
 

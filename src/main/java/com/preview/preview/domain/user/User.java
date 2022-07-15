@@ -14,7 +14,6 @@ import java.util.Set;
 @Entity
 @Table(name = "user")
 @Getter
-@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,7 +23,8 @@ public class User extends BaseTimeEntity {
     @Column(name = "user_id")
     private Long id;
 
-    @Column(nullable = true, name = "nickname")
+    @Setter
+    @Column(nullable = false, name = "nickname")
     private String nickname; // 닉네임
 
     @Column(nullable = true, name = "email")
@@ -37,14 +37,11 @@ public class User extends BaseTimeEntity {
     @Column(name = "password")
     private String password; // 비밀번호
 
-    //private String provider;    // oauth2를 이용할 경우 어떤 플랫폼을 이용하는지
-
-    //private String providerId;  // oauth2를 이용할 경우 아이디값
-
     @JsonIgnore
     @Column(name = "activated")
     private boolean activated;
 
+    @Setter
     @ManyToMany
     @JoinTable(
             name = "user_authority",
@@ -52,6 +49,7 @@ public class User extends BaseTimeEntity {
             inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")})
     private Set<Authority> authorities;
 
+    @Setter
     @ManyToMany
     @JoinTable(
             name = "user_job",
@@ -60,6 +58,7 @@ public class User extends BaseTimeEntity {
     )
     private Set<Job> likedJobs;
 
+    @Setter
     @ManyToMany
     @JoinTable(
             name = "user_enterprise",
@@ -67,5 +66,6 @@ public class User extends BaseTimeEntity {
             inverseJoinColumns = {@JoinColumn(name = "enterprise_name", referencedColumnName = "enterprise_name")}
     )
     Set<Enterprise> likedEnterprises;
+
 
 }

@@ -32,18 +32,25 @@ public class UserDto {
     @NotNull
     private long kakaoId;
 
+    private String email;
+
     private Set<JobDto> jobDtoSet;
 
     private Set<EnterpriseDto> enterpriseDtoSet;
 
     private Set<AuthorityDto> authorityDtoSet;
 
+    private boolean activated;
 
     public static UserDto from(User user){
         if (user == null) return null;
         return UserDto.builder()
                 .nickname(user.getNickname())
                 .kakaoId(user.getKakaoId())
+                .email(user.getEmail())
+                .jobDtoSet(user.getLikedJobs().stream()
+                        .map(job -> JobDto.builder().jobName(job.getName()).build())
+                        .collect(Collectors.toSet()))
                 .authorityDtoSet(user.getAuthorities().stream()
                         .map(authority -> AuthorityDto.builder().authorityName(authority.getAuthorityName()).build())
                         .collect(Collectors.toSet()))

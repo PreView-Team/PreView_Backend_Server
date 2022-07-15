@@ -12,8 +12,8 @@ import java.util.Set;
 
 @Getter
 public class KakaoSignupRequestDto {
-    private String token; // access token
+    private String kakaoAccessToken; // access token
     private String nickname; // 닉네임
+    private String email; // 이메일
     private List<JobDto> jobNames; // 직무 이름 리스트
-    private List<EnterpriseDto> enterpriseNames; // 기업 리스트
 }

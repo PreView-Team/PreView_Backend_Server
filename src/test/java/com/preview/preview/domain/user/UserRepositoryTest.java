@@ -37,16 +37,12 @@ class UserRepositoryTest {
         Set<Job> jobs = new HashSet<>();
         jobs.add(new Job("프로그래머"));
 
-        Set<Enterprise> enterprises = new HashSet<>();
-        enterprises.add(new Enterprise("삼성전자"));
-
         User user = User.builder()
                 .activated(true)
                 .nickname("박태순")
                 .kakaoId(123241231L)
                 .likedJobs(jobs)
-                .email("test123@daum.net")
-                .likedEnterprises(enterprises)
+                .likedEnterprises(null)
                 .build();
 
         //when
@@ -56,7 +52,7 @@ class UserRepositoryTest {
     }
 
     @Test
-    @DisplayName("유저 정보 업데이트 ")
+    @DisplayName("유저 정보 업데이트")
     void update(){
         // given
         Set<Job> jobs = new HashSet<>();
