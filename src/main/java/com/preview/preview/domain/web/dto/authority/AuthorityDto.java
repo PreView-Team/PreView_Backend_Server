@@ -1,4 +1,4 @@
-package com.preview.preview.domain.web.dto;
+package com.preview.preview.domain.web.dto.authority;
 
 import lombok.*;
 

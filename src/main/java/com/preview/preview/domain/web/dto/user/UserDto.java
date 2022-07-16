@@ -1,9 +1,8 @@
 package com.preview.preview.domain.web.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.preview.preview.domain.enterprise.Enterprise;
 import com.preview.preview.domain.user.User;
-import com.preview.preview.domain.web.dto.AuthorityDto;
+import com.preview.preview.domain.web.dto.authority.AuthorityDto;
 import com.preview.preview.domain.web.dto.enterprise.EnterpriseDto;
 import com.preview.preview.domain.web.dto.job.JobDto;
 import lombok.*;

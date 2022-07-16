@@ -20,4 +20,7 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     @EntityGraph(attributePaths = "authorities")
     Optional<User> findOneWithAuthoritiesByKakaoId(Long kakaoId);
+
+
+
 }

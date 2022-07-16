@@ -53,6 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/user/kakao/signup").permitAll()
                 .antMatchers("/api/user/nickname/**").permitAll()
                 .antMatchers("/api/email/**").permitAll()
+                .antMatchers("/api/authority/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .apply(new JwtSecurityConfig(tokenProvider));

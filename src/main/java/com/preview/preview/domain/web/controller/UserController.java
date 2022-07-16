@@ -2,6 +2,7 @@ package com.preview.preview.domain.web.controller;
 
 import com.preview.preview.domain.service.social.kakao.KakaoServiceImpl;
 import com.preview.preview.domain.service.user.UserServiceImpl;
+import com.preview.preview.domain.web.dto.authority.AuthorityResponseDto;
 import com.preview.preview.domain.web.dto.social.kakao.KakaoLoginInfoDto;
 import com.preview.preview.domain.web.dto.social.kakao.KakaoSignupRequestDto;
 import com.preview.preview.domain.web.dto.user.SignupResponseDto;
@@ -48,6 +49,8 @@ public class UserController {
         UserDto userDto = userService.getMyUserWithAuthorities();
         return ResponseEntity.ok(userDto);
     }
+
+
 
     @GetMapping("/user/{username}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")

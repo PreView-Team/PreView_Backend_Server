@@ -12,9 +12,7 @@ import java.nio.file.AccessDeniedException;
 @Slf4j
 public class ExceptionController {
 
-    @ExceptionHandler({
-            RuntimeException.class
-    })
+    @ExceptionHandler({RuntimeException.class})
     public ResponseEntity<Object> BadRequestException(final RuntimeException ex){
         log.warn("error", ex);
         return ResponseEntity.badRequest().body(ex.getMessage());

@@ -24,7 +24,7 @@ spring:
   jwt:
     header: Authorization
     secret: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
-    token-validity-in-seconds: 86400
+    token-validity-in-seconds: 2592000
     refresh-token-validity-in-seconds: 120000
 
   mail:
@@ -47,6 +47,7 @@ spring:
     # username: preview
     # password: tnsxoqkr1
     # driver-class-name: com.mysql.cj.jdbc.Driver
+
 
       # RDS
       #jpa:
