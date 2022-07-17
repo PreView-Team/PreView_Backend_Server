@@ -1,6 +1,6 @@
 package com.preview.preview.domain.web.dto;
 
-import com.preview.preview.domain.posts.Posts;
+import com.preview.preview.domain.post.Post;
 import com.preview.preview.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,11 +23,10 @@ public class PostsSaveRequestDto {
         this.author = author;
     }
 
-    public Posts toEntity(){
-        return Posts.builder()
+    public Post toEntity(){
+        return Post.builder()
                 .title(title)
                 .content(content)
-                .author(author)
                 .user(user)
                 .build();
     }

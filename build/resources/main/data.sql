@@ -1,5 +1,10 @@
 INSERT INTO USER (user_id, nickname, email, kakao_id, password, activated) values (1,'일심짱태', 'tovbskvb@daunm.net', 123131, 123123, 'TRUE');
 
+INSERT INTO CATEGORY (category_id, category_name) values (1, '프로그래밍');
+INSERT INTO CATEGORY (category_id, category_name) values (2, '디자인');
+INSERT INTO CATEGORY (category_id, category_name) values (3, '마케팅');
+INSERT INTO CATEGORY (category_id, category_name) values (4, 'PM');
+
 INSERT INTO AUTHORITY (AUTHORITY_NAME) values ('ROLE_USER');
 INSERT INTO AUTHORITY (AUTHORITY_NAME) values ('ROLE_ADMIN');
 

@@ -14,6 +14,8 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     boolean existsByEmail(String email);
 
+    Optional<User> findByKakaoId(Long id);
+
     // Spring Security
     @EntityGraph(attributePaths = "authorities")
     Optional<User> findOneWithAuthoritiesByNickname(String nickname);

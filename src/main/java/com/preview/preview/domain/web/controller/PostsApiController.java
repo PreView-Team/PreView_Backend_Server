@@ -3,18 +3,27 @@ package com.preview.preview.domain.web.controller;
 import com.preview.preview.domain.service.posts.PostsService;
 import com.preview.preview.domain.web.dto.PostsResponseDto;
 import com.preview.preview.domain.web.dto.PostsUpdateRequestDto;
+import com.preview.preview.domain.web.dto.post.PostCreateRequestDto;
+import com.preview.preview.domain.web.dto.post.PostCreateResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @Controller
 public class PostsApiController {
 
         private final PostsService postsService;
+
+        // 멘토만 등록할 수 있게 설정
+        @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+        @PostMapping("/api/post")
+        public ResponseEntity<PostCreateResponseDto> createPost(
+                @RequestBody PostCreateRequestDto postCreateRequestDto){
+                return ResponseEntity.ok(postsService.save(postCreateRequestDto));
+        }
 
         @GetMapping("/board")
         public String index(){
