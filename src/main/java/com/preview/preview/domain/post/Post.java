@@ -5,10 +5,7 @@ import com.preview.preview.domain.BaseTimeEntity;
 import com.preview.preview.domain.category.Category;
 import com.preview.preview.domain.like.PostLike;
 import com.preview.preview.domain.user.User;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -27,12 +24,15 @@ public class Post extends BaseTimeEntity {
     @Column(name = "post_id")
     private Long id;
 
+    @Setter
     @Column(nullable = false, name = "title")
     private String title;
 
+    @Setter
     @Column(nullable = false, name = "sub_title")
     private String sub_title;
 
+    @Setter
     @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
 

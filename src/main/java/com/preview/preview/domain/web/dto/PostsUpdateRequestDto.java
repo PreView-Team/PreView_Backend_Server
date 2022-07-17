@@ -3,16 +3,17 @@ package com.preview.preview.domain.web.dto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.time.LocalDateTime;
 
 @Getter
+@Setter
 @NoArgsConstructor
 public class PostsUpdateRequestDto {
+    private long postId;
+    private long kakaoId;
     private String title;
-    private String content;
-
-    @Builder
-    public PostsUpdateRequestDto(String title, String content){
-        this.title = title;
-        this.content = content;
-    }
+    private String subTitle;
+    private String contents;
 }

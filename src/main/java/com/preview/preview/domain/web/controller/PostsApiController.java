@@ -3,10 +3,7 @@ package com.preview.preview.domain.web.controller;
 import com.preview.preview.domain.service.posts.PostsService;
 import com.preview.preview.domain.web.dto.PostsResponseDto;
 import com.preview.preview.domain.web.dto.PostsUpdateRequestDto;
-import com.preview.preview.domain.web.dto.post.PostCreateRequestDto;
-import com.preview.preview.domain.web.dto.post.PostCreateResponseDto;
-import com.preview.preview.domain.web.dto.post.PostDto;
-import com.preview.preview.domain.web.dto.post.PostGetResponseDto;
+import com.preview.preview.domain.web.dto.post.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,7 +17,7 @@ public class PostsApiController {
         private final PostsService postsService;
 
         // 멘토만 등록할 수 있게 설정
-        @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+        @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
         @PostMapping("/api/post")
         public ResponseEntity<PostCreateResponseDto> createPost(
                 @RequestBody PostCreateRequestDto postCreateRequestDto){
@@ -34,16 +31,16 @@ public class PostsApiController {
                 return ResponseEntity.ok(postsService.findById(postId));
         }
 
-
+        @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+        @PutMapping("/api/post")
+        public ResponseEntity<PostUpdateResponseDto> updatePost(
+                @RequestBody PostsUpdateRequestDto postsUpdateRequestDto){
+                return ResponseEntity.ok(postsService.update(postsUpdateRequestDto));
+        }
 
         @GetMapping("/board")
         public String index(){
                 return "board";
-        }
-
-        @PutMapping("/api/v1/posts/{id}")
-        public Long update(@PathVariable Long id, @RequestBody PostsUpdateRequestDto requestDto){
-                return postsService.update(id, requestDto);
         }
 
 }

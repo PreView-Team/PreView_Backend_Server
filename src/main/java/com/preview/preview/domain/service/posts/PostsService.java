@@ -12,10 +12,7 @@ import com.preview.preview.domain.user.UserRepository;
 import com.preview.preview.domain.web.dto.PostsResponseDto;
 import com.preview.preview.domain.web.dto.PostsSaveRequestDto;
 import com.preview.preview.domain.web.dto.PostsUpdateRequestDto;
-import com.preview.preview.domain.web.dto.post.PostCreateRequestDto;
-import com.preview.preview.domain.web.dto.post.PostCreateResponseDto;
-import com.preview.preview.domain.web.dto.post.PostDto;
-import com.preview.preview.domain.web.dto.post.PostGetResponseDto;
+import com.preview.preview.domain.web.dto.post.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +32,8 @@ public class PostsService {
 
         User user = userRepository.findByKakaoId(requestDto.getKakaoId()).orElseThrow(()->{throw new CustomException(ErrorCode.NOT_EXISTED_USER_ID);});
 
+        if (user.getAuthorities().size() == 1) throw new CustomException(ErrorCode.NOT_EQUAL_USER_RESOURCE);
+
         Post post = Post.builder()
                 .category(category)
                 .user(user)
@@ -50,11 +49,24 @@ public class PostsService {
     }
 
     @Transactional
-    public Long update(Long id, PostsUpdateRequestDto requestDto){
-        Post posts = postsRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
-        return id;
+    public PostUpdateResponseDto update(PostsUpdateRequestDto requestDto){
+        Post post = postsRepository.findById(requestDto.getPostId()).orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTED_POST_ID));
+        User user = userRepository.findByKakaoId(requestDto.getKakaoId()).orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
+        // kakao ID랑 post user id 비교
+        if (post.getUser().getId() != user.getId()) new CustomException(ErrorCode.NOT_EQUAL_USER_RESOURCE);
+
+        post.setTitle(requestDto.getTitle());
+        post.setSub_title(requestDto.getSubTitle());
+        post.setContent(requestDto.getContents());
+
+        PostDto.from(postsRepository.save(post));
+        PostUpdateResponseDto postUpdateResponseDto = new PostUpdateResponseDto();
+        postUpdateResponseDto.setResult("수정되었습니다.");
+        postUpdateResponseDto.setId(post.getId());
+        return postUpdateResponseDto;
     }
 
+    @Transactional
     public PostGetResponseDto findById(Long id){
         Post post = postsRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTED_POST_ID));
         PostGetResponseDto postGetResponseDto = new PostGetResponseDto();
@@ -63,6 +75,8 @@ public class PostsService {
         postGetResponseDto.setTitle(post.getTitle());
         postGetResponseDto.setSubTitle(post.getSub_title());
         postGetResponseDto.setContents(post.getContent());
+        postGetResponseDto.setCreateDateTime(post.getCreatedDate());
+        postGetResponseDto.setUpdateDateTime(post.getModifiedDate());
         return postGetResponseDto;
     }
 
