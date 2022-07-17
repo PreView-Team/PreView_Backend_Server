@@ -8,5 +8,6 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PostCreateResponseDto {
+    private Long id;
     private String result;
 }

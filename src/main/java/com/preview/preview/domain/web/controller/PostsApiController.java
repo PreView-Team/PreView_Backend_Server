@@ -5,6 +5,8 @@ import com.preview.preview.domain.web.dto.PostsResponseDto;
 import com.preview.preview.domain.web.dto.PostsUpdateRequestDto;
 import com.preview.preview.domain.web.dto.post.PostCreateRequestDto;
 import com.preview.preview.domain.web.dto.post.PostCreateResponseDto;
+import com.preview.preview.domain.web.dto.post.PostDto;
+import com.preview.preview.domain.web.dto.post.PostGetResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -25,6 +27,15 @@ public class PostsApiController {
                 return ResponseEntity.ok(postsService.save(postCreateRequestDto));
         }
 
+        @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+        @GetMapping("/api/post/{postId}")
+        public ResponseEntity<PostGetResponseDto> getPost(
+                @PathVariable Long postId){
+                return ResponseEntity.ok(postsService.findById(postId));
+        }
+
+
+
         @GetMapping("/board")
         public String index(){
                 return "board";
@@ -33,11 +44,6 @@ public class PostsApiController {
         @PutMapping("/api/v1/posts/{id}")
         public Long update(@PathVariable Long id, @RequestBody PostsUpdateRequestDto requestDto){
                 return postsService.update(id, requestDto);
-        }
-
-        @GetMapping("/api/v1/posts/{id}")
-        public PostsResponseDto findById(@PathVariable Long id){
-                return postsService.findById(id);
         }
 
 }

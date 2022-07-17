@@ -15,6 +15,7 @@ import com.preview.preview.domain.web.dto.PostsUpdateRequestDto;
 import com.preview.preview.domain.web.dto.post.PostCreateRequestDto;
 import com.preview.preview.domain.web.dto.post.PostCreateResponseDto;
 import com.preview.preview.domain.web.dto.post.PostDto;
+import com.preview.preview.domain.web.dto.post.PostGetResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,18 +45,25 @@ public class PostsService {
         PostDto.from(postsRepository.save(post));
         PostCreateResponseDto postCreateResponseDto = new PostCreateResponseDto();
         postCreateResponseDto.setResult("성공");;
+        postCreateResponseDto.setId(post.getId());
         return postCreateResponseDto;
     }
 
     @Transactional
     public Long update(Long id, PostsUpdateRequestDto requestDto){
-        Post posts = postsRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id = " + id));
+        Post posts = postsRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
         return id;
     }
 
-    public PostsResponseDto findById(Long id){
-        Post entity = postsRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id="+id));
-        return new PostsResponseDto(entity);
+    public PostGetResponseDto findById(Long id){
+        Post post = postsRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTED_POST_ID));
+        PostGetResponseDto postGetResponseDto = new PostGetResponseDto();
+        postGetResponseDto.setCategoryName(post.getCategory().getName());
+        postGetResponseDto.setNickname(post.getUser().getNickname());
+        postGetResponseDto.setTitle(post.getTitle());
+        postGetResponseDto.setSubTitle(post.getSub_title());
+        postGetResponseDto.setContents(post.getContent());
+        return postGetResponseDto;
     }
 
 }
