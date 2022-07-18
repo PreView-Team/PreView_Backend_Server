@@ -1,2 +1,15 @@
-package com.preview.preview.domain.web.dto.post;public class PostDeleteResponseDto {
+package com.preview.preview.domain.web.dto.post;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class PostDeleteResponseDto {
+    long id;
+    String result;
 }

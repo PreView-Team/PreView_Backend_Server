@@ -24,5 +24,5 @@ public abstract class BaseTimeEntity {
     private LocalDateTime modifiedDate;
 
     @DateTimeFormat(pattern = "yyyyMMddHHmmss")
-    private LocalDateTime deletedDate;
+    protected LocalDateTime deletedDate;
 }

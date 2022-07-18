@@ -8,6 +8,7 @@ import com.preview.preview.domain.user.User;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,5 +49,8 @@ public class Post extends BaseTimeEntity {
     @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private final List<PostLike> postLikes = new ArrayList<>();
 
-
+    public Long deletePost(){
+        deletedDate = LocalDateTime.now();
+        return id;
+    }
 }

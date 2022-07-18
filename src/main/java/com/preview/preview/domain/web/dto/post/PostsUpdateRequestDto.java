@@ -1,4 +1,4 @@
-package com.preview.preview.domain.web.dto;
+package com.preview.preview.domain.web.dto.post;
 
 import lombok.Builder;
 import lombok.Getter;

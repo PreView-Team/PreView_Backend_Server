@@ -1,8 +1,7 @@
 package com.preview.preview.domain.web.controller;
 
 import com.preview.preview.domain.service.posts.PostsService;
-import com.preview.preview.domain.web.dto.PostsResponseDto;
-import com.preview.preview.domain.web.dto.PostsUpdateRequestDto;
+import com.preview.preview.domain.web.dto.post.PostsUpdateRequestDto;
 import com.preview.preview.domain.web.dto.post.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +15,6 @@ public class PostsApiController {
 
         private final PostsService postsService;
 
-        // 멘토만 등록할 수 있게 설정
         @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
         @PostMapping("/api/post")
         public ResponseEntity<PostCreateResponseDto> createPost(
@@ -38,9 +36,14 @@ public class PostsApiController {
                 return ResponseEntity.ok(postsService.update(postsUpdateRequestDto));
         }
 
-        @GetMapping("/board")
-        public String index(){
-                return "board";
+        @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+        @DeleteMapping("/api/post")
+        public ResponseEntity<PostDeleteResponseDto> deletePost(
+                @RequestBody PostsDeleteRequestDto postsDeleteRequestDto){
+                return ResponseEntity.ok(postsService.delete(postsDeleteRequestDto));
         }
+
+
+
 
 }

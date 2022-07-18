@@ -9,9 +9,7 @@ import com.preview.preview.domain.post.Post;
 import com.preview.preview.domain.post.PostRepository;
 import com.preview.preview.domain.user.User;
 import com.preview.preview.domain.user.UserRepository;
-import com.preview.preview.domain.web.dto.PostsResponseDto;
-import com.preview.preview.domain.web.dto.PostsSaveRequestDto;
-import com.preview.preview.domain.web.dto.PostsUpdateRequestDto;
+import com.preview.preview.domain.web.dto.post.PostsUpdateRequestDto;
 import com.preview.preview.domain.web.dto.post.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -50,7 +48,7 @@ public class PostsService {
 
     @Transactional
     public PostUpdateResponseDto update(PostsUpdateRequestDto requestDto){
-        Post post = postsRepository.findById(requestDto.getPostId()).orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTED_POST_ID));
+        Post post = postsRepository.findById(requestDto.getPostId()).filter(getPost -> getPost.getDeletedDate() == null).orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTED_POST_ID));
         User user = userRepository.findByKakaoId(requestDto.getKakaoId()).orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
         // kakao ID랑 post user id 비교
         if (post.getUser().getId() != user.getId()) new CustomException(ErrorCode.NOT_EQUAL_USER_RESOURCE);
@@ -68,7 +66,7 @@ public class PostsService {
 
     @Transactional
     public PostGetResponseDto findById(Long id){
-        Post post = postsRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTED_POST_ID));
+        Post post = postsRepository.findById(id).filter(getPost -> getPost.getDeletedDate() == null).orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTED_POST_ID));
         PostGetResponseDto postGetResponseDto = new PostGetResponseDto();
         postGetResponseDto.setCategoryName(post.getCategory().getName());
         postGetResponseDto.setNickname(post.getUser().getNickname());
@@ -78,6 +76,25 @@ public class PostsService {
         postGetResponseDto.setCreateDateTime(post.getCreatedDate());
         postGetResponseDto.setUpdateDateTime(post.getModifiedDate());
         return postGetResponseDto;
+    }
+
+    @Transactional
+    public PostDeleteResponseDto delete(PostsDeleteRequestDto deleteRequestDto){
+
+        PostDeleteResponseDto postDeleteResponseDto = new PostDeleteResponseDto();
+
+        postsRepository.findById(deleteRequestDto.getPostId())
+                .filter(unidentifiedPost -> unidentifiedPost.getDeletedDate() == null)
+                .filter(post -> post.getUser().getKakaoId() == deleteRequestDto.getKakaoId())
+                .map(post -> {
+                    post.deletePost();
+                    postsRepository.save(post);
+                    postDeleteResponseDto.setId(deleteRequestDto.getPostId());
+                    postDeleteResponseDto.setResult("게시글을 삭제하였습니다.");
+                    return postDeleteResponseDto;
+                }).orElseThrow(()-> new CustomException(ErrorCode.NOT_DELETE_POST_RESOURCE));
+
+        return postDeleteResponseDto;
     }
 
 }
