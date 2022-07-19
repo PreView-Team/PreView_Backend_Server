@@ -9,6 +9,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Optional;
+
 @RequiredArgsConstructor
 @Controller
 public class PostsApiController {
@@ -43,6 +46,15 @@ public class PostsApiController {
                 return ResponseEntity.ok(postsService.delete(postsDeleteRequestDto));
         }
 
+        // 카테고리 별로 리스트 가져오기
+        @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+        @GetMapping("/api/post/category/{categoryId}")
+        public ResponseEntity<List<PostsGetByCategoryResponseDto>> getPostsByCategory(
+                @PathVariable Long categoryId){
+                PostsGetByCategoryRequestDto postsGetByCategoryRequestDto = new PostsGetByCategoryRequestDto();
+                postsGetByCategoryRequestDto.setCategoryId(categoryId);
+                return ResponseEntity.ok(postsService.findPostsByCategoryId(postsGetByCategoryRequestDto));
+        }
 
 
 

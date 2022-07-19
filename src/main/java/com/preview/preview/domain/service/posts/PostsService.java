@@ -15,6 +15,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RequiredArgsConstructor
 @Service
 public class PostsService {
@@ -79,13 +82,19 @@ public class PostsService {
     }
 
     @Transactional
+    public List<PostsGetByCategoryResponseDto> findPostsByCategoryId(PostsGetByCategoryRequestDto postsGetByCategoryRequestDto){
+        return postsRepository.findPostByCategoryId(postsGetByCategoryRequestDto.categoryId).stream().filter(post -> post.getDeletedDate() == null)
+                .map(PostsGetByCategoryResponseDto::of)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
     public PostDeleteResponseDto delete(PostsDeleteRequestDto deleteRequestDto){
 
         PostDeleteResponseDto postDeleteResponseDto = new PostDeleteResponseDto();
 
         postsRepository.findById(deleteRequestDto.getPostId())
-                .filter(unidentifiedPost -> unidentifiedPost.getDeletedDate() == null)
-                .filter(post -> post.getUser().getKakaoId() == deleteRequestDto.getKakaoId())
+                .filter(unidentifiedPost -> unidentifiedPost.getDeletedDate() == null && unidentifiedPost.getUser().getKakaoId() == deleteRequestDto.getKakaoId())
                 .map(post -> {
                     post.deletePost();
                     postsRepository.save(post);
