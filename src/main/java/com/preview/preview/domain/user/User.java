@@ -11,6 +11,7 @@ import lombok.*;
 import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -80,4 +81,8 @@ public class User extends BaseTimeEntity {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private final List<PostLike> postLikes = new ArrayList<>();
 
+    public Long deleteUser(){
+        deletedDate = LocalDateTime.now();
+        return id;
+    }
 }

@@ -15,7 +15,9 @@ public enum ErrorCode {
     NOT_EXISTED_CATEGORY_ID(HttpStatus.BAD_REQUEST, "P005", "등록되지 않은 카테고리입니다."),
     NOT_EXISTED_POST_ID(HttpStatus.BAD_REQUEST, "P006", "찾을 수 없는 게시글입니다."),
     NOT_EQUAL_USER_RESOURCE(HttpStatus.FORBIDDEN, "P007", "게시물을 권한이 없는 계정입니다."),
-    NOT_DELETE_POST_RESOURCE(HttpStatus.BAD_REQUEST, "P008", "게시글을 지울 수 없습니다.")
+    NOT_DELETE_POST_RESOURCE(HttpStatus.BAD_REQUEST, "P008", "게시글을 지울 수 없습니다."),
+    NOT_DELETE_USER_RESOURCE(HttpStatus.BAD_REQUEST, "P009", "유저를 삭제할 수 없습니다."),
+    DELETE_USER_RESOURCE(HttpStatus.BAD_REQUEST, "P010", "이미 삭제된 계정입니다. 일주일 뒤에 다시 가입 바랍니다.")
     ;
 
     private final HttpStatus httpStatus;

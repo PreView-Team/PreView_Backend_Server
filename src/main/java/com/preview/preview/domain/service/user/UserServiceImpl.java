@@ -9,6 +9,8 @@ import com.preview.preview.domain.user.User;
 import com.preview.preview.domain.user.UserRepository;
 import com.preview.preview.domain.web.dto.enterprise.EnterpriseDto;
 import com.preview.preview.domain.web.dto.job.JobDto;
+import com.preview.preview.domain.web.dto.user.UserDeleteRequestDto;
+import com.preview.preview.domain.web.dto.user.UserDeleteResponseDto;
 import com.preview.preview.domain.web.dto.user.UserDto;
 import com.preview.preview.domain.web.dto.user.VaildedNicknameDto;
 import com.preview.preview.global.util.SecurityUtil;
@@ -84,10 +86,26 @@ public class UserServiceImpl implements UserService{
     }
 
     public Optional<User> findByKakaoId(Long id){
-        return userRepository.findOneWithAuthoritiesByKakaoId(id);
+        return Optional.ofNullable(userRepository.findOneWithAuthoritiesByKakaoId(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTED_USER_ID)));
     }
 
     public boolean existedByEmail(String email){
         return userRepository.existsByEmail(email);
+    }
+
+    @Transactional
+    public UserDeleteResponseDto deleteUserByKakaoId(UserDeleteRequestDto userDeleteRequestDto){
+        UserDeleteResponseDto userDeleteResponseDto = new UserDeleteResponseDto();
+
+        userRepository.findByKakaoId(userDeleteRequestDto.getKakaoId()).filter(
+                user -> user.getDeletedDate() == null
+        ).map(user -> {
+            user.deleteUser();
+            userRepository.save(user);
+            userDeleteResponseDto.setResult("삭제되었습니다.");
+            return userDeleteResponseDto;
+        }).orElseThrow(()-> new CustomException(ErrorCode.NOT_DELETE_USER_RESOURCE));
+
+        return userDeleteResponseDto;
     }
 }

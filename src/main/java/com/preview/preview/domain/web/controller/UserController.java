@@ -3,11 +3,11 @@ package com.preview.preview.domain.web.controller;
 import com.preview.preview.domain.service.social.kakao.KakaoServiceImpl;
 import com.preview.preview.domain.service.user.UserServiceImpl;
 import com.preview.preview.domain.web.dto.authority.AuthorityResponseDto;
+import com.preview.preview.domain.web.dto.post.PostDeleteResponseDto;
+import com.preview.preview.domain.web.dto.post.PostsDeleteRequestDto;
 import com.preview.preview.domain.web.dto.social.kakao.KakaoLoginInfoDto;
 import com.preview.preview.domain.web.dto.social.kakao.KakaoSignupRequestDto;
-import com.preview.preview.domain.web.dto.user.SignupResponseDto;
-import com.preview.preview.domain.web.dto.user.UserDto;
-import com.preview.preview.domain.web.dto.user.VaildedNicknameDto;
+import com.preview.preview.domain.web.dto.user.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -63,6 +63,13 @@ public class UserController {
     public ResponseEntity<VaildedNicknameDto> isExisedNickname(@PathVariable String nickname){
         VaildedNicknameDto vaildedNicknameDto = userService.checkNicknameDuplicate(nickname);
         return ResponseEntity.ok(vaildedNicknameDto);
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    @DeleteMapping("/user")
+    public ResponseEntity<UserDeleteResponseDto> deleteUser(
+            @RequestBody UserDeleteRequestDto userDeleteRequestDto){
+        return ResponseEntity.ok(userService.deleteUserByKakaoId(userDeleteRequestDto));
     }
 
 }
