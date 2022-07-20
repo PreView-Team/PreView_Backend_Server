@@ -9,12 +9,10 @@ import com.preview.preview.domain.user.User;
 import com.preview.preview.domain.user.UserRepository;
 import com.preview.preview.domain.web.dto.enterprise.EnterpriseDto;
 import com.preview.preview.domain.web.dto.job.JobDto;
-import com.preview.preview.domain.web.dto.user.UserDeleteRequestDto;
-import com.preview.preview.domain.web.dto.user.UserDeleteResponseDto;
-import com.preview.preview.domain.web.dto.user.UserDto;
-import com.preview.preview.domain.web.dto.user.VaildedNicknameDto;
+import com.preview.preview.domain.web.dto.user.*;
 import com.preview.preview.global.util.SecurityUtil;
 import org.springframework.http.ResponseEntity;
+import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -108,4 +106,23 @@ public class UserServiceImpl implements UserService{
 
         return userDeleteResponseDto;
     }
+
+    @Transactional
+    public UserUpdateResponseDto updateUserByKakaoId(UserUpdateRequestDto userUpdateRequestDto){
+        UserUpdateResponseDto userUpdateResponseDto = new UserUpdateResponseDto();
+        Optional<User> user = Optional.ofNullable(userRepository.findByKakaoId(userUpdateRequestDto.getKakaoId()).orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTED_USER_ID)));
+        user.get().setLikedJobs(userUpdateRequestDto.getJobDtoSet());
+
+        try {
+            userRepository.save(user.get());
+        } catch (JpaObjectRetrievalFailureException ex){
+            throw new CustomException(ErrorCode.NOT_EXISTED_LIKE_JOB);
+        }
+
+
+        userUpdateResponseDto.setId(user.get().getId());
+        userUpdateResponseDto.setResult("유저 정보를 수정하였습니다.");
+        return userUpdateResponseDto;
+    }
+
 }

@@ -51,7 +51,6 @@ public class UserController {
     }
 
 
-
     @GetMapping("/user/{username}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<UserDto> getUserInfo(@PathVariable String username){
@@ -63,6 +62,13 @@ public class UserController {
     public ResponseEntity<VaildedNicknameDto> isExisedNickname(@PathVariable String nickname){
         VaildedNicknameDto vaildedNicknameDto = userService.checkNicknameDuplicate(nickname);
         return ResponseEntity.ok(vaildedNicknameDto);
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    @PutMapping("/user")
+    public ResponseEntity<UserUpdateResponseDto> updateUser(
+            @RequestBody UserUpdateRequestDto userUpdateRequestDto){
+        return ResponseEntity.ok(userService.updateUserByKakaoId(userUpdateRequestDto));
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
