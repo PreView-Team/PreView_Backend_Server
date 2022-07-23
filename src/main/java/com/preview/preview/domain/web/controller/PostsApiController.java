@@ -28,10 +28,10 @@ public class PostsApiController {
         }
 
         @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-        @GetMapping("/api/post/{postId}/{userId}")
+        @GetMapping("/api/post/{userId}/{postId}")
         public ResponseEntity<PostGetResponseDto> getPost(
-                @PathVariable Long postId, @PathVariable Long userId){
-                return ResponseEntity.ok(postsService.findById(postId, userId));
+                @PathVariable Long userId, @PathVariable Long postId){
+                return ResponseEntity.ok(postsService.findById(userId, postId));
         }
 
         @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
@@ -50,10 +50,11 @@ public class PostsApiController {
 
         // 카테고리 별로 리스트 가져오기
         @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-        @GetMapping("/api/post/category/{categoryId}")
+        @GetMapping("/api/post/category/{userId}/{categoryId}")
         public ResponseEntity<List<PostsGetByCategoryResponseDto>> getPostsByCategory(
-                @PathVariable Long categoryId){
+                @PathVariable Long userId,@PathVariable Long categoryId){
                 PostsGetByCategoryRequestDto postsGetByCategoryRequestDto = new PostsGetByCategoryRequestDto();
+                postsGetByCategoryRequestDto.setUserKakaoId(userId);
                 postsGetByCategoryRequestDto.setCategoryId(categoryId);
                 return ResponseEntity.ok(postsService.findPostsByCategoryId(postsGetByCategoryRequestDto));
         }

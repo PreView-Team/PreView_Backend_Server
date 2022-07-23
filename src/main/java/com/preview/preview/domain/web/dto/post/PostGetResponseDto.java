@@ -17,4 +17,5 @@ public class PostGetResponseDto {
     private String categoryName;
     private LocalDateTime createDateTime;
     private LocalDateTime updateDateTime;
+    private boolean CheckedLike;
 }

@@ -10,5 +10,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PostsGetByCategoryRequestDto {
-    public long categoryId;
+    private long categoryId;
+    private long userKakaoId;
 }

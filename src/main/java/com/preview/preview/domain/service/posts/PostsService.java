@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -81,7 +82,6 @@ public class PostsService {
             postGetResponseDto.setCheckedLike(false);
         }
 
-
         postGetResponseDto.setCategoryName(post.getCategory().getName());
         postGetResponseDto.setNickname(post.getUser().getNickname());
         postGetResponseDto.setTitle(post.getTitle());
@@ -94,9 +94,18 @@ public class PostsService {
 
     @Transactional
     public List<PostsGetByCategoryResponseDto> findPostsByCategoryId(PostsGetByCategoryRequestDto postsGetByCategoryRequestDto){
-        return postsRepository.findPostByCategoryId(postsGetByCategoryRequestDto.categoryId).stream().filter(post -> post.getDeletedDate() == null)
-                .map(PostsGetByCategoryResponseDto::of)
-                .collect(Collectors.toList());
+        User user = userRepository.findByKakaoId(postsGetByCategoryRequestDto.getUserKakaoId()).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
+        List<Post> posts = postsRepository.findPostByCategoryId(postsGetByCategoryRequestDto.getCategoryId()).stream().filter(post -> post.getDeletedDate() == null).collect(Collectors.toList());
+        boolean like = false;
+
+        List<PostsGetByCategoryResponseDto> list = new ArrayList<>();
+
+        for (Post s:posts){
+            like = postLikeRepository.existsPostLikeByUserIdAndPostId(user.getId(), s.getId());
+            list.add(PostsGetByCategoryResponseDto.of(s, like));
+        }
+
+        return list;
     }
 
     @Transactional

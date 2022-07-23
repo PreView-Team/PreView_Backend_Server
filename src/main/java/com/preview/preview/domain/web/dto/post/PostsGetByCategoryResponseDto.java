@@ -1,6 +1,7 @@
 package com.preview.preview.domain.web.dto.post;
 
 import com.preview.preview.domain.post.Post;
+import com.preview.preview.domain.user.User;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -24,7 +25,8 @@ public class PostsGetByCategoryResponseDto {
     private boolean like;
 
 
-    public static PostsGetByCategoryResponseDto of (Post post){
+    public static PostsGetByCategoryResponseDto of (Post post, boolean like){
+
         return PostsGetByCategoryResponseDto.builder()
                 .id(post.getId())
                 .contents(post.getContent())
@@ -34,11 +36,10 @@ public class PostsGetByCategoryResponseDto {
                 .user(post.getUser().getNickname())
                 .title(post.getTitle())
                 .subTitle(post.getSub_title())
+                .like(like)
                 .build();
     }
 
-    public static List<PostsGetByCategoryResponseDto> of(List<Post> posts) {
-        return posts.stream().map(PostsGetByCategoryResponseDto::of).collect(Collectors.toList());
-    }
+
 
 }
