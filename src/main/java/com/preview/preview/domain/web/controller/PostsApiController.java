@@ -28,10 +28,10 @@ public class PostsApiController {
         }
 
         @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-        @GetMapping("/api/post/{postId}")
+        @GetMapping("/api/post/{postId}/{userId}")
         public ResponseEntity<PostGetResponseDto> getPost(
-                @PathVariable Long postId){
-                return ResponseEntity.ok(postsService.findById(postId));
+                @PathVariable Long postId, @PathVariable Long userId){
+                return ResponseEntity.ok(postsService.findById(postId, userId));
         }
 
         @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
@@ -63,6 +63,13 @@ public class PostsApiController {
         public ResponseEntity<PostLikeResponseDto> likePost(
                 @RequestBody PostLikeRequestDto postLikeRequestDto){
                 return ResponseEntity.ok(postLikeService.likePostByUserId(postLikeRequestDto));
+        }
+
+        @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+        @PostMapping("/api/post/unlike")
+        public ResponseEntity<PostLikeResponseDto> unlikePost(
+                @RequestBody PostLikeRequestDto postLikeRequestDto){
+                return ResponseEntity.ok(postLikeService.unlikePostByUserId(postLikeRequestDto));
         }
 
 

@@ -11,6 +11,7 @@ import com.preview.preview.domain.user.UserRepository;
 import com.preview.preview.domain.web.dto.post.PostLikeRequestDto;
 import com.preview.preview.domain.web.dto.post.PostLikeResponseDto;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class PostLikeService {
@@ -24,6 +25,7 @@ public class PostLikeService {
         this.postLikeRepository = postLikeRepository;
     }
 
+    @Transactional
     public PostLikeResponseDto likePostByUserId(PostLikeRequestDto postLikeRequestDto){
         User user = userRepository.findByKakaoId(postLikeRequestDto.getUserKakaoId()).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
         Post post = postRepository.findById(postLikeRequestDto.getPostId()).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_POST_ID));
@@ -38,6 +40,21 @@ public class PostLikeService {
         postLikeResponseDto.setPostId(post.getId());
         postLikeResponseDto.setUserId(user.getId());
         postLikeResponseDto.setResult("좋아요 등록 성공");
+        return postLikeResponseDto;
+    }
+
+    @Transactional
+    public PostLikeResponseDto unlikePostByUserId(PostLikeRequestDto postLikeRequestDto){
+        User user = userRepository.findByKakaoId(postLikeRequestDto.getUserKakaoId()).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
+        Post post = postRepository.findById(postLikeRequestDto.getPostId()).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_POST_ID));
+
+        PostLike postLike = postLikeRepository.findPostLikeByUserIdAndPostId(user.getId(), post.getId()).orElseThrow(() -> new CustomException(ErrorCode.DUPLICATE_POST_UNLIKE_RESOURCE));
+        postLikeRepository.deleteById(postLike.getId());
+
+        PostLikeResponseDto postLikeResponseDto = new PostLikeResponseDto();
+        postLikeResponseDto.setPostId(post.getId());
+        postLikeResponseDto.setUserId(user.getId());
+        postLikeResponseDto.setResult("좋아요 취소 성공");
         return postLikeResponseDto;
     }
 

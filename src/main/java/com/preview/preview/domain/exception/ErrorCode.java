@@ -20,6 +20,7 @@ public enum ErrorCode {
     DELETE_USER_RESOURCE(HttpStatus.BAD_REQUEST, "P010", "이미 삭제된 계정입니다. 일주일 뒤에 다시 가입 바랍니다."),
     NOT_EXISTED_LIKE_JOB(HttpStatus.BAD_REQUEST, "P011","데이터 베이스에 해당 직무가 존재하지 않습니다."),
     DUPLICATE_POST_LIKE_RESOURCE(HttpStatus.CONFLICT,"P012", "이미 좋아요를 한 게시물 입니다."),
+    DUPLICATE_POST_UNLIKE_RESOURCE(HttpStatus.CONFLICT,"P012", "이미 좋아요가 안된 게시물 입니다.")
     ;
 
     private final HttpStatus httpStatus;

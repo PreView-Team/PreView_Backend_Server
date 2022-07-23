@@ -21,6 +21,7 @@ public class PostsGetByCategoryResponseDto {
     private String user;
     private String title;
     private String subTitle;
+    private boolean like;
 
 
     public static PostsGetByCategoryResponseDto of (Post post){

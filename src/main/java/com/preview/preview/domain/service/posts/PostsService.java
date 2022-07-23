@@ -6,6 +6,7 @@ import com.preview.preview.domain.category.CategoryRepository;
 import com.preview.preview.domain.exception.CustomException;
 import com.preview.preview.domain.exception.ErrorCode;
 import com.preview.preview.domain.post.Post;
+import com.preview.preview.domain.post.PostLikeRepository;
 import com.preview.preview.domain.post.PostRepository;
 import com.preview.preview.domain.user.User;
 import com.preview.preview.domain.user.UserRepository;
@@ -24,6 +25,7 @@ public class PostsService {
     private final PostRepository postsRepository;
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
+    private final PostLikeRepository postLikeRepository;
 
 
     @Transactional
@@ -68,8 +70,10 @@ public class PostsService {
     }
 
     @Transactional
-    public PostGetResponseDto findById(Long id){
-        Post post = postsRepository.findById(id).filter(getPost -> getPost.getDeletedDate() == null).orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTED_POST_ID));
+    public PostGetResponseDto findById(Long userId, Long postId){
+        User user = userRepository.findById(userId).orElseThrow(()-> new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
+        Post post = postsRepository.findById(postId).filter(getPost -> getPost.getDeletedDate() == null).orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTED_POST_ID));
+
         PostGetResponseDto postGetResponseDto = new PostGetResponseDto();
         postGetResponseDto.setCategoryName(post.getCategory().getName());
         postGetResponseDto.setNickname(post.getUser().getNickname());
@@ -83,9 +87,6 @@ public class PostsService {
 
     @Transactional
     public List<PostsGetByCategoryResponseDto> findPostsByCategoryId(PostsGetByCategoryRequestDto postsGetByCategoryRequestDto){
-
-
-
         return postsRepository.findPostByCategoryId(postsGetByCategoryRequestDto.categoryId).stream().filter(post -> post.getDeletedDate() == null)
                 .map(PostsGetByCategoryResponseDto::of)
                 .collect(Collectors.toList());
