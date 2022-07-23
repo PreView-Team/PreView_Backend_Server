@@ -71,10 +71,17 @@ public class PostsService {
 
     @Transactional
     public PostGetResponseDto findById(Long userId, Long postId){
-        User user = userRepository.findById(userId).orElseThrow(()-> new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
+        User user = userRepository.findByKakaoId(userId).orElseThrow(()-> new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
         Post post = postsRepository.findById(postId).filter(getPost -> getPost.getDeletedDate() == null).orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTED_POST_ID));
-
         PostGetResponseDto postGetResponseDto = new PostGetResponseDto();
+
+        if (postLikeRepository.existsPostLikeByUserIdAndPostId(user.getId(), post.getId())){
+            postGetResponseDto.setCheckedLike(true);
+        } else{
+            postGetResponseDto.setCheckedLike(false);
+        }
+
+
         postGetResponseDto.setCategoryName(post.getCategory().getName());
         postGetResponseDto.setNickname(post.getUser().getNickname());
         postGetResponseDto.setTitle(post.getTitle());
