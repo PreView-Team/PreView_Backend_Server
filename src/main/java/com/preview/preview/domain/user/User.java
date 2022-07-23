@@ -1,19 +1,14 @@
 package com.preview.preview.domain.user;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.preview.preview.domain.BaseTimeEntity;
 import com.preview.preview.domain.authority.Authority;
 import com.preview.preview.domain.enterprise.Enterprise;
 import com.preview.preview.domain.job.Job;
-import com.preview.preview.domain.like.PostLike;
-import com.preview.preview.domain.post.Post;
 import lombok.*;
 import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 
@@ -73,14 +68,17 @@ public class User extends BaseTimeEntity {
     )
     Set<Enterprise> likedEnterprises;
 
+    /*
     @JsonManagedReference
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private final List<Post> posts = new ArrayList<>();
+    */
 
+    /*
     @JsonManagedReference
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private final List<PostLike> postLikes = new ArrayList<>();
-
+    */
     public Long deleteUser(){
         deletedDate = LocalDateTime.now();
         return id;

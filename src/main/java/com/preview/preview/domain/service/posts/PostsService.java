@@ -83,6 +83,9 @@ public class PostsService {
 
     @Transactional
     public List<PostsGetByCategoryResponseDto> findPostsByCategoryId(PostsGetByCategoryRequestDto postsGetByCategoryRequestDto){
+
+
+
         return postsRepository.findPostByCategoryId(postsGetByCategoryRequestDto.categoryId).stream().filter(post -> post.getDeletedDate() == null)
                 .map(PostsGetByCategoryResponseDto::of)
                 .collect(Collectors.toList());

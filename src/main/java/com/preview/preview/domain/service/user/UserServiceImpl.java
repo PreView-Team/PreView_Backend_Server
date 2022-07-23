@@ -119,7 +119,6 @@ public class UserServiceImpl implements UserService{
             throw new CustomException(ErrorCode.NOT_EXISTED_LIKE_JOB);
         }
 
-
         userUpdateResponseDto.setId(user.get().getId());
         userUpdateResponseDto.setResult("유저 정보를 수정하였습니다.");
         return userUpdateResponseDto;

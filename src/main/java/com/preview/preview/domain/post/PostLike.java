@@ -1,20 +1,17 @@
-package com.preview.preview.domain.like;
+package com.preview.preview.domain.post;
 
 import com.preview.preview.domain.BaseTimeEntity;
 import com.preview.preview.domain.post.Post;
 import com.preview.preview.domain.user.User;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
-
-@NoArgsConstructor
-@Getter
-@Setter
 @Table(name = "post_like")
+@Builder
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class PostLike extends BaseTimeEntity {
 
@@ -30,8 +27,5 @@ public class PostLike extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id", referencedColumnName = "post_id", nullable = false, foreignKey = @ForeignKey(name = "fk_like_to_post"))
     private Post post;
-
-    @Column(name = "like_check")
-    private boolean isLiked;
 
 }

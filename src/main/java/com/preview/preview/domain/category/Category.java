@@ -1,7 +1,6 @@
 package com.preview.preview.domain.category;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.preview.preview.domain.like.PostLike;
 import com.preview.preview.domain.post.Post;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

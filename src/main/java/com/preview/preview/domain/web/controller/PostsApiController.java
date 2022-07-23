@@ -1,5 +1,6 @@
 package com.preview.preview.domain.web.controller;
 
+import com.preview.preview.domain.service.posts.PostLikeService;
 import com.preview.preview.domain.service.posts.PostsService;
 import com.preview.preview.domain.web.dto.post.PostsUpdateRequestDto;
 import com.preview.preview.domain.web.dto.post.*;
@@ -17,6 +18,7 @@ import java.util.Optional;
 public class PostsApiController {
 
         private final PostsService postsService;
+        private final PostLikeService postLikeService;
 
         @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
         @PostMapping("/api/post")
@@ -56,6 +58,12 @@ public class PostsApiController {
                 return ResponseEntity.ok(postsService.findPostsByCategoryId(postsGetByCategoryRequestDto));
         }
 
+        @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+        @PostMapping("/api/post/like")
+        public ResponseEntity<PostLikeResponseDto> likePost(
+                @RequestBody PostLikeRequestDto postLikeRequestDto){
+                return ResponseEntity.ok(postLikeService.likePostByUserId(postLikeRequestDto));
+        }
 
 
 }

@@ -19,7 +19,6 @@ public class PostsGetByCategoryResponseDto {
     private LocalDateTime updatedAt;
     private String category;
     private String user;
-    private Long likeCount;
     private String title;
     private String subTitle;
 
@@ -32,7 +31,6 @@ public class PostsGetByCategoryResponseDto {
                 .updatedAt(post.getModifiedDate())
                 .category(post.getCategory().getName())
                 .user(post.getUser().getNickname())
-                .likeCount(post.getPostLikes().stream().count())
                 .title(post.getTitle())
                 .subTitle(post.getSub_title())
                 .build();
