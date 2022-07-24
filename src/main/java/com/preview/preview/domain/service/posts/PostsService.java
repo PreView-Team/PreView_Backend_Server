@@ -30,11 +30,11 @@ public class PostsService {
 
 
     @Transactional
-    public PostCreateResponseDto save(PostCreateRequestDto requestDto){
+    public PostCreateResponseDto save(long kakaoID, PostCreateRequestDto requestDto){
         Category category = categoryRepository.findById(requestDto.getCategoryId()).orElseThrow(()-> {throw new CustomException(ErrorCode.NOT_EXISTED_CATEGORY_ID);
         });
 
-        User user = userRepository.findByKakaoId(requestDto.getKakaoId()).orElseThrow(()->{throw new CustomException(ErrorCode.NOT_EXISTED_USER_ID);});
+        User user = userRepository.findByKakaoId(kakaoID).orElseThrow(()->{throw new CustomException(ErrorCode.NOT_EXISTED_USER_ID);});
 
         if (user.getAuthorities().size() == 1) throw new CustomException(ErrorCode.NOT_EQUAL_USER_RESOURCE);
 

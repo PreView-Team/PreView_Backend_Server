@@ -2,11 +2,13 @@ package com.preview.preview.domain.web.controller;
 
 import com.preview.preview.domain.service.posts.PostLikeService;
 import com.preview.preview.domain.service.posts.PostsService;
+import com.preview.preview.domain.user.User;
 import com.preview.preview.domain.web.dto.post.PostsUpdateRequestDto;
 import com.preview.preview.domain.web.dto.post.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,8 +25,9 @@ public class PostsApiController {
         @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
         @PostMapping("/api/post")
         public ResponseEntity<PostCreateResponseDto> createPost(
+                @AuthenticationPrincipal User user,
                 @RequestBody PostCreateRequestDto postCreateRequestDto){
-                return ResponseEntity.ok(postsService.save(postCreateRequestDto));
+                return ResponseEntity.ok(postsService.save(user.getKakaoId(), postCreateRequestDto));
         }
 
         @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")

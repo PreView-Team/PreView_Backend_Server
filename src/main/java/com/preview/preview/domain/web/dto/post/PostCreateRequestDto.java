@@ -12,5 +12,4 @@ public class PostCreateRequestDto {
     private String title;
     private String subTitle;
     private long categoryId;
-    private long kakaoId;
 }
