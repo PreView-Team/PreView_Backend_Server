@@ -71,8 +71,8 @@ public class PostsService {
     }
 
     @Transactional
-    public PostGetResponseDto findById(Long userId, Long postId){
-        User user = userRepository.findByKakaoId(userId).orElseThrow(()-> new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
+    public PostGetResponseDto findById(Long kakaoId, Long postId){
+        User user = userRepository.findByKakaoId(kakaoId).orElseThrow(()-> new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
         Post post = postsRepository.findById(postId).filter(getPost -> getPost.getDeletedDate() == null).orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTED_POST_ID));
         PostGetResponseDto postGetResponseDto = new PostGetResponseDto();
 

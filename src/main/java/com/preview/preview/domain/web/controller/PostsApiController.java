@@ -31,10 +31,11 @@ public class PostsApiController {
         }
 
         @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-        @GetMapping("/api/post/{userId}/{postId}")
+        @GetMapping("/api/post/{postId}")
         public ResponseEntity<PostGetResponseDto> getPost(
-                @PathVariable Long userId, @PathVariable Long postId){
-                return ResponseEntity.ok(postsService.findById(userId, postId));
+                @AuthenticationPrincipal User user,
+                @PathVariable Long postId){
+                return ResponseEntity.ok(postsService.findById(user.getKakaoId(), postId));
         }
 
         @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
