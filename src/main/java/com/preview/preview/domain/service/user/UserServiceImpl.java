@@ -92,10 +92,10 @@ public class UserServiceImpl implements UserService{
     }
 
     @Transactional
-    public UserDeleteResponseDto deleteUserByKakaoId(UserDeleteRequestDto userDeleteRequestDto){
+    public UserDeleteResponseDto deleteUserByKakaoId(long kakaoId){
         UserDeleteResponseDto userDeleteResponseDto = new UserDeleteResponseDto();
 
-        userRepository.findByKakaoId(userDeleteRequestDto.getKakaoId()).filter(
+        userRepository.findByKakaoId(kakaoId).filter(
                 user -> user.getDeletedDate() == null
         ).map(user -> {
             user.deleteUser();
@@ -108,9 +108,9 @@ public class UserServiceImpl implements UserService{
     }
 
     @Transactional
-    public UserUpdateResponseDto updateUserByKakaoId(UserUpdateRequestDto userUpdateRequestDto){
+    public UserUpdateResponseDto updateUserByKakaoId(UserUpdateRequestDto userUpdateRequestDto, long kakaoId){
         UserUpdateResponseDto userUpdateResponseDto = new UserUpdateResponseDto();
-        Optional<User> user = Optional.ofNullable(userRepository.findByKakaoId(userUpdateRequestDto.getKakaoId()).orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTED_USER_ID)));
+        Optional<User> user = Optional.ofNullable(userRepository.findByKakaoId(kakaoId).orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTED_USER_ID)));
         user.get().setLikedJobs(userUpdateRequestDto.getJobDtoSet());
 
         try {

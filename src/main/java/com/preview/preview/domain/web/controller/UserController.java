@@ -2,6 +2,7 @@ package com.preview.preview.domain.web.controller;
 
 import com.preview.preview.domain.service.social.kakao.KakaoServiceImpl;
 import com.preview.preview.domain.service.user.UserServiceImpl;
+import com.preview.preview.domain.user.User;
 import com.preview.preview.domain.web.dto.authority.AuthorityResponseDto;
 import com.preview.preview.domain.web.dto.post.PostDeleteResponseDto;
 import com.preview.preview.domain.web.dto.post.PostsDeleteRequestDto;
@@ -10,6 +11,7 @@ import com.preview.preview.domain.web.dto.social.kakao.KakaoSignupRequestDto;
 import com.preview.preview.domain.web.dto.user.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
@@ -67,15 +69,16 @@ public class UserController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     @PutMapping("/user")
     public ResponseEntity<UserUpdateResponseDto> updateUser(
+            @AuthenticationPrincipal User user,
             @RequestBody UserUpdateRequestDto userUpdateRequestDto){
-        return ResponseEntity.ok(userService.updateUserByKakaoId(userUpdateRequestDto));
+        return ResponseEntity.ok(userService.updateUserByKakaoId(userUpdateRequestDto, user.getKakaoId()));
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     @DeleteMapping("/user")
     public ResponseEntity<UserDeleteResponseDto> deleteUser(
-            @RequestBody UserDeleteRequestDto userDeleteRequestDto){
-        return ResponseEntity.ok(userService.deleteUserByKakaoId(userDeleteRequestDto));
+            @AuthenticationPrincipal User user){
+        return ResponseEntity.ok(userService.deleteUserByKakaoId(user.getKakaoId()));
     }
 
 }
