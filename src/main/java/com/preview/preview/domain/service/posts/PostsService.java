@@ -114,7 +114,7 @@ public class PostsService {
         PostDeleteResponseDto postDeleteResponseDto = new PostDeleteResponseDto();
 
         postsRepository.findById(deleteRequestDto.getPostId())
-                .filter(unidentifiedPost -> unidentifiedPost.getDeletedDate() == null && unidentifiedPost.getUser().getKakaoId() == deleteRequestDto.getKakaoId())
+                .filter(unidentifiedPost -> unidentifiedPost.getDeletedDate() == null && unidentifiedPost.getUser().getKakaoId() == kakaoId)
                 .map(post -> {
                     post.deletePost();
                     postsRepository.save(post);
