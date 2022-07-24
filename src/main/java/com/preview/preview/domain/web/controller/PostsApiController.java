@@ -56,11 +56,12 @@ public class PostsApiController {
 
         // 카테고리 별로 리스트 가져오기
         @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-        @GetMapping("/api/post/category/{userId}/{categoryId}")
+        @GetMapping("/api/post/category/{categoryId}")
         public ResponseEntity<List<PostsGetByCategoryResponseDto>> getPostsByCategory(
-                @PathVariable Long userId,@PathVariable Long categoryId){
+                @AuthenticationPrincipal User user,
+                @PathVariable Long categoryId){
                 PostsGetByCategoryRequestDto postsGetByCategoryRequestDto = new PostsGetByCategoryRequestDto();
-                postsGetByCategoryRequestDto.setUserKakaoId(userId);
+                postsGetByCategoryRequestDto.setUserKakaoId(user.getKakaoId());
                 postsGetByCategoryRequestDto.setCategoryId(categoryId);
                 return ResponseEntity.ok(postsService.findPostsByCategoryId(postsGetByCategoryRequestDto));
         }
