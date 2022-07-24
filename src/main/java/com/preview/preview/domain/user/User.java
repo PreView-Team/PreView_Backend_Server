@@ -4,6 +4,7 @@ import com.preview.preview.domain.BaseTimeEntity;
 import com.preview.preview.domain.authority.Authority;
 import com.preview.preview.domain.enterprise.Enterprise;
 import com.preview.preview.domain.job.Job;
+import io.jsonwebtoken.Claims;
 import lombok.*;
 import net.minidev.json.annotate.JsonIgnore;
 
@@ -67,6 +68,10 @@ public class User extends BaseTimeEntity {
             inverseJoinColumns = {@JoinColumn(name = "enterprise_name", referencedColumnName = "enterprise_name")}
     )
     Set<Enterprise> likedEnterprises;
+
+    public User(Claims claims) {
+        this.kakaoId = Long.valueOf(claims.getSubject());
+    }
 
     /*
     @JsonManagedReference

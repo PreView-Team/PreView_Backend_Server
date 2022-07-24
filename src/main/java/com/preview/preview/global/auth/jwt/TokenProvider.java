@@ -1,5 +1,7 @@
 package com.preview.preview.global.auth.jwt;
 
+import com.nimbusds.jose.Algorithm;
+import com.nimbusds.jwt.JWT;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -43,7 +45,7 @@ public class TokenProvider implements InitializingBean {
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String createToken(Authentication authentication){
+    public String createToken(Authentication authentication, long kakaoId){
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
@@ -54,9 +56,21 @@ public class TokenProvider implements InitializingBean {
         return Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim(AUTHRITIES_KEY, authorities)
+                .claim("kakaoId", kakaoId)
                 .signWith(key, SignatureAlgorithm.HS512)
                 .setExpiration(validity)
                 .compact();
+    }
+
+    public long get(String token){
+        Claims claims = Jwts
+                .parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+        long a = (long) claims.get("kakaoId");
+        return a;
     }
 
     public Authentication getAuthentication(String token){
@@ -74,7 +88,7 @@ public class TokenProvider implements InitializingBean {
 
         User principal = new User(claims.getSubject(), "", authorities);
 
-        return new UsernamePasswordAuthenticationToken(principal, token, authorities);
+        return new UsernamePasswordAuthenticationToken(new com.preview.preview.domain.user.User(claims), token, authorities);
     }
 
     public boolean validateToken(String token){
