@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class PostsUpdateRequestDto {
     private long postId;
-    private long kakaoId;
     private String title;
     private String subTitle;
     private String contents;

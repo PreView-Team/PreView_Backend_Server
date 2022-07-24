@@ -53,9 +53,9 @@ public class PostsService {
     }
 
     @Transactional
-    public PostUpdateResponseDto update(PostsUpdateRequestDto requestDto){
+    public PostUpdateResponseDto update(long kakaoId, PostsUpdateRequestDto requestDto){
         Post post = postsRepository.findById(requestDto.getPostId()).filter(getPost -> getPost.getDeletedDate() == null).orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTED_POST_ID));
-        User user = userRepository.findByKakaoId(requestDto.getKakaoId()).orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
+        User user = userRepository.findByKakaoId(kakaoId).orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
         // kakao ID랑 post user id 비교
         if (post.getUser().getId() != user.getId()) new CustomException(ErrorCode.NOT_EQUAL_USER_RESOURCE);
 
@@ -109,7 +109,7 @@ public class PostsService {
     }
 
     @Transactional
-    public PostDeleteResponseDto delete(PostsDeleteRequestDto deleteRequestDto){
+    public PostDeleteResponseDto delete(long kakaoId, PostsDeleteRequestDto deleteRequestDto){
 
         PostDeleteResponseDto postDeleteResponseDto = new PostDeleteResponseDto();
 

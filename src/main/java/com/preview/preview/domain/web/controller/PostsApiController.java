@@ -41,15 +41,17 @@ public class PostsApiController {
         @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
         @PutMapping("/api/post")
         public ResponseEntity<PostUpdateResponseDto> updatePost(
+                @AuthenticationPrincipal User user,
                 @RequestBody PostsUpdateRequestDto postsUpdateRequestDto){
-                return ResponseEntity.ok(postsService.update(postsUpdateRequestDto));
+                return ResponseEntity.ok(postsService.update(user.getKakaoId(), postsUpdateRequestDto));
         }
 
         @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
         @DeleteMapping("/api/post")
         public ResponseEntity<PostDeleteResponseDto> deletePost(
+                @AuthenticationPrincipal User user,
                 @RequestBody PostsDeleteRequestDto postsDeleteRequestDto){
-                return ResponseEntity.ok(postsService.delete(postsDeleteRequestDto));
+                return ResponseEntity.ok(postsService.delete(user.getKakaoId(), postsDeleteRequestDto));
         }
 
         // 카테고리 별로 리스트 가져오기
