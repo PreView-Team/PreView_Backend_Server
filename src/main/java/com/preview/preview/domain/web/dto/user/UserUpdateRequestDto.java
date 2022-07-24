@@ -15,8 +15,5 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 public class UserUpdateRequestDto {
-    @NotNull
-    private long kakaoId;
-
     private Set<Job> jobDtoSet;
 }
