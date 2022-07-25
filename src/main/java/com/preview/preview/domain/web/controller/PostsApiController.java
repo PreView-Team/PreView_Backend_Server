@@ -69,15 +69,17 @@ public class PostsApiController {
         @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
         @PostMapping("/api/post/like")
         public ResponseEntity<PostLikeResponseDto> likePost(
+                @AuthenticationPrincipal User user,
                 @RequestBody PostLikeRequestDto postLikeRequestDto){
-                return ResponseEntity.ok(postLikeService.likePostByUserId(postLikeRequestDto));
+                return ResponseEntity.ok(postLikeService.likePostByUserId(user.getKakaoId(), postLikeRequestDto));
         }
 
         @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
         @PostMapping("/api/post/unlike")
         public ResponseEntity<PostLikeResponseDto> unlikePost(
+                @AuthenticationPrincipal User user,
                 @RequestBody PostLikeRequestDto postLikeRequestDto){
-                return ResponseEntity.ok(postLikeService.unlikePostByUserId(postLikeRequestDto));
+                return ResponseEntity.ok(postLikeService.unlikePostByUserId(user.getKakaoId(), postLikeRequestDto));
         }
 
 

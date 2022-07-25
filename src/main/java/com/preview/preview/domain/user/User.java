@@ -69,6 +69,11 @@ public class User extends BaseTimeEntity {
     )
     Set<Enterprise> likedEnterprises;
 
+    public Long deleteUser(){
+        deletedDate = LocalDateTime.now();
+        return id;
+    }
+
     public User(Claims claims) {
         this.kakaoId = Long.valueOf(claims.getSubject());
     }
@@ -84,8 +89,5 @@ public class User extends BaseTimeEntity {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private final List<PostLike> postLikes = new ArrayList<>();
     */
-    public Long deleteUser(){
-        deletedDate = LocalDateTime.now();
-        return id;
-    }
+
 }

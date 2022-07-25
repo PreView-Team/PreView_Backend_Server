@@ -26,8 +26,8 @@ public class PostLikeService {
     }
 
     @Transactional
-    public PostLikeResponseDto likePostByUserId(PostLikeRequestDto postLikeRequestDto){
-        User user = userRepository.findByKakaoId(postLikeRequestDto.getUserKakaoId()).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
+    public PostLikeResponseDto likePostByUserId(long kakaoId, PostLikeRequestDto postLikeRequestDto){
+        User user = userRepository.findByKakaoId(kakaoId).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
         Post post = postRepository.findById(postLikeRequestDto.getPostId()).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_POST_ID));
 
         if (postLikeRepository.existsPostLikeByUserIdAndPostId(user.getId(), post.getId())){
@@ -44,8 +44,8 @@ public class PostLikeService {
     }
 
     @Transactional
-    public PostLikeResponseDto unlikePostByUserId(PostLikeRequestDto postLikeRequestDto){
-        User user = userRepository.findByKakaoId(postLikeRequestDto.getUserKakaoId()).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
+    public PostLikeResponseDto unlikePostByUserId(long kakaoId, PostLikeRequestDto postLikeRequestDto){
+        User user = userRepository.findByKakaoId(kakaoId).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
         Post post = postRepository.findById(postLikeRequestDto.getPostId()).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_POST_ID));
 
         PostLike postLike = postLikeRepository.findPostLikeByUserIdAndPostId(user.getId(), post.getId()).orElseThrow(() -> new CustomException(ErrorCode.DUPLICATE_POST_UNLIKE_RESOURCE));
