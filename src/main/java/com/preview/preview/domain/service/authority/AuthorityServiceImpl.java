@@ -9,9 +9,6 @@ import com.preview.preview.domain.web.dto.authority.AuthorityResponseDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-import java.util.Set;
-
 @Service
 public class AuthorityServiceImpl implements AuthorityService{
 
@@ -24,12 +21,8 @@ public class AuthorityServiceImpl implements AuthorityService{
     @Transactional
     @Override
     public AuthorityResponseDto enrollAuthority(String kakaoId) {
-        // 유저 확인
-        User user = userRepository.findOneWithAuthoritiesByKakaoId(Long.valueOf(kakaoId)).orElse(null);
 
-        if (user == null){
-            throw new CustomException(ErrorCode.NOT_EXISTED_USER_ID);
-        }
+        User user = userRepository.findOneWithAuthoritiesByKakaoId(Long.valueOf(kakaoId)).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
 
         for (Authority s : user.getAuthorities()){
             if(s.getAuthorityName().equals("ROLE_ADMIN")) throw new CustomException(ErrorCode.DUPLICATE_AUTHORITY_RESOURCE);
@@ -39,8 +32,6 @@ public class AuthorityServiceImpl implements AuthorityService{
 
         userRepository.save(user);
 
-        AuthorityResponseDto authorityResponseDto = new AuthorityResponseDto();
-        authorityResponseDto.setResult("멘토 처리 되었습니다.");
-        return authorityResponseDto;
+        return AuthorityResponseDto.from(user);
     }
 }

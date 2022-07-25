@@ -1,6 +1,5 @@
 package com.preview.preview.domain.form;
 
-import com.preview.preview.domain.post.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

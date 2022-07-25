@@ -8,7 +8,10 @@ import com.preview.preview.domain.post.Post;
 import com.preview.preview.domain.post.PostRepository;
 import com.preview.preview.domain.user.User;
 import com.preview.preview.domain.user.UserRepository;
-import com.preview.preview.domain.web.dto.form.*;
+import com.preview.preview.domain.web.dto.form.FormAllGetResponseDto;
+import com.preview.preview.domain.web.dto.form.FormCreateRequestDto;
+import com.preview.preview.domain.web.dto.form.FormCreateResponseDto;
+import com.preview.preview.domain.web.dto.form.FormGetResponseDto;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -31,7 +34,6 @@ public class FormServiceImpl implements FormSevice{
 
     @Override
     public FormCreateResponseDto createForm(long kakaoId, FormCreateRequestDto formCreateRequestDto) {
-        FormCreateResponseDto formCreateResponseDto = new FormCreateResponseDto();
         User user = userRepository.findByKakaoId(kakaoId).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
         Post post = postRepository.findById(formCreateRequestDto.getPostId()).orElseThrow(()-> new CustomException(ErrorCode.NOT_EXISTED_POST_ID));
 
@@ -49,10 +51,7 @@ public class FormServiceImpl implements FormSevice{
                 .wantedJob(formCreateRequestDto.getWantedJob())
                 .build();
 
-        formRepository.save(form);
-        formCreateResponseDto.setResult("멘티 신청 완료 되었습니다.");
-        formCreateResponseDto.setId(form.getId());
-        return formCreateResponseDto;
+        return FormCreateResponseDto.from(formRepository.save(form));
     }
 
     @Override

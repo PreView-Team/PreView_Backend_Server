@@ -3,9 +3,6 @@ package com.preview.preview.domain.web.controller;
 import com.preview.preview.domain.service.social.kakao.KakaoServiceImpl;
 import com.preview.preview.domain.service.user.UserServiceImpl;
 import com.preview.preview.domain.user.User;
-import com.preview.preview.domain.web.dto.authority.AuthorityResponseDto;
-import com.preview.preview.domain.web.dto.post.PostDeleteResponseDto;
-import com.preview.preview.domain.web.dto.post.PostsDeleteRequestDto;
 import com.preview.preview.domain.web.dto.social.kakao.KakaoLoginInfoDto;
 import com.preview.preview.domain.web.dto.social.kakao.KakaoSignupRequestDto;
 import com.preview.preview.domain.web.dto.user.*;
@@ -13,8 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Set;
 
 
 @RestController
@@ -32,17 +27,7 @@ public class UserController {
     @PostMapping("/user/kakao/signup")
     public ResponseEntity<SignupResponseDto> signup(@RequestBody KakaoSignupRequestDto kakaoSignupRequestDto){
         KakaoLoginInfoDto kakaoLoginInfoDto = kakaoService.getProfile(kakaoSignupRequestDto.getKakaoAccessToken());
-
-        UserDto userDto = new UserDto();
-        userDto.setNickname(kakaoSignupRequestDto.getNickname());
-        userDto.setKakaoId(kakaoLoginInfoDto.getId());
-        userDto.setJobDtoSet(Set.copyOf(kakaoSignupRequestDto.getJobNames()));
-        userDto.setEmail(kakaoSignupRequestDto.getEmail());
-        userService.signup(userDto);
-
-        SignupResponseDto signupResponseDto = new SignupResponseDto();
-        signupResponseDto.setResult("가입 성공");
-        return ResponseEntity.ok(signupResponseDto);
+        return ResponseEntity.ok(userService.signup(kakaoSignupRequestDto, kakaoLoginInfoDto));
     }
 
     @GetMapping("/user")

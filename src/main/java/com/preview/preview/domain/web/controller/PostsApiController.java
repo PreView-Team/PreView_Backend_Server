@@ -1,9 +1,8 @@
 package com.preview.preview.domain.web.controller;
 
-import com.preview.preview.domain.service.posts.PostLikeService;
-import com.preview.preview.domain.service.posts.PostsService;
+import com.preview.preview.domain.service.posts.PostLikeServiceImpl;
+import com.preview.preview.domain.service.posts.PostsServiceImpi;
 import com.preview.preview.domain.user.User;
-import com.preview.preview.domain.web.dto.post.PostsUpdateRequestDto;
 import com.preview.preview.domain.web.dto.post.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -13,14 +12,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Controller
 public class PostsApiController {
 
-        private final PostsService postsService;
-        private final PostLikeService postLikeService;
+        private final PostsServiceImpi postsService;
+        private final PostLikeServiceImpl postLikeService;
 
         @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
         @PostMapping("/api/post")
@@ -76,7 +74,7 @@ public class PostsApiController {
 
         @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
         @PostMapping("/api/post/unlike")
-        public ResponseEntity<PostLikeResponseDto> unlikePost(
+        public ResponseEntity<PostUnLikeResponseDto> unlikePost(
                 @AuthenticationPrincipal User user,
                 @RequestBody PostLikeRequestDto postLikeRequestDto){
                 return ResponseEntity.ok(postLikeService.unlikePostByUserId(user.getKakaoId(), postLikeRequestDto));

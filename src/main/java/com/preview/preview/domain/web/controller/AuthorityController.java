@@ -1,14 +1,13 @@
 package com.preview.preview.domain.web.controller;
 
 import com.preview.preview.domain.service.authority.AuthorityServiceImpl;
-import com.preview.preview.domain.user.User;
 import com.preview.preview.domain.web.dto.authority.AuthorityResponseDto;
-import com.preview.preview.global.auth.jwt.TokenProvider;
-import io.jsonwebtoken.Claims;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api")

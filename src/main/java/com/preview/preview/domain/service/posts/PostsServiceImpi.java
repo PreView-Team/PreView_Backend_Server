@@ -10,7 +10,6 @@ import com.preview.preview.domain.post.PostLikeRepository;
 import com.preview.preview.domain.post.PostRepository;
 import com.preview.preview.domain.user.User;
 import com.preview.preview.domain.user.UserRepository;
-import com.preview.preview.domain.web.dto.post.PostsUpdateRequestDto;
 import com.preview.preview.domain.web.dto.post.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,17 +21,17 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
-public class PostsService {
+public class PostsServiceImpi implements PostService{
     private final PostRepository postsRepository;
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
     private final PostLikeRepository postLikeRepository;
 
-
     @Transactional
+    @Override
     public PostCreateResponseDto save(long kakaoID, PostCreateRequestDto requestDto){
-        Category category = categoryRepository.findById(requestDto.getCategoryId()).orElseThrow(()-> {throw new CustomException(ErrorCode.NOT_EXISTED_CATEGORY_ID);
-        });
+
+        Category category = categoryRepository.findById(requestDto.getCategoryId()).orElseThrow(()-> {throw new CustomException(ErrorCode.NOT_EXISTED_CATEGORY_ID);});
 
         User user = userRepository.findByKakaoId(kakaoID).orElseThrow(()->{throw new CustomException(ErrorCode.NOT_EXISTED_USER_ID);});
 
@@ -45,85 +44,68 @@ public class PostsService {
                 .title(requestDto.getTitle())
                 .sub_title(requestDto.getSubTitle()).build();
 
-        PostDto.from(postsRepository.save(post));
-        PostCreateResponseDto postCreateResponseDto = new PostCreateResponseDto();
-        postCreateResponseDto.setResult("성공");;
-        postCreateResponseDto.setId(post.getId());
-        return postCreateResponseDto;
+        return PostCreateResponseDto.from(postsRepository.save(post));
     }
 
     @Transactional
+    @Override
     public PostUpdateResponseDto update(long kakaoId, PostsUpdateRequestDto requestDto){
         Post post = postsRepository.findById(requestDto.getPostId()).filter(getPost -> getPost.getDeletedDate() == null).orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTED_POST_ID));
         User user = userRepository.findByKakaoId(kakaoId).orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
-        // kakao ID랑 post user id 비교
+
+        // kakao id, post에 있는 user id 비교 다를 시 예외처리
         if (post.getUser().getId() != user.getId()) new CustomException(ErrorCode.NOT_EQUAL_USER_RESOURCE);
 
         post.setTitle(requestDto.getTitle());
         post.setSub_title(requestDto.getSubTitle());
         post.setContent(requestDto.getContents());
 
-        PostDto.from(postsRepository.save(post));
-        PostUpdateResponseDto postUpdateResponseDto = new PostUpdateResponseDto();
-        postUpdateResponseDto.setResult("수정되었습니다.");
-        postUpdateResponseDto.setId(post.getId());
-        return postUpdateResponseDto;
+        return PostUpdateResponseDto.from(postsRepository.save(post));
     }
 
     @Transactional
+    @Override
     public PostGetResponseDto findById(Long kakaoId, Long postId){
         User user = userRepository.findByKakaoId(kakaoId).orElseThrow(()-> new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
         Post post = postsRepository.findById(postId).filter(getPost -> getPost.getDeletedDate() == null).orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTED_POST_ID));
-        PostGetResponseDto postGetResponseDto = new PostGetResponseDto();
+        boolean isLiked;
 
         if (postLikeRepository.existsPostLikeByUserIdAndPostId(user.getId(), post.getId())){
-            postGetResponseDto.setCheckedLike(true);
+            isLiked = true;
         } else{
-            postGetResponseDto.setCheckedLike(false);
+            isLiked = false;
         }
 
-        postGetResponseDto.setCategoryName(post.getCategory().getName());
-        postGetResponseDto.setNickname(post.getUser().getNickname());
-        postGetResponseDto.setTitle(post.getTitle());
-        postGetResponseDto.setSubTitle(post.getSub_title());
-        postGetResponseDto.setContents(post.getContent());
-        postGetResponseDto.setCreateDateTime(post.getCreatedDate());
-        postGetResponseDto.setUpdateDateTime(post.getModifiedDate());
-        return postGetResponseDto;
+        return PostGetResponseDto.from(post, isLiked);
     }
 
     @Transactional
+    @Override
     public List<PostsGetByCategoryResponseDto> findPostsByCategoryId(PostsGetByCategoryRequestDto postsGetByCategoryRequestDto){
         User user = userRepository.findByKakaoId(postsGetByCategoryRequestDto.getUserKakaoId()).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
         List<Post> posts = postsRepository.findPostByCategoryId(postsGetByCategoryRequestDto.getCategoryId()).stream().filter(post -> post.getDeletedDate() == null).collect(Collectors.toList());
-        boolean like = false;
+        boolean like;
 
         List<PostsGetByCategoryResponseDto> list = new ArrayList<>();
 
         for (Post s:posts){
             like = postLikeRepository.existsPostLikeByUserIdAndPostId(user.getId(), s.getId());
-            list.add(PostsGetByCategoryResponseDto.of(s, like));
+            list.add(PostsGetByCategoryResponseDto.from(s, like));
         }
 
         return list;
     }
 
     @Transactional
+    @Override
     public PostDeleteResponseDto delete(long kakaoId, PostsDeleteRequestDto deleteRequestDto){
-
-        PostDeleteResponseDto postDeleteResponseDto = new PostDeleteResponseDto();
-
-        postsRepository.findById(deleteRequestDto.getPostId())
+        return postsRepository.findById(deleteRequestDto.getPostId())
                 .filter(unidentifiedPost -> unidentifiedPost.getDeletedDate() == null && unidentifiedPost.getUser().getKakaoId() == kakaoId)
                 .map(post -> {
                     post.deletePost();
                     postsRepository.save(post);
-                    postDeleteResponseDto.setId(deleteRequestDto.getPostId());
-                    postDeleteResponseDto.setResult("게시글을 삭제하였습니다.");
-                    return postDeleteResponseDto;
+                    return PostDeleteResponseDto.from(post);
                 }).orElseThrow(()-> new CustomException(ErrorCode.NOT_DELETE_POST_RESOURCE));
-
-        return postDeleteResponseDto;
     }
 
 }

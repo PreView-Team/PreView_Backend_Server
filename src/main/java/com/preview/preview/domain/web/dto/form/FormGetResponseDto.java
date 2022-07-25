@@ -1,8 +1,6 @@
 package com.preview.preview.domain.web.dto.form;
 
 import com.preview.preview.domain.form.Form;
-import com.preview.preview.domain.post.Post;
-import com.preview.preview.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;

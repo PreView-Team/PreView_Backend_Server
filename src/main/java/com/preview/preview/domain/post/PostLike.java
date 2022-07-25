@@ -1,9 +1,11 @@
 package com.preview.preview.domain.post;
 
 import com.preview.preview.domain.BaseTimeEntity;
-import com.preview.preview.domain.post.Post;
 import com.preview.preview.domain.user.User;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 

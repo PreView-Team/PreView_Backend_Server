@@ -6,7 +6,7 @@ import com.preview.preview.domain.service.social.kakao.KakaoServiceImpl;
 import com.preview.preview.domain.service.user.UserServiceImpl;
 import com.preview.preview.domain.web.dto.social.kakao.KakaoLoginInfoDto;
 import com.preview.preview.domain.web.dto.social.kakao.KakaoLoginRequestDto;
-import com.preview.preview.domain.web.dto.TokenDto;
+import com.preview.preview.domain.web.dto.token.TokenDto;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

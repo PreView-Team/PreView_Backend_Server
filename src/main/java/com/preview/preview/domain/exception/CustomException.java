@@ -1,8 +1,5 @@
 package com.preview.preview.domain.exception;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
 public class CustomException extends RuntimeException{
     private ErrorCode errorCode;
 
