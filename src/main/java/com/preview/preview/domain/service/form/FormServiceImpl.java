@@ -11,6 +11,7 @@ import com.preview.preview.domain.user.UserRepository;
 import com.preview.preview.domain.web.dto.form.FormCreateRequestDto;
 import com.preview.preview.domain.web.dto.form.FormCreateResponseDto;
 import com.preview.preview.domain.web.dto.form.FormDto;
+import com.preview.preview.domain.web.dto.form.FormGetResponseDto;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -50,5 +51,11 @@ public class FormServiceImpl implements FormSevice{
         formCreateResponseDto.setResult("멘티 신청 완료 되었습니다.");
         formCreateResponseDto.setId(form.getId());
         return formCreateResponseDto;
+    }
+
+    @Override
+    public FormGetResponseDto getForm(long formId) {
+        Form form = formRepository.findById(formId).orElseThrow(()-> new CustomException(ErrorCode.NOT_EXISTED_FORM_ID));
+        return FormGetResponseDto.from(form);
     }
 }

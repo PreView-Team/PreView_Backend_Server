@@ -1,5 +1,6 @@
 package com.preview.preview.domain.form;
 
+import com.preview.preview.domain.BaseTimeEntity;
 import com.preview.preview.domain.post.Post;
 import com.preview.preview.domain.user.User;
 import lombok.AllArgsConstructor;
@@ -15,7 +16,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "form")
-public class Form {
+public class Form extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,4 +40,6 @@ public class Form {
     private String wantedJob;
 
     private String context; // 상담 받고 싶은 내용
+
+    private boolean status; // 상태 정보
 }

@@ -21,7 +21,8 @@ public enum ErrorCode {
     NOT_EXISTED_LIKE_JOB(HttpStatus.BAD_REQUEST, "P011","데이터 베이스에 해당 직무가 존재하지 않습니다."),
     DUPLICATE_POST_LIKE_RESOURCE(HttpStatus.CONFLICT,"P012", "이미 좋아요를 한 게시물 입니다."),
     DUPLICATE_POST_UNLIKE_RESOURCE(HttpStatus.CONFLICT,"P013", "이미 좋아요가 안된 게시물 입니다."),
-    DUPLICATE_FORM_RESOURCE(HttpStatus.CONFLICT,"P014", "이미 신청된 제안서입니다.")
+    DUPLICATE_FORM_RESOURCE(HttpStatus.CONFLICT,"P014", "이미 신청된 제안서입니다."),
+    NOT_EXISTED_FORM_ID(HttpStatus.BAD_REQUEST, "P015", "등록되지 않은 제안서입니다."),
     ;
 
     private final HttpStatus httpStatus;
