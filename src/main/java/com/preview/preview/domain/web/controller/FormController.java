@@ -2,6 +2,7 @@ package com.preview.preview.domain.web.controller;
 
 import com.preview.preview.domain.service.form.FormServiceImpl;
 import com.preview.preview.domain.user.User;
+import com.preview.preview.domain.web.dto.form.FormAllGetResponseDto;
 import com.preview.preview.domain.web.dto.form.FormCreateRequestDto;
 import com.preview.preview.domain.web.dto.form.FormCreateResponseDto;
 import com.preview.preview.domain.web.dto.form.FormGetResponseDto;
@@ -9,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/form")
@@ -34,6 +37,12 @@ public class FormController {
             @PathVariable long formId
     ){
         return ResponseEntity.ok(formService.getForm(formId));
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    @GetMapping
+    public ResponseEntity<List<FormAllGetResponseDto>> getForms(@AuthenticationPrincipal User user){
+        return ResponseEntity.ok(formService.getFormsByKakaoId(user.getKakaoId()));
     }
 
 }
