@@ -2,26 +2,18 @@ package com.preview.preview.domain.user;
 
 import com.preview.preview.domain.enterprise.Enterprise;
 import com.preview.preview.domain.job.Job;
-import com.preview.preview.domain.web.dto.enterprise.EnterpriseDto;
-import com.preview.preview.domain.web.dto.job.JobDto;
-import com.preview.preview.domain.web.dto.user.UserDto;
+import com.preview.preview.module.user.domain.User;
+import com.preview.preview.module.user.domain.UserRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.data.jpa.repository.support.JpaEntityInformation;
-import org.springframework.data.jpa.repository.support.JpaEntityInformationSupport;
-import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
-import org.springframework.data.repository.core.EntityInformation;
 
-import javax.persistence.EntityManager;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 class UserRepositoryTest {
