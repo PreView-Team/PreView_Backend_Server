@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Setter
 @Builder
 public class FormsByMentoGetResponseDto {
-    private long id;
+    private long formId;
     private String username;
     private LocalDateTime createTime;
     private boolean status;
@@ -20,7 +20,7 @@ public class FormsByMentoGetResponseDto {
     public static FormsByMentoGetResponseDto from(Form form){
         if (form == null) return null;
         return FormsByMentoGetResponseDto.builder()
-                .id(form.getId())
+                .formId(form.getId())
                 .createTime(form.getCreatedDate())
                 .username(form.getName())
                 .status(form.isStatus()).build();

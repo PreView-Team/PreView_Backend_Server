@@ -71,20 +71,6 @@ public class FormService{
     }
 
     @Transactional
-    public List<FormsByMentoGetResponseDto> getMemtoFormsByKakaoId(long kakaoId) {
-        User user = userRepository.findByKakaoId(kakaoId).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
-
-        List<Form> forms = user.getForms();
-
-        List<FormsByMentoGetResponseDto> formList = new ArrayList<>();
-
-        for (Form form : forms){
-            formList.add(FormsByMentoGetResponseDto.from(form));
-        }
-        return formList;
-    }
-
-    @Transactional
     public FormUpdateResponseDto formUpdate(long kakaoId, long formId, FormUpdateRequestDto formUpdateRequestDto) {
         User user = userRepository.findByKakaoId(kakaoId).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
         Form form = formRepository.findById(formId).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_FORM_ID));

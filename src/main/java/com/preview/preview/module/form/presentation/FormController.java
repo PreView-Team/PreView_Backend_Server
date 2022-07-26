@@ -1,5 +1,6 @@
 package com.preview.preview.module.form.presentation;
 
+import com.preview.preview.module.form.application.FormByMentoService;
 import com.preview.preview.module.form.application.FormService;
 import com.preview.preview.module.form.application.dto.*;
 import com.preview.preview.module.user.domain.User;
@@ -60,10 +61,4 @@ public class FormController {
         return ResponseEntity.ok(formService.formDelete(user.getKakaoId(), formId));
     }
 
-    // 멘토에게 들어온 제안서 확인
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    @GetMapping("/mento")
-    public ResponseEntity<List<FormsByMentoGetResponseDto>> getFormsByMento(@AuthenticationPrincipal User user){
-        return ResponseEntity.ok(formService.getMemtoFormsByKakaoId(user.getKakaoId()));
-    }
 }
