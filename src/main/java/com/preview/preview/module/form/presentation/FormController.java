@@ -1,6 +1,6 @@
 package com.preview.preview.module.form.presentation;
 
-import com.preview.preview.module.form.application.FormServiceImpl;
+import com.preview.preview.module.form.application.FormService;
 import com.preview.preview.module.form.application.dto.*;
 import com.preview.preview.module.user.domain.User;
 import org.springframework.http.ResponseEntity;
@@ -13,9 +13,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/form")
 public class FormController {
-    private final FormServiceImpl formService;
+    private final FormService formService;
 
-    public FormController(FormServiceImpl formService) {
+    public FormController(FormService formService) {
         this.formService = formService;
     }
 
@@ -31,8 +31,9 @@ public class FormController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     @GetMapping("{formId}")
     public ResponseEntity<FormGetResponseDto> getForm(
-            @PathVariable long formId){
-        return ResponseEntity.ok(formService.getForm(formId));
+            @PathVariable long formId,
+            @AuthenticationPrincipal User user){
+        return ResponseEntity.ok(formService.getForm(user.getKakaoId(),formId));
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")

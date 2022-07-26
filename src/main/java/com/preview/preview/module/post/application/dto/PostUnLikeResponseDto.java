@@ -8,15 +8,11 @@ import lombok.Setter;
 @Setter
 @Builder
 public class PostUnLikeResponseDto {
-    private Long userId;
-    private Long postId;
     private String result;
 
     public static PostUnLikeResponseDto from(PostLike postLike){
         if (postLike == null) return null;
         return PostUnLikeResponseDto.builder()
-                .userId(postLike.getUser().getId())
-                .postId(postLike.getPost().getId())
                 .result("좋아요 취소 성공")
                 .build();
     }

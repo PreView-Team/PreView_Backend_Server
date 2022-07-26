@@ -8,7 +8,5 @@ import lombok.Setter;
 public class FormUpdateRequestDto {
     private String name;
     private String phoneNumber;
-    private String university;
-    private String wantedJob;
-    private String context; // 상담 받고 싶은 내용
+    private String content; // 상담 받고 싶은 내용
 }
