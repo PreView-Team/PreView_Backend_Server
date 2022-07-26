@@ -2,7 +2,9 @@ package com.preview.preview.module.user.domain;
 
 import com.preview.preview.module.auth.domain.Authority;
 import com.preview.preview.module.enterprise.domain.Enterprise;
+import com.preview.preview.module.form.domain.Form;
 import com.preview.preview.module.job.domain.Job;
+import com.preview.preview.module.post.domain.PostLike;
 import com.preview.preview.util.BaseTimeEntity;
 import io.jsonwebtoken.Claims;
 import lombok.*;
@@ -10,6 +12,8 @@ import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 
@@ -68,6 +72,9 @@ public class User extends BaseTimeEntity {
             inverseJoinColumns = {@JoinColumn(name = "enterprise_name", referencedColumnName = "enterprise_name")}
     )
     Set<Enterprise> likedEnterprises;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private final List<Form> forms = new ArrayList<>();
 
     public Long deleteUser(){
         deletedDate = LocalDateTime.now();
