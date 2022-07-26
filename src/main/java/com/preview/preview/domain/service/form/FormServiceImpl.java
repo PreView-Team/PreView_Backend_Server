@@ -8,10 +8,7 @@ import com.preview.preview.domain.post.Post;
 import com.preview.preview.domain.post.PostRepository;
 import com.preview.preview.domain.user.User;
 import com.preview.preview.domain.user.UserRepository;
-import com.preview.preview.domain.web.dto.form.FormAllGetResponseDto;
-import com.preview.preview.domain.web.dto.form.FormCreateRequestDto;
-import com.preview.preview.domain.web.dto.form.FormCreateResponseDto;
-import com.preview.preview.domain.web.dto.form.FormGetResponseDto;
+import com.preview.preview.domain.web.dto.form.*;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -72,5 +69,22 @@ public class FormServiceImpl implements FormSevice{
             formList.add(FormAllGetResponseDto.from(form));
         }
         return formList;
+    }
+
+    @Override
+    public FormUpdateResponseDto getUpdate(long kakaoId, long formId, FormUpdateRequestDto formUpdateRequestDto) {
+        User user = userRepository.findByKakaoId(kakaoId).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
+        Form form = formRepository.findById(formId).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_FORM_ID));
+
+        if (form.getUser().getId() != user.getId())
+            throw new CustomException(ErrorCode.NOT_EQUAL_FORM_RESOURCE);
+
+        form.setContext(formUpdateRequestDto.getContext());
+        form.setPhoneNumber(formUpdateRequestDto.getPhoneNumber());
+        form.setWantedJob(formUpdateRequestDto.getWantedJob());
+        form.setName(formUpdateRequestDto.getName());
+        form.setUniversity(formUpdateRequestDto.getUniversity());
+
+        return FormUpdateResponseDto.from(formRepository.save(form));
     }
 }

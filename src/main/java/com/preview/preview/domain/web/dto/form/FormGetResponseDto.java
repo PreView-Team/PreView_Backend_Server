@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @Setter
 @Builder
 public class FormGetResponseDto {
+    private long id;
     private String mentoNickname;
     private LocalDateTime createTime;
     private String name;
@@ -23,6 +24,7 @@ public class FormGetResponseDto {
     public static FormGetResponseDto from(Form form){
         if (form == null) return null;
         return FormGetResponseDto.builder()
+                .id(form.getId())
                 .mentoNickname(form.getUser().getNickname())
                 .createTime(form.getCreatedDate())
                 .name(form.getName())

@@ -75,7 +75,6 @@ public class PostsServiceImpi implements PostService{
         } else{
             isLiked = false;
         }
-
         return PostGetResponseDto.from(post, isLiked);
     }
 

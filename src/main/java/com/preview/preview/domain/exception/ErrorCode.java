@@ -21,6 +21,7 @@ public enum ErrorCode {
     DUPLICATE_POST_UNLIKE_RESOURCE(HttpStatus.CONFLICT,"P013", "이미 좋아요가 안된 게시물 입니다."),
     DUPLICATE_FORM_RESOURCE(HttpStatus.CONFLICT,"P014", "이미 신청된 제안서입니다."),
     NOT_EXISTED_FORM_ID(HttpStatus.BAD_REQUEST, "P015", "등록되지 않은 제안서입니다."),
+    NOT_EQUAL_FORM_RESOURCE(HttpStatus.FORBIDDEN, "P016", "수정할 권한이 없는 계정입니다.")
     ;
 
     private final HttpStatus httpStatus;

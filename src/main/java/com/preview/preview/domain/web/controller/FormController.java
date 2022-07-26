@@ -2,10 +2,7 @@ package com.preview.preview.domain.web.controller;
 
 import com.preview.preview.domain.service.form.FormServiceImpl;
 import com.preview.preview.domain.user.User;
-import com.preview.preview.domain.web.dto.form.FormAllGetResponseDto;
-import com.preview.preview.domain.web.dto.form.FormCreateRequestDto;
-import com.preview.preview.domain.web.dto.form.FormCreateResponseDto;
-import com.preview.preview.domain.web.dto.form.FormGetResponseDto;
+import com.preview.preview.domain.web.dto.form.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -34,8 +31,7 @@ public class FormController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     @GetMapping("{formId}")
     public ResponseEntity<FormGetResponseDto> getForm(
-            @PathVariable long formId
-    ){
+            @PathVariable long formId){
         return ResponseEntity.ok(formService.getForm(formId));
     }
 
@@ -45,4 +41,14 @@ public class FormController {
         return ResponseEntity.ok(formService.getFormsByKakaoId(user.getKakaoId()));
     }
 
+    // 신청서 수정
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    @PutMapping("{formId}")
+    public ResponseEntity<FormUpdateResponseDto> updateForm(
+            @AuthenticationPrincipal User user,
+            @PathVariable long formId,
+            @RequestBody FormUpdateRequestDto formUpdateRequestDto){
+        return ResponseEntity.ok(formService.getUpdate(user.getKakaoId(), formId, formUpdateRequestDto));
+    }
+    // 신청서 삭제
 }

@@ -29,7 +29,7 @@ public class PostGetResponseDto {
                 .nickname(post.getUser().getNickname())
                 .categoryName(post.getCategory().getName())
                 .createDateTime(post.getCreatedDate())
-                .createDateTime(post.getModifiedDate())
+                .updateDateTime(post.getModifiedDate())
                 .checkedLike(isCheckedLike)
                 .build();
     }

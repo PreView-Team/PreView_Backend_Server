@@ -1,10 +1,7 @@
 package com.preview.preview.domain.service.form;
 
 
-import com.preview.preview.domain.web.dto.form.FormAllGetResponseDto;
-import com.preview.preview.domain.web.dto.form.FormCreateRequestDto;
-import com.preview.preview.domain.web.dto.form.FormCreateResponseDto;
-import com.preview.preview.domain.web.dto.form.FormGetResponseDto;
+import com.preview.preview.domain.web.dto.form.*;
 
 import java.util.List;
 
@@ -16,4 +13,6 @@ public interface FormSevice {
     FormGetResponseDto getForm(long formId);
     // 멘티 신청서 전체 조회
     List<FormAllGetResponseDto> getFormsByKakaoId(long kakaoId);
+    // 멘티 신청서 수정
+    FormUpdateResponseDto getUpdate(long kakaoId, long formId, FormUpdateRequestDto formUpdateRequestDto);
 }

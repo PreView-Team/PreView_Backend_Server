@@ -3,10 +3,7 @@ package com.preview.preview.domain.form;
 import com.preview.preview.domain.BaseTimeEntity;
 import com.preview.preview.domain.post.Post;
 import com.preview.preview.domain.user.User;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -31,14 +28,19 @@ public class Form extends BaseTimeEntity {
     @JoinColumn(name = "post_id", referencedColumnName = "post_id", nullable = false, foreignKey = @ForeignKey(name = "fk_form_to_post"))
     private Post post;
 
+    @Setter
     private String name;
 
+    @Setter
     private String phoneNumber;
 
+    @Setter
     private String university;
 
+    @Setter
     private String wantedJob;
 
+    @Setter
     private String context; // 상담 받고 싶은 내용
 
     private boolean status; // 상태 정보
