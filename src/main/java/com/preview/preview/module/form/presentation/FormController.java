@@ -49,7 +49,14 @@ public class FormController {
             @AuthenticationPrincipal User user,
             @PathVariable long formId,
             @RequestBody FormUpdateRequestDto formUpdateRequestDto){
-        return ResponseEntity.ok(formService.getUpdate(user.getKakaoId(), formId, formUpdateRequestDto));
+        return ResponseEntity.ok(formService.formUpdate(user.getKakaoId(), formId, formUpdateRequestDto));
     }
     // 신청서 삭제
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    @DeleteMapping("{formId}")
+    public ResponseEntity<FormDeleteResponseDto> deleteForm(
+            @AuthenticationPrincipal User user,
+            @PathVariable long formId){
+        return ResponseEntity.ok(formService.formDelete(user.getKakaoId(), formId));
+    }
 }

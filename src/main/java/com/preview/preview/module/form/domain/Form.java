@@ -7,6 +7,7 @@ import com.preview.preview.util.BaseTimeEntity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -41,4 +42,8 @@ public class Form extends BaseTimeEntity {
     private String content; // 상담 받고 싶은 내용
 
     private boolean status; // 상태 정보
+
+    public void setDeleteTime(){
+        this.deletedDate =  LocalDateTime.now();
+    }
 }

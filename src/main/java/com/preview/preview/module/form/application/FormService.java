@@ -10,6 +10,7 @@ import com.preview.preview.module.post.domain.PostRepository;
 import com.preview.preview.module.user.domain.User;
 import com.preview.preview.module.user.domain.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,7 @@ public class FormService{
         this.userRepository = userRepository;
     }
 
+    @Transactional
     public FormCreateResponseDto createForm(long kakaoId, FormCreateRequestDto formCreateRequestDto) {
         User user = userRepository.findByKakaoId(kakaoId).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
         Post post = postRepository.findById(formCreateRequestDto.getPostId()).orElseThrow(()-> new CustomException(ErrorCode.NOT_EXISTED_POST_ID));
@@ -47,12 +49,14 @@ public class FormService{
         return FormCreateResponseDto.from(formRepository.save(form));
     }
 
+    @Transactional
     public FormGetResponseDto getForm(long kakaoId, long formId) {
         User user = userRepository.findByKakaoId(kakaoId).orElseThrow(()-> new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
         Form form = formRepository.findById(formId).orElseThrow(()-> new CustomException(ErrorCode.NOT_EXISTED_FORM_ID));
         return FormGetResponseDto.from(form,user);
     }
 
+    @Transactional
     public List<FormAllGetResponseDto> getFormsByKakaoId(long kakaoId) {
         User user = userRepository.findByKakaoId(kakaoId).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
 
@@ -66,7 +70,8 @@ public class FormService{
         return formList;
     }
 
-    public FormUpdateResponseDto getUpdate(long kakaoId, long formId, FormUpdateRequestDto formUpdateRequestDto) {
+    @Transactional
+    public FormUpdateResponseDto formUpdate(long kakaoId, long formId, FormUpdateRequestDto formUpdateRequestDto) {
         User user = userRepository.findByKakaoId(kakaoId).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
         Form form = formRepository.findById(formId).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_FORM_ID));
 
@@ -79,4 +84,19 @@ public class FormService{
 
         return FormUpdateResponseDto.from(formRepository.save(form));
     }
+
+    @Transactional
+    public FormDeleteResponseDto formDelete(long kakaoId, long formId){
+        User user = userRepository.findByKakaoId(kakaoId).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
+        Form form = formRepository.findById(formId).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_FORM_ID));
+
+        if (user.getId() != form.getUser().getId()){
+            throw new CustomException(ErrorCode.NOT_EQUAL_FORM_RESOURCE);
+        }
+
+        form.setDeleteTime();
+        formRepository.save(form);
+        return FormDeleteResponseDto.builder().result("삭제 성공하였습니다.").build();
+    }
+
 }
