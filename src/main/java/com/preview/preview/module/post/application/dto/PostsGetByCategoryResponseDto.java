@@ -11,29 +11,28 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PostsGetByCategoryResponseDto {
-    private Long id;
+    private Long postId;
     private String contents;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private String category;
     private String user;
     private String title;
-    private String subTitle;
     private boolean like;
+    private Integer likeCount;
 
 
     public static PostsGetByCategoryResponseDto from (Post post, boolean like){
-
         return PostsGetByCategoryResponseDto.builder()
-                .id(post.getId())
+                .postId(post.getId())
                 .contents(post.getContent())
                 .createdAt(post.getCreatedDate())
                 .updatedAt(post.getModifiedDate())
                 .category(post.getCategory().getName())
                 .user(post.getUser().getNickname())
                 .title(post.getTitle())
-                .subTitle(post.getSub_title())
                 .like(like)
+                .likeCount(post.getPostLikes().size())
                 .build();
     }
 

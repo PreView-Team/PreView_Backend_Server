@@ -10,28 +10,28 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PostGetResponseDto {
-    private long id;
+    private long postId;
     private String contents;
     private String title;
-    private String subTitle;
     private String nickname;
     private String categoryName;
     private LocalDateTime createDateTime;
     private LocalDateTime updateDateTime;
-    private boolean checkedLike;
+    private String history;
+    private String introduce;
 
-    public static PostGetResponseDto from(Post post, boolean isCheckedLike) {
+    public static PostGetResponseDto from(Post post) {
         if (post == null) return null;
         return PostGetResponseDto.builder()
-                .id(post.getId())
+                .postId(post.getId())
                 .contents(post.getContent())
                 .title(post.getTitle())
-                .subTitle(post.getSub_title())
                 .nickname(post.getUser().getNickname())
                 .categoryName(post.getCategory().getName())
                 .createDateTime(post.getCreatedDate())
                 .updateDateTime(post.getModifiedDate())
-                .checkedLike(isCheckedLike)
+                .history("아직 x")
+                .introduce("아직 x")
                 .build();
     }
 }

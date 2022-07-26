@@ -12,5 +12,5 @@ import java.util.Optional;
 }*/
 
 public interface PostRepository extends JpaRepository<Post, Long> {
-    List<Post> findPostByCategoryId(Long categoryId);
+    List<Post> findPostByCategoryName(String name);
 }

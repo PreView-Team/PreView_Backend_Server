@@ -59,7 +59,6 @@ public class PostsService {
         if (post.getUser().getId() != user.getId()) new CustomException(ErrorCode.NOT_EQUAL_USER_RESOURCE);
 
         post.setTitle(requestDto.getTitle());
-        post.setSub_title(requestDto.getSubTitle());
         post.setContent(requestDto.getContents());
 
         return PostUpdateResponseDto.from(postsRepository.save(post));
@@ -67,18 +66,15 @@ public class PostsService {
 
     @Transactional
     public PostGetResponseDto findById(Long kakaoId, Long postId) {
-        User user = userRepository.findByKakaoId(kakaoId).orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
+        userRepository.findByKakaoId(kakaoId).orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
         Post post = postsRepository.findById(postId).filter(getPost -> getPost.getDeletedDate() == null).orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTED_POST_ID));
-        boolean isLiked;
-
-        isLiked = postLikeRepository.existsPostLikeByUserIdAndPostId(user.getId(), post.getId());
-        return PostGetResponseDto.from(post, isLiked);
+        return PostGetResponseDto.from(post);
     }
 
     @Transactional
-    public List<PostsGetByCategoryResponseDto> findPostsByCategoryId(PostsGetByCategoryRequestDto postsGetByCategoryRequestDto) {
-        User user = userRepository.findByKakaoId(postsGetByCategoryRequestDto.getUserKakaoId()).orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
-        List<Post> posts = postsRepository.findPostByCategoryId(postsGetByCategoryRequestDto.getCategoryId()).stream().filter(post -> post.getDeletedDate() == null).collect(Collectors.toList());
+    public List<PostsGetByCategoryResponseDto> findPostsByCategoryName(long kakaoId, PostsGetByCategoryRequestDto postsGetByCategoryRequestDto) {
+        User user = userRepository.findByKakaoId(kakaoId).orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
+        List<Post> posts = postsRepository.findPostByCategoryName(postsGetByCategoryRequestDto.getCategoryName()).stream().filter(post -> post.getDeletedDate() == null).collect(Collectors.toList());
         boolean like;
 
         List<PostsGetByCategoryResponseDto> list = new ArrayList<>();

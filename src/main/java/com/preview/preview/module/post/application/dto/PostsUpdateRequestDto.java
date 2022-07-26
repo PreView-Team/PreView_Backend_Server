@@ -10,6 +10,5 @@ import lombok.Setter;
 public class PostsUpdateRequestDto {
     private long postId;
     private String title;
-    private String subTitle;
     private String contents;
 }
