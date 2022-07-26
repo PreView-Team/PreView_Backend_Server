@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
-public class PostsServiceImpi {
+public class PostsService {
     private final PostRepository postsRepository;
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
@@ -30,7 +30,7 @@ public class PostsServiceImpi {
     @Transactional
     public PostCreateResponseDto save(long kakaoID, PostCreateRequestDto requestDto) {
 
-        Category category = categoryRepository.findById(requestDto.getCategoryId()).orElseThrow(() -> {
+        Category category = categoryRepository.findCategoryByName(requestDto.getCategoryName()).orElseThrow(() -> {
             throw new CustomException(ErrorCode.NOT_EXISTED_CATEGORY_ID);
         });
 

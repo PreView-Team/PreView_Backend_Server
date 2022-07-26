@@ -1,7 +1,7 @@
 package com.preview.preview.module.post.presentation;
 
 import com.preview.preview.module.post.application.PostLikeServiceImpl;
-import com.preview.preview.module.post.application.PostsServiceImpi;
+import com.preview.preview.module.post.application.PostsService;
 import com.preview.preview.module.post.application.dto.*;
 import com.preview.preview.module.user.domain.User;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ import java.util.List;
 @Controller
 public class PostController {
 
-        private final PostsServiceImpi postsService;
+        private final PostsService postsService;
         private final PostLikeServiceImpl postLikeService;
 
         @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")

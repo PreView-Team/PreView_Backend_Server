@@ -11,5 +11,5 @@ public class PostCreateRequestDto {
     private String contents;
     private String title;
     private String subTitle;
-    private long categoryId;
+    private String categoryName;
 }
