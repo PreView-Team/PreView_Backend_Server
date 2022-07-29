@@ -16,7 +16,7 @@ public class PostsGetByCategoryResponseDto {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private String category;
-    private String user;
+    private String nickname;
     private String title;
     private boolean like;
     private Integer likeCount;
@@ -29,7 +29,7 @@ public class PostsGetByCategoryResponseDto {
                 .createdAt(post.getCreatedDate())
                 .updatedAt(post.getModifiedDate())
                 .category(post.getCategory().getName())
-                .user(post.getUser().getNickname())
+                .nickname(post.getUser().getNickname())
                 .title(post.getTitle())
                 .like(like)
                 .likeCount(post.getPostLikes().size())

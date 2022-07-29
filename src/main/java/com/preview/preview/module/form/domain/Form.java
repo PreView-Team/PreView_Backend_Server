@@ -42,7 +42,7 @@ public class Form extends BaseTimeEntity {
     private String content; // 상담 받고 싶은 내용
 
     @Setter
-    private boolean status; // 상태 정보
+    private String status; // 상태 정보
 
     public void setDeleteTime(){
         this.deletedDate =  LocalDateTime.now();

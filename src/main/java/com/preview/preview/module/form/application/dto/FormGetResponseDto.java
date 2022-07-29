@@ -16,25 +16,25 @@ import java.util.Set;
 @Builder
 public class FormGetResponseDto {
     private long formId;
-    private String mentoNickname;
+    private String mentorNickname;
     private LocalDateTime createTime;
     private String name;
     private String phoneNumber;
     private Set<Job> jobNames;
-    private String content; // 상담 받고 싶은 내용
-    private boolean status;
+    private String contents; // 상담 받고 싶은 내용
+    private String status;
 
     public static FormGetResponseDto from(Form form, User user){
         if (form == null) return null;
         return FormGetResponseDto.builder()
                 .formId(form.getId())
-                .mentoNickname(form.getUser().getNickname())
+                .mentorNickname(form.getUser().getNickname())
                 .createTime(form.getCreatedDate())
                 .name(form.getName())
                 .phoneNumber(form.getPhoneNumber())
                 .jobNames(user.getLikedJobs())
-                .content(form.getContent())
-                .status(form.isStatus())
+                .contents(form.getContent())
+                .status(form.getStatus())
                 .build();
     }
 }

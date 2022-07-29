@@ -42,7 +42,7 @@ public class FormService{
                 .user(user)
                 .post(post)
                 .name(formCreateRequestDto.getName())
-                .content(formCreateRequestDto.getContext())
+                .content(formCreateRequestDto.getContents())
                 .phoneNumber(formCreateRequestDto.getPhoneNumber())
                 .build();
 

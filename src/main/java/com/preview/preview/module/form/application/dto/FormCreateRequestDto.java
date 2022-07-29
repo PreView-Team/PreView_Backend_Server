@@ -13,5 +13,5 @@ public class FormCreateRequestDto {
     private String name;
     private String phoneNumber;
     private List<JobDto> JobNames;
-    private String context;
+    private String contents;
 }

@@ -15,12 +15,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class PostLikeServiceImpl{
+public class PostLikeService{
     private final PostRepository postRepository;
     private final UserRepository userRepository;
     private final PostLikeRepository postLikeRepository;
 
-    public PostLikeServiceImpl(PostRepository postRepository, UserRepository userRepository, PostLikeRepository postLikeRepository) {
+    public PostLikeService(PostRepository postRepository, UserRepository userRepository, PostLikeRepository postLikeRepository) {
         this.postRepository = postRepository;
         this.userRepository = userRepository;
         this.postLikeRepository = postLikeRepository;

@@ -1,6 +1,6 @@
 package com.preview.preview.module.post.presentation;
 
-import com.preview.preview.module.post.application.PostLikeServiceImpl;
+import com.preview.preview.module.post.application.PostLikeService;
 import com.preview.preview.module.post.application.PostsService;
 import com.preview.preview.module.post.application.dto.*;
 import com.preview.preview.module.user.domain.User;
@@ -18,7 +18,7 @@ import java.util.List;
 public class PostController {
 
         private final PostsService postsService;
-        private final PostLikeServiceImpl postLikeService;
+        private final PostLikeService postLikeService;
 
         @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
         @PostMapping("/api/post")
@@ -52,14 +52,21 @@ public class PostController {
                 return ResponseEntity.ok(postsService.delete(user.getKakaoId(), postsDeleteRequestDto));
         }
 
-        // 카테고리 별로 리스트 가져오기
         @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
         @GetMapping("/api/post/category")
         public ResponseEntity<List<PostsGetByCategoryResponseDto>> getPostsByCategory(
-                @AuthenticationPrincipal User user,
-                @RequestBody PostsGetByCategoryRequestDto postsGetByCategoryRequestDto){
-                return ResponseEntity.ok(postsService.findPostsByCategoryName(user.getKakaoId(), postsGetByCategoryRequestDto));
+                @RequestParam("status") String status,
+                @RequestParam("name") String name,
+                @AuthenticationPrincipal User user){
+                switch (status){
+                        case "recommendation":
+                                return ResponseEntity.ok(postsService.findPostsByCategoryName(user.getKakaoId(), name));
+                        case "new":
+                                return ResponseEntity.ok(postsService.findRecommendedPostsByCategoryName(user.getKakaoId(), name));
+                }
+                return null;
         }
+
 
         @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
         @PostMapping("/api/post/like")
@@ -76,6 +83,10 @@ public class PostController {
                 @RequestBody PostLikeRequestDto postLikeRequestDto){
                 return ResponseEntity.ok(postLikeService.unlikePostByUserId(user.getKakaoId(), postLikeRequestDto));
         }
+
+        // 신규멘토, 카테고리 id 게시물 전체 조회
+
+        // 추천멘토, 카테고리 id 게시물 전체 조회
 
 
 }

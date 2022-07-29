@@ -1,7 +1,8 @@
 package com.preview.preview.module.form.presentation;
 
-import com.preview.preview.module.form.application.FormByMentoService;
+import com.preview.preview.module.form.application.FormByMentorService;
 import com.preview.preview.module.form.application.dto.FormAcceptStatusResponseDto;
+import com.preview.preview.module.form.application.dto.FormByMentorGetResponseDto;
 import com.preview.preview.module.form.application.dto.FormsByMentoGetResponseDto;
 import com.preview.preview.module.user.domain.User;
 import org.springframework.http.ResponseEntity;
@@ -12,19 +13,19 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/mento")
-public class FormByMentoController {
-    private final FormByMentoService formByMentoService;
+@RequestMapping("/api/mentor")
+public class FormByMentorController {
+    private final FormByMentorService formByMentorService;
 
-    public FormByMentoController(FormByMentoService formByMentoService) {
-        this.formByMentoService = formByMentoService;
+    public FormByMentorController(FormByMentorService formByMentorService) {
+        this.formByMentorService = formByMentorService;
     }
 
     // 멘토에게 들어온 제안서 확인
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @GetMapping("/form")
-    public ResponseEntity<List<FormsByMentoGetResponseDto>> getFormsByMento(@AuthenticationPrincipal User user){
-        return ResponseEntity.ok(formByMentoService.getMemtoFormsByKakaoId(user.getKakaoId()));
+    public ResponseEntity<List<FormsByMentoGetResponseDto>> getFormsByMentor(@AuthenticationPrincipal User user){
+        return ResponseEntity.ok(formByMentorService.getMemtorFormsByKakaoId(user.getKakaoId()));
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
@@ -32,7 +33,7 @@ public class FormByMentoController {
     public ResponseEntity<FormAcceptStatusResponseDto> acceptForm(
             @PathVariable long formId,
             @AuthenticationPrincipal User user){
-        return ResponseEntity.ok(formByMentoService.acceptForm(formId, user.getKakaoId()));
+        return ResponseEntity.ok(formByMentorService.acceptForm(formId, user.getKakaoId()));
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
@@ -40,7 +41,15 @@ public class FormByMentoController {
     public ResponseEntity<FormAcceptStatusResponseDto> rejectForm(
             @PathVariable long formId,
             @AuthenticationPrincipal User user){
-        return ResponseEntity.ok(formByMentoService.rejectForm(formId, user.getKakaoId()));
+        return ResponseEntity.ok(formByMentorService.rejectForm(formId, user.getKakaoId()));
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @GetMapping("form/{formId}")
+    public ResponseEntity<FormByMentorGetResponseDto> getForm(
+            @PathVariable long formId,
+            @AuthenticationPrincipal User user){
+        return ResponseEntity.ok(formByMentorService.getForm(formId, user.getKakaoId()));
     }
 
 }

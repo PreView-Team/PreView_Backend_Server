@@ -45,7 +45,7 @@ public class PostsService {
                 .user(user)
                 .content(requestDto.getContents())
                 .title(requestDto.getTitle())
-                .sub_title(requestDto.getSubTitle()).build();
+                .build();
 
         return PostCreateResponseDto.from(postsRepository.save(post));
     }
@@ -72,9 +72,25 @@ public class PostsService {
     }
 
     @Transactional
-    public List<PostsGetByCategoryResponseDto> findPostsByCategoryName(long kakaoId, PostsGetByCategoryRequestDto postsGetByCategoryRequestDto) {
+    public List<PostsGetByCategoryResponseDto> findPostsByCategoryName(long kakaoId, String name) {
         User user = userRepository.findByKakaoId(kakaoId).orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
-        List<Post> posts = postsRepository.findPostByCategoryName(postsGetByCategoryRequestDto.getCategoryName()).stream().filter(post -> post.getDeletedDate() == null).collect(Collectors.toList());
+        List<Post> posts = postsRepository.findPostByCategoryName(name).stream().filter(post -> post.getDeletedDate() == null).collect(Collectors.toList());
+        boolean like;
+
+        List<PostsGetByCategoryResponseDto> list = new ArrayList<>();
+
+        for (Post s : posts) {
+            like = postLikeRepository.existsPostLikeByUserIdAndPostId(user.getId(), s.getId());
+            list.add(PostsGetByCategoryResponseDto.from(s, like));
+        }
+
+        return list;
+    }
+
+    @Transactional
+    public List<PostsGetByCategoryResponseDto> findRecommendedPostsByCategoryName(long kakaoId, String name) {
+        User user = userRepository.findByKakaoId(kakaoId).orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
+        List<Post> posts = postsRepository.findPostByCategoryName(name).stream().filter(post -> post.getDeletedDate() == null && user.getLikedJobs().contains(post.getCategory())).collect(Collectors.toList());
         boolean like;
 
         List<PostsGetByCategoryResponseDto> list = new ArrayList<>();

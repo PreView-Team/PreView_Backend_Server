@@ -15,7 +15,7 @@ public class FormsByMentoGetResponseDto {
     private long formId;
     private String username;
     private LocalDateTime createTime;
-    private boolean status;
+    private String status;
 
     public static FormsByMentoGetResponseDto from(Form form){
         if (form == null) return null;
@@ -23,6 +23,6 @@ public class FormsByMentoGetResponseDto {
                 .formId(form.getId())
                 .createTime(form.getCreatedDate())
                 .username(form.getName())
-                .status(form.isStatus()).build();
+                .status(form.getStatus()).build();
     }
 }

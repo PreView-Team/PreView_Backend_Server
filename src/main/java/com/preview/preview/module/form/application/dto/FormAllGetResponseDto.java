@@ -12,17 +12,17 @@ import java.time.LocalDateTime;
 @Setter
 @Builder
 public class FormAllGetResponseDto {
-    private long id;
-    private String mentoNickname;
+    private long formId;
+    private String mentorNickname;
     private LocalDateTime createTime;
-    private boolean status;
+    private String status;
 
     public static FormAllGetResponseDto from(Form form){
         if (form == null) return null;
         return FormAllGetResponseDto.builder()
-                .id(form.getId())
+                .formId(form.getId())
                 .createTime(form.getCreatedDate())
-                .mentoNickname(form.getUser().getNickname())
-                .status(form.isStatus()).build();
+                .mentorNickname(form.getUser().getNickname())
+                .status(form.getStatus()).build();
     }
 }

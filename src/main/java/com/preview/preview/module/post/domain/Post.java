@@ -28,10 +28,6 @@ public class Post extends BaseTimeEntity {
     private String title;
 
     @Setter
-    @Column(nullable = false, name = "sub_title")
-    private String sub_title;
-
-    @Setter
     @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
 

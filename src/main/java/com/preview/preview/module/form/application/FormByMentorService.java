@@ -17,13 +17,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class FormByMentoService {
+public class FormByMentorService {
 
     private final FormRepository formRepository;
     private final PostRepository postRepository;
     private final UserRepository userRepository;
 
-    public FormByMentoService(FormRepository formRepository, PostRepository postRepository, UserRepository userRepository) {
+    public FormByMentorService(FormRepository formRepository, PostRepository postRepository, UserRepository userRepository) {
         this.formRepository = formRepository;
         this.postRepository = postRepository;
         this.userRepository = userRepository;
@@ -31,7 +31,7 @@ public class FormByMentoService {
 
 
     @Transactional
-    public List<FormsByMentoGetResponseDto> getMemtoFormsByKakaoId(long kakaoId) {
+    public List<FormsByMentoGetResponseDto> getMemtorFormsByKakaoId(long kakaoId) {
         User user = userRepository.findByKakaoId(kakaoId).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
 
         List<Form> forms = user.getForms().stream().filter(form -> form.getDeletedDate() == null).collect(Collectors.toList());
@@ -53,8 +53,8 @@ public class FormByMentoService {
             throw new CustomException(ErrorCode.NOT_EQUAL_FORM_RESOURCE);
         }
 
-        form.setStatus(true);
-        return FormAcceptStatusResponseDto.builder().status(form.isStatus()).build();
+        form.setStatus("true");
+        return FormAcceptStatusResponseDto.builder().status(form.getStatus()).build();
     }
 
     @Transactional
@@ -67,8 +67,19 @@ public class FormByMentoService {
         }
 
         form.setDeleteTime();
-        form.setStatus(false);
-        return FormAcceptStatusResponseDto.builder().status(form.isStatus()).build();
+        form.setStatus("false");
+        return FormAcceptStatusResponseDto.builder().status(form.getStatus()).build();
     }
 
+    @Transactional
+    public FormByMentorGetResponseDto getForm(long formId, long kakaoId){
+        User user = userRepository.findByKakaoId(kakaoId).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
+        Form form = formRepository.findById(formId).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_FORM_ID));
+
+        if (user.getId() != form.getUser().getId()){
+            throw new CustomException(ErrorCode.NOT_EQUAL_FORM_RESOURCE);
+        }
+        return FormByMentorGetResponseDto.form(form);
     }
+
+}
