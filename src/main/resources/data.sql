@@ -10,9 +10,9 @@ INSERT INTO AUTHORITY (AUTHORITY_NAME) values ('ROLE_ADMIN');
 
 INSERT INTO USER_AUTHORITY (USER_ID, AUTHORITY_NAME) values (1, 'ROLE_USER');
 
-insert into job (job_name) values ('프로그래머');
-insert into job (job_name) values ('마케터');
-insert into job (job_name) values ('선생님');
+insert into job (job_name) values ('프로그래밍');
+insert into job (job_name) values ('디자인');
+insert into job (job_name) values ('마케팅');
 
 insert into enterprise (enterprise_name) values ('삼성전자');
 insert into enterprise (enterprise_name) values ('네이버');

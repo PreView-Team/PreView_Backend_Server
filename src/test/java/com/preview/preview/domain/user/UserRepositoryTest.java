@@ -43,27 +43,5 @@ class UserRepositoryTest {
         Assertions.assertThat(user).isSameAs(savedUser);
     }
 
-    @Test
-    @DisplayName("유저 정보 업데이트")
-    void update(){
-        // given
-        Set<Job> jobs = new HashSet<>();
-        jobs.add(new Job("선생님"));
-
-        Set<Enterprise> enterprises = new HashSet<>();
-        enterprises.add(new Enterprise("네이버"));
-        enterprises.add(new Enterprise("삼성전자"));
-
-        Optional<User> user = userRepository.findById(1L);
-        // when
-        user.ifPresent(selectedUser -> {
-            selectedUser.setLikedEnterprises(enterprises);
-            selectedUser.setLikedJobs(jobs);
-            userRepository.save(selectedUser);
-        });
-        user = userRepository.findById(1L);
-        //then
-        Assertions.assertThat(user.get().likedEnterprises).isEqualTo(enterprises);
-    }
 
 }

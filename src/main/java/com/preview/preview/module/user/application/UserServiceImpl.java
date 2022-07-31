@@ -74,8 +74,9 @@ public class UserServiceImpl {
     }
 
     @Transactional
-    public UserDto getMyUserWithAuthorities(){
-        return UserDto.from(SecurityUtil.getCurrentUsername().flatMap(userRepository::findOneWithAuthoritiesByKakaoId).orElse(null));
+    public UserInfomationGetRequestDto getUserProfileBykakaoId(long kakaoId){
+        User user = userRepository.findByKakaoId(kakaoId).orElseThrow(()-> new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
+        return UserInfomationGetRequestDto.from(user);
     }
 
     @Transactional
@@ -110,6 +111,14 @@ public class UserServiceImpl {
             throw new CustomException(ErrorCode.NOT_EXISTED_LIKE_JOB);
         }
         return UserUpdateResponseDto.from(user.get());
+    }
+
+    @Transactional
+    public UserNicknameUpdateResponseDto updateNicknameBykakaoId(UserNicknameUpdateRequestDto userNicknameUpdateRequestDto, long kakaoId){
+        User user = userRepository.findByKakaoId(kakaoId).orElseThrow(()-> new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
+        user.setUserNickname(userNicknameUpdateRequestDto.getNickname());
+        userRepository.save(user);
+        return UserNicknameUpdateResponseDto.builder().result("닉네임 변경 성공").build();
     }
 
 }

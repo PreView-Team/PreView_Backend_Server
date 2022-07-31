@@ -34,7 +34,7 @@ public class FormByMentorService {
     public List<FormsByMentoGetResponseDto> getMemtorFormsByKakaoId(long kakaoId) {
         User user = userRepository.findByKakaoId(kakaoId).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
 
-        List<Form> forms = user.getForms().stream().filter(form -> form.getDeletedDate() == null).collect(Collectors.toList());
+        List<Form> forms = user.getForms().stream().filter(form -> form.getStatus() != "거절").collect(Collectors.toList());
 
         List<FormsByMentoGetResponseDto> formList = new ArrayList<>();
 
@@ -53,7 +53,7 @@ public class FormByMentorService {
             throw new CustomException(ErrorCode.NOT_EQUAL_FORM_RESOURCE);
         }
 
-        form.setStatus("true");
+        form.setStatus("수락");
         return FormAcceptStatusResponseDto.builder().status(form.getStatus()).build();
     }
 
@@ -67,7 +67,7 @@ public class FormByMentorService {
         }
 
         form.setDeleteTime();
-        form.setStatus("false");
+        form.setStatus("거절");
         return FormAcceptStatusResponseDto.builder().status(form.getStatus()).build();
     }
 

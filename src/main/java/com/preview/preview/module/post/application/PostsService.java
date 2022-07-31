@@ -5,6 +5,7 @@ import com.preview.preview.core.exception.CustomException;
 import com.preview.preview.core.exception.ErrorCode;
 import com.preview.preview.module.category.domain.Category;
 import com.preview.preview.module.category.domain.CategoryRepository;
+import com.preview.preview.module.job.domain.Job;
 import com.preview.preview.module.post.application.dto.*;
 import com.preview.preview.module.post.domain.Post;
 import com.preview.preview.module.post.domain.PostLikeRepository;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -90,7 +92,10 @@ public class PostsService {
     @Transactional
     public List<PostsGetByCategoryResponseDto> findRecommendedPostsByCategoryName(long kakaoId, String name) {
         User user = userRepository.findByKakaoId(kakaoId).orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
-        List<Post> posts = postsRepository.findPostByCategoryName(name).stream().filter(post -> post.getDeletedDate() == null && user.getLikedJobs().contains(post.getCategory())).collect(Collectors.toList());
+
+        List<Post> posts = postsRepository.findPostByCategoryName(name).stream().filter(post -> post.getDeletedDate() == null &&
+                user.isExistedJob(post.getCategory().getName()) == true).collect(Collectors.toList());
+
         boolean like;
 
         List<PostsGetByCategoryResponseDto> list = new ArrayList<>();
@@ -104,8 +109,8 @@ public class PostsService {
     }
 
     @Transactional
-    public PostDeleteResponseDto delete(long kakaoId, PostsDeleteRequestDto deleteRequestDto) {
-        return postsRepository.findById(deleteRequestDto.getPostId())
+    public PostDeleteResponseDto delete(long kakaoId, long postId) {
+        return postsRepository.findById(postId)
                 .filter(unidentifiedPost -> unidentifiedPost.getDeletedDate() == null && unidentifiedPost.getUser().getKakaoId() == kakaoId)
                 .map(post -> {
                     post.deletePost();

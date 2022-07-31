@@ -44,12 +44,12 @@ public class PostController {
                 return ResponseEntity.ok(postsService.update(user.getKakaoId(), postsUpdateRequestDto));
         }
 
-        @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-        @DeleteMapping("/api/post")
+        @PreAuthorize("hasAnyRole('ROLE_USER')")
+        @DeleteMapping("/api/post/{postId}")
         public ResponseEntity<PostDeleteResponseDto> deletePost(
                 @AuthenticationPrincipal User user,
-                @RequestBody PostsDeleteRequestDto postsDeleteRequestDto){
-                return ResponseEntity.ok(postsService.delete(user.getKakaoId(), postsDeleteRequestDto));
+                @PathVariable Long postId){
+                return ResponseEntity.ok(postsService.delete(user.getKakaoId(), postId));
         }
 
         @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
@@ -60,9 +60,9 @@ public class PostController {
                 @AuthenticationPrincipal User user){
                 switch (status){
                         case "recommendation":
-                                return ResponseEntity.ok(postsService.findPostsByCategoryName(user.getKakaoId(), name));
-                        case "new":
                                 return ResponseEntity.ok(postsService.findRecommendedPostsByCategoryName(user.getKakaoId(), name));
+                        case "new":
+                                return ResponseEntity.ok(postsService.findPostsByCategoryName(user.getKakaoId(), name));
                 }
                 return null;
         }

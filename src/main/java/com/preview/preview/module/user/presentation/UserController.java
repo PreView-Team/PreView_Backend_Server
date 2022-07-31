@@ -30,19 +30,34 @@ public class UserController {
         return ResponseEntity.ok(userService.signup(kakaoSignupRequestDto, kakaoLoginInfoDto));
     }
 
-    @GetMapping("/user")
-    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
-    public ResponseEntity<UserDto> getMyUserInfo(){
-        UserDto userDto = userService.getMyUserWithAuthorities();
-        return ResponseEntity.ok(userDto);
-    }
-
-
     @GetMapping("/user/{username}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<UserDto> getUserInfo(@PathVariable String username){
         UserDto userDto = userService.getUserWithAuthorities(username);
         return ResponseEntity.ok(userDto);
+    }
+
+    @PutMapping("/user/nickname")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    public ResponseEntity<UserNicknameUpdateResponseDto> updateUserNickname(@RequestBody UserNicknameUpdateRequestDto userNicknameUpdateRequestDto,
+                                                                           @AuthenticationPrincipal User user){
+        return ResponseEntity.ok(userService.updateNicknameBykakaoId(userNicknameUpdateRequestDto, user.getKakaoId()));
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    @GetMapping("/user")
+    public ResponseEntity<UserInfomationGetRequestDto> getUser(
+            @AuthenticationPrincipal User user){
+        return ResponseEntity.ok(userService.getUserProfileBykakaoId(user.getKakaoId()));
+    }
+
+
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    @DeleteMapping("/user")
+    public ResponseEntity<UserDeleteResponseDto> deleteUser(
+            @AuthenticationPrincipal User user){
+        return ResponseEntity.ok(userService.deleteUserByKakaoId(user.getKakaoId()));
     }
 
     @GetMapping("/user/nickname/{nickname}")
@@ -57,13 +72,6 @@ public class UserController {
             @AuthenticationPrincipal User user,
             @RequestBody UserUpdateRequestDto userUpdateRequestDto){
         return ResponseEntity.ok(userService.updateUserByKakaoId(userUpdateRequestDto, user.getKakaoId()));
-    }
-
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-    @DeleteMapping("/user")
-    public ResponseEntity<UserDeleteResponseDto> deleteUser(
-            @AuthenticationPrincipal User user){
-        return ResponseEntity.ok(userService.deleteUserByKakaoId(user.getKakaoId()));
     }
 
 }

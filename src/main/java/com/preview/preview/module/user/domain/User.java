@@ -11,10 +11,13 @@ import lombok.*;
 import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
+import javax.swing.text.html.HTMLDocument;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Entity
@@ -84,6 +87,44 @@ public class User extends BaseTimeEntity {
     public User(Claims claims) {
         this.kakaoId = Long.valueOf(claims.getSubject());
     }
+
+    public boolean isExistedJob(String name){
+        Iterator<Job> iterator = likedJobs.iterator();
+
+        while (iterator.hasNext()){
+            Job job = iterator.next();
+            if (job.getName().equals(name)) return true;
+        }
+        return false;
+    }
+
+    public boolean isMentored(){
+        Iterator<Authority> iterator = authorities.iterator();
+
+        while (iterator.hasNext()){
+            if (iterator.next().getAuthorityName().equals("ROLE_ADMIN")) return true;
+        }
+        return false;
+    }
+
+    public void setUserNickname(String nickname){
+        this.nickname = nickname;
+    }
+
+    public List<String> getLikedJobsInProfile(){
+        Iterator<Job> iterator = likedJobs.iterator();
+        List<String> list = new ArrayList<>();
+
+        while (iterator.hasNext()){
+            Job job = iterator.next();
+            list.add(job.getName());
+        }
+
+        return list;
+    }
+
+
+
 
     /*
     @JsonManagedReference
