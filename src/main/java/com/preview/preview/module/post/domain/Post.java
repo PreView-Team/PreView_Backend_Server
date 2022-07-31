@@ -1,6 +1,7 @@
 package com.preview.preview.module.post.domain;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.preview.preview.module.category.domain.Category;
+import com.preview.preview.module.review.domain.Review;
 import com.preview.preview.module.user.domain.User;
 import com.preview.preview.util.BaseTimeEntity;
 import lombok.*;
@@ -41,6 +42,9 @@ public class Post extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private final List<PostLike> postLikes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private final List<Review> reviews = new ArrayList<>();
 
     public Long deletePost(){
         deletedDate = LocalDateTime.now();
