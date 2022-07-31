@@ -1,6 +1,4 @@
-package com.preview.preview.module.auth.presentation;
-import com.preview.preview.module.auth.application.AuthorityServiceImpl;
-import com.preview.preview.module.auth.application.dto.AuthorityResponseDto;
+package com.preview.preview.module.mentor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,7 +16,7 @@ public class AuthorityController {
         this.authorityService = authorityService;
     }
 
-    @PostMapping("/authority/{kakaoId}")
+    @PostMapping("/mentor/{kakaoId}")
     @PreAuthorize("hasAnyRole('ROLE_USER')")
     public ResponseEntity<AuthorityResponseDto> enroll(@PathVariable String kakaoId){
         AuthorityResponseDto authorityResponseDto = authorityService.enrollAuthority(kakaoId);

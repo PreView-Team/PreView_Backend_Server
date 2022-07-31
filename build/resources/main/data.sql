@@ -14,6 +14,10 @@ insert into job (job_name) values ('프로그래밍');
 insert into job (job_name) values ('디자인');
 insert into job (job_name) values ('마케팅');
 
+insert into mentor_job (mentor_job_name) values ('프로그래밍');
+insert into mentor_job (mentor_job_name) values ('디자인');
+insert into mentor_job (mentor_job_name) values ('마케팅');
+
 insert into enterprise (enterprise_name) values ('삼성전자');
 insert into enterprise (enterprise_name) values ('네이버');
 insert into enterprise (enterprise_name) values ('카카오');

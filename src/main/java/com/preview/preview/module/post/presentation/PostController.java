@@ -84,9 +84,11 @@ public class PostController {
                 return ResponseEntity.ok(postLikeService.unlikePostByUserId(user.getKakaoId(), postLikeRequestDto));
         }
 
-        // 신규멘토, 카테고리 id 게시물 전체 조회
+        // home 신규 멘토 주기
 
-        // 추천멘토, 카테고리 id 게시물 전체 조회
+        // home 추천 멘토 주기
+
+        // 정렬 기능
 
 
 }

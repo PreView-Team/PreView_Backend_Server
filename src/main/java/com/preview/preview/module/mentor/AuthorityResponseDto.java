@@ -1,4 +1,4 @@
-package com.preview.preview.module.auth.application.dto;
+package com.preview.preview.module.mentor;
 
 import com.preview.preview.module.user.domain.User;
 import lombok.Builder;

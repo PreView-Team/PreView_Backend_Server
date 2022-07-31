@@ -51,8 +51,6 @@ public class UserController {
         return ResponseEntity.ok(userService.getUserProfileBykakaoId(user.getKakaoId()));
     }
 
-
-
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     @DeleteMapping("/user")
     public ResponseEntity<UserDeleteResponseDto> deleteUser(
