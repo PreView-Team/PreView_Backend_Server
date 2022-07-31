@@ -4,7 +4,7 @@ import com.preview.preview.module.auth.domain.Authority;
 import com.preview.preview.module.enterprise.domain.Enterprise;
 import com.preview.preview.module.form.domain.Form;
 import com.preview.preview.module.job.domain.Job;
-import com.preview.preview.module.mentor.Mentor;
+import com.preview.preview.module.mentor.domain.Mentor;
 import com.preview.preview.module.review.domain.Review;
 import com.preview.preview.util.BaseTimeEntity;
 import io.jsonwebtoken.Claims;

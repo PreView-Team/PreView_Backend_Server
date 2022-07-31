@@ -1,7 +1,10 @@
-package com.preview.preview.module.mentor;
+package com.preview.preview.module.mentor.domain;
 
-import com.preview.preview.module.mentor.Mentor;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
 public interface MentorRepository extends JpaRepository<Mentor, Long> {
+    Optional<Mentor> findMentorById(Long mentorId);
+
 }

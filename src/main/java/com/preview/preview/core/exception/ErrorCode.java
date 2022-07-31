@@ -24,6 +24,7 @@ public enum ErrorCode {
     NOT_EQUAL_FORM_RESOURCE(HttpStatus.FORBIDDEN, "P016", "수정할 권한이 없는 계정입니다."),
     NOT_EXISTED_REVIEW_ID(HttpStatus.FORBIDDEN, "P017", "존재하지 않는 리뷰입니다."),
     DUPLICATE_REVIEW_RESOURCE(HttpStatus.CONFLICT,"P018", "이미 등록이 된 리뷰입니다."),
+    NOT_EXISTED_MENTOR_ID(HttpStatus.BAD_REQUEST, "P019", "등록되지 않은 멘토입니다.")
     ;
 
     private final HttpStatus httpStatus;
