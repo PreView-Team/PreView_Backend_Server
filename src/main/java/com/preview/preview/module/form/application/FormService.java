@@ -41,6 +41,7 @@ public class FormService{
         Form form = Form.builder()
                 .user(user)
                 .post(post)
+                .status("대기")
                 .name(formCreateRequestDto.getName())
                 .content(formCreateRequestDto.getContents())
                 .phoneNumber(formCreateRequestDto.getPhoneNumber())
@@ -53,6 +54,7 @@ public class FormService{
     public FormGetResponseDto getForm(long kakaoId, long formId) {
         User user = userRepository.findByKakaoId(kakaoId).orElseThrow(()-> new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
         Form form = formRepository.findById(formId).orElseThrow(()-> new CustomException(ErrorCode.NOT_EXISTED_FORM_ID));
+
         return FormGetResponseDto.from(form,user);
     }
 
@@ -60,7 +62,7 @@ public class FormService{
     public List<FormAllGetResponseDto> getFormsByKakaoId(long kakaoId) {
         User user = userRepository.findByKakaoId(kakaoId).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
 
-        List<Form> forms = formRepository.findFormByuserId(user.getId()).stream().filter(form -> form.getDeletedDate() == null).collect(Collectors.toList());
+        List<Form> forms = formRepository.findFormByuserId(user.getId());
 
         List<FormAllGetResponseDto> formList = new ArrayList<>();
 
@@ -78,7 +80,7 @@ public class FormService{
         if (form.getUser().getId() != user.getId())
             throw new CustomException(ErrorCode.NOT_EQUAL_FORM_RESOURCE);
 
-        form.setContent(formUpdateRequestDto.getContent());
+        form.setContent(formUpdateRequestDto.getContents());
         form.setPhoneNumber(formUpdateRequestDto.getPhoneNumber());
         form.setName(formUpdateRequestDto.getName());
 
@@ -95,7 +97,7 @@ public class FormService{
         }
 
         form.setDeleteTime();
-        formRepository.save(form);
+        formRepository.delete(form);
         return FormDeleteResponseDto.builder().result("삭제 성공하였습니다.").build();
     }
 
