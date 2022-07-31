@@ -20,12 +20,14 @@ public class Review extends BaseTimeEntity {
     private Long id;
 
     @Setter
+    @Getter
     @Column(name = "contents")
     private String contents;
 
     @Setter
+    @Getter
     @Column(name = "grade")
-    private int grade; // 평점
+    private float grade; // 평점
 
     @Getter
     @ManyToOne(fetch = FetchType.LAZY)

@@ -50,4 +50,20 @@ public class Post extends BaseTimeEntity {
         deletedDate = LocalDateTime.now();
         return id;
     }
+
+    public double getGrade(){
+        int size = reviews.size();
+        double num = 0;
+
+        if (size == 0){
+            return 0;
+        }
+
+        for (Review s:reviews){
+            num += s.getGrade();
+        }
+
+        num = num / reviews.size();
+        return Math.round(num);
+    }
 }

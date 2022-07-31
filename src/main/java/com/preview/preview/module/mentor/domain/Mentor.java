@@ -17,12 +17,14 @@ import java.util.Set;
 @Entity
 @Table(name = "mentor")
 public class Mentor {
+    @Getter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "mentor_id", nullable = false)
     private Long id;
 
     @Getter
+    @Setter
     private String nickname; // 닉네임
 
     @Setter
@@ -36,6 +38,7 @@ public class Mentor {
     private Set<MentorJob> likedJobs;
 
     @Getter
+    @Setter
     private String contents; // 소개
 
     public List<String> getMentorJobList(){

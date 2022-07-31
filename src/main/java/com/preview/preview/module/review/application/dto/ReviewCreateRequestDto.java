@@ -6,5 +6,5 @@ import lombok.*;
 @Setter
 public class ReviewCreateRequestDto {
     private String contents;
-    private Integer grade;
+    private float grade;
 }

@@ -81,6 +81,7 @@ public class User extends BaseTimeEntity {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private final List<Review> reviews = new ArrayList<>();
 
+    @Setter
     @OneToOne
     @JoinColumn(name = "mentor_id")
     private Mentor mentor;
