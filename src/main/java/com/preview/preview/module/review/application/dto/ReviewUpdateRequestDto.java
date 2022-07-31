@@ -1,10 +1,12 @@
 package com.preview.preview.module.review.application.dto;
 
-import lombok.*;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
-public class ReviewCreateRequestDto {
+public class ReviewUpdateRequestDto {
     private String contents;
     private Integer grade;
 }

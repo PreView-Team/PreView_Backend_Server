@@ -5,6 +5,7 @@ import com.preview.preview.module.enterprise.domain.Enterprise;
 import com.preview.preview.module.form.domain.Form;
 import com.preview.preview.module.job.domain.Job;
 import com.preview.preview.module.post.domain.PostLike;
+import com.preview.preview.module.review.domain.Review;
 import com.preview.preview.util.BaseTimeEntity;
 import io.jsonwebtoken.Claims;
 import lombok.*;
@@ -78,6 +79,10 @@ public class User extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private final List<Form> forms = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private final List<Review> reviews = new ArrayList<>();
+
 
     public Long deleteUser(){
         deletedDate = LocalDateTime.now();

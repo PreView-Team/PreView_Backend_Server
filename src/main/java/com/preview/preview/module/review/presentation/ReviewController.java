@@ -1,17 +1,13 @@
 package com.preview.preview.module.review.presentation;
 
 import com.preview.preview.module.review.application.ReviewService;
-import com.preview.preview.module.review.application.dto.ReviewCreateRequestDto;
-import com.preview.preview.module.review.application.dto.ReviewCreateResponseDto;
+import com.preview.preview.module.review.application.dto.*;
 import com.preview.preview.module.user.domain.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class ReviewController {
@@ -30,5 +26,24 @@ public class ReviewController {
             @RequestBody ReviewCreateRequestDto reviewCreateRequestDto){
         return ResponseEntity.ok(reviewService.createReview(user.getKakaoId(), postId, reviewCreateRequestDto));
     }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    @PutMapping("/api/review/{reviewId}")
+    public ResponseEntity<ReviewUpdateResponseDto> updateReview(
+            @AuthenticationPrincipal User user,
+            @PathVariable Long reviewId,
+            @RequestBody ReviewUpdateRequestDto reviewUpdateRequestDto){
+        return ResponseEntity.ok(reviewService.updateReview(user.getKakaoId(), reviewId, reviewUpdateRequestDto));
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    @DeleteMapping("/api/review/{reviewId}")
+    public ResponseEntity<ReviewDeleteResponseDto> deleteReview(
+            @AuthenticationPrincipal User user,
+            @PathVariable Long reviewId){
+        return ResponseEntity.ok(reviewService.deleteReview(user.getKakaoId(), reviewId));
+    }
+
+
 
 }

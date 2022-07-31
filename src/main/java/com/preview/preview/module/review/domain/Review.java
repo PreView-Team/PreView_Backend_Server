@@ -3,9 +3,7 @@ package com.preview.preview.module.review.domain;
 import com.preview.preview.module.post.domain.Post;
 import com.preview.preview.module.user.domain.User;
 import com.preview.preview.util.BaseTimeEntity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -21,9 +19,15 @@ public class Review extends BaseTimeEntity {
     @Column(name = "review_id")
     private Long id;
 
+    @Setter
     @Column(name = "contents")
     private String contents;
 
+    @Setter
+    @Column(name = "grade")
+    private int grade; // 평점
+
+    @Getter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false, foreignKey = @ForeignKey(name = "fk_like_to_user"))
     private User user;
