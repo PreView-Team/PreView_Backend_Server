@@ -13,6 +13,8 @@ import com.preview.preview.module.post.domain.PostRepository;
 import com.preview.preview.module.user.domain.User;
 import com.preview.preview.module.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -74,9 +76,9 @@ public class PostsService {
     }
 
     @Transactional
-    public List<PostsGetByCategoryResponseDto> findPostsByCategoryName(long kakaoId, String name) {
+    public List<PostsGetByCategoryResponseDto> findPostsByCategoryName(long kakaoId, String name, Pageable pageable) {
         User user = userRepository.findByKakaoId(kakaoId).orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
-        List<Post> posts = postsRepository.findPostByCategoryName(name).stream().filter(post -> post.getDeletedDate() == null).collect(Collectors.toList());
+        List<Post> posts = postsRepository.findPostByCategoryName(name, pageable).stream().filter(post -> post.getDeletedDate() == null).collect(Collectors.toList());
         boolean like;
 
         List<PostsGetByCategoryResponseDto> list = new ArrayList<>();
@@ -90,10 +92,12 @@ public class PostsService {
     }
 
     @Transactional
-    public List<PostsGetByCategoryResponseDto> findRecommendedPostsByCategoryName(long kakaoId, String name) {
+    public List<PostsGetByCategoryResponseDto> findRecommendedPostsByCategoryName(long kakaoId, String name, Pageable pageable) {
         User user = userRepository.findByKakaoId(kakaoId).orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
 
-        List<Post> posts = postsRepository.findPostByCategoryName(name).stream().filter(post -> post.getDeletedDate() == null &&
+        postsRepository.findAll(pageable);
+
+        List<Post> posts = postsRepository.findPostByCategoryName(name, pageable).stream().filter(post -> post.getDeletedDate() == null &&
                 user.isExistedJob(post.getCategory().getName()) == true).collect(Collectors.toList());
 
         boolean like;

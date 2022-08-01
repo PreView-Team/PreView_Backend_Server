@@ -3,8 +3,13 @@ package com.preview.preview.module.post.presentation;
 import com.preview.preview.module.post.application.PostLikeService;
 import com.preview.preview.module.post.application.PostsService;
 import com.preview.preview.module.post.application.dto.*;
+import com.preview.preview.module.post.domain.Post;
+import com.preview.preview.module.post.domain.PostRepository;
 import com.preview.preview.module.user.domain.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,6 +24,7 @@ public class PostController {
 
         private final PostsService postsService;
         private final PostLikeService postLikeService;
+        private final PostRepository postRepository;
 
         @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
         @PostMapping("/api/post")
@@ -35,6 +41,14 @@ public class PostController {
                 @PathVariable Long postId){
                 return ResponseEntity.ok(postsService.findById(user.getKakaoId(), postId));
         }
+
+        @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+        @GetMapping("/posts")
+        public Page<Post> getAllPost(){
+                PageRequest pageRequest = PageRequest.of(0, 5);
+                return postRepository.findAll(pageRequest);
+        }
+
 
         @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
         @PutMapping("/api/post")
@@ -57,12 +71,13 @@ public class PostController {
         public ResponseEntity<List<PostsGetByCategoryResponseDto>> getPostsByCategory(
                 @RequestParam("status") String status,
                 @RequestParam("name") String name,
-                @AuthenticationPrincipal User user){
+                @AuthenticationPrincipal User user,
+                Pageable pageable){
                 switch (status){
                         case "recommendation":
-                                return ResponseEntity.ok(postsService.findRecommendedPostsByCategoryName(user.getKakaoId(), name));
+                                return ResponseEntity.ok(postsService.findRecommendedPostsByCategoryName(user.getKakaoId(), name, pageable));
                         case "new":
-                                return ResponseEntity.ok(postsService.findPostsByCategoryName(user.getKakaoId(), name));
+                                return ResponseEntity.ok(postsService.findPostsByCategoryName(user.getKakaoId(), name, pageable));
                 }
                 return null;
         }

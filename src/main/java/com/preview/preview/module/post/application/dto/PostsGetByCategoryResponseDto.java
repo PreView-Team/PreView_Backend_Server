@@ -14,12 +14,12 @@ public class PostsGetByCategoryResponseDto {
     private Long postId;
     private String contents;
     private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
     private String category;
-    private String nickname;
-    private String title;
-    private boolean like;
-    private Integer likeCount;
+    private String nickname; // 맨토 닉네임
+    private String title; // 한 줄 소개
+    private boolean like; // 좋아요 여부
+    private Integer likeCount; // 좋아요 횟수
+    private double grade; // 리뷰 총점
 
 
     public static PostsGetByCategoryResponseDto from (Post post, boolean like){
@@ -27,12 +27,12 @@ public class PostsGetByCategoryResponseDto {
                 .postId(post.getId())
                 .contents(post.getContent())
                 .createdAt(post.getCreatedDate())
-                .updatedAt(post.getModifiedDate())
                 .category(post.getCategory().getName())
-                .nickname(post.getUser().getNickname())
+                .nickname(post.getUser().getMentor().getNickname())
                 .title(post.getTitle())
                 .like(like)
                 .likeCount(post.getPostLikes().size())
+                .grade(post.getGrade())
                 .build();
     }
 

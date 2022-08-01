@@ -1,6 +1,8 @@
 package com.preview.preview.module.post.domain;
 
 import com.preview.preview.core.Repository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -16,7 +18,7 @@ import java.util.Optional;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
 
-    List<Post> findPostByCategoryName(String name);
+    Page<Post> findPostByCategoryName(String name, Pageable pageable);
 
 
     //List<Post> findPostsByCategoryName(@Param("userId") Long userId);
