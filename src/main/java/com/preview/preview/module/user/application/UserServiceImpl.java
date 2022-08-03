@@ -104,6 +104,7 @@ public class UserServiceImpl {
     public UserUpdateResponseDto updateUserByKakaoId(UserUpdateRequestDto userUpdateRequestDto, long kakaoId){
         Optional<User> user = Optional.ofNullable(userRepository.findByKakaoId(kakaoId).orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTED_USER_ID)));
         user.get().setLikedJobs(userUpdateRequestDto.getJobDtoSet());
+        user.get().setUserNickname(userUpdateRequestDto.getNickname());
 
         try {
             userRepository.save(user.get());

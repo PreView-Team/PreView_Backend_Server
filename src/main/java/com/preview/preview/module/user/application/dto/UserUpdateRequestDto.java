@@ -10,4 +10,5 @@ import java.util.Set;
 @Setter
 public class UserUpdateRequestDto {
     private Set<Job> jobDtoSet;
+    private String nickname;
 }
