@@ -44,6 +44,7 @@ public class FormService{
                 .status("대기")
                 .name(formCreateRequestDto.getName())
                 .content(formCreateRequestDto.getContents())
+                .content(formCreateRequestDto.getLocal())
                 .phoneNumber(formCreateRequestDto.getPhoneNumber())
                 .build();
 
@@ -83,6 +84,7 @@ public class FormService{
         form.setContent(formUpdateRequestDto.getContents());
         form.setPhoneNumber(formUpdateRequestDto.getPhoneNumber());
         form.setName(formUpdateRequestDto.getName());
+        form.setLocal(formUpdateRequestDto.getLocal());
 
         return FormUpdateResponseDto.from(formRepository.save(form));
     }

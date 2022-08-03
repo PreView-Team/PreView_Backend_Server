@@ -36,6 +36,9 @@ public class Form extends BaseTimeEntity {
     private String name;
 
     @Setter
+    private String local; // 멘티 사는 지역
+
+    @Setter
     private String phoneNumber;
 
     @Setter

@@ -22,6 +22,7 @@ public class FormGetResponseDto {
     private String phoneNumber;
     private Set<Job> jobNames;
     private String contents; // 상담 받고 싶은 내용
+    private String local;
     private String status;
 
     public static FormGetResponseDto from(Form form, User user){
@@ -35,6 +36,7 @@ public class FormGetResponseDto {
                 .jobNames(user.getLikedJobs())
                 .contents(form.getContent())
                 .status(form.getStatus())
+                .local(form.getLocal())
                 .build();
     }
 }

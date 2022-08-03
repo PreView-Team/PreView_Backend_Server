@@ -34,7 +34,7 @@ public class FormByMentorService {
     public List<FormsByMentoGetResponseDto> getMemtorFormsByKakaoId(long kakaoId) {
         User user = userRepository.findByKakaoId(kakaoId).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
 
-        List<Form> forms = user.getForms().stream().filter(form -> form.getStatus() != "거절").collect(Collectors.toList());
+        List<Form> forms = user.getForms().stream().filter(form -> form.getStatus().equals("거절") == false).collect(Collectors.toList());
 
         List<FormsByMentoGetResponseDto> formList = new ArrayList<>();
 

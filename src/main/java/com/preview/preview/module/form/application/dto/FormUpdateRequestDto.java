@@ -9,4 +9,5 @@ public class FormUpdateRequestDto {
     private String name;
     private String phoneNumber;
     private String contents; // 상담 받고 싶은 내용
+    private String local;
 }

@@ -13,4 +13,5 @@ public class FormCreateRequestDto {
     private String name;
     private String phoneNumber;
     private String contents;
+    private String local;
 }

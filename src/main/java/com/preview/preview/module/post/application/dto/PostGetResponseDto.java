@@ -14,17 +14,15 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PostGetResponseDto {
-    private long mentorId;
     private long postId;
     private String contents;
     private String title;
     private String nickname;
-    private String categoryName;
+    private List<String> jobList;
     private LocalDateTime createDateTime;
     private LocalDateTime updateDateTime;
     private String introduce;
     private List<ReviewDto> reviews;
-    private long reviewCnt;
     private double grade;
 
     public static PostGetResponseDto from(Post post) {
@@ -43,12 +41,10 @@ public class PostGetResponseDto {
                 .contents(post.getContent())
                 .title(post.getTitle())
                 .nickname(post.getUser().getMentor().getNickname())
-                .categoryName(post.getCategory().getName())
+                .jobList(post.getUser().getMentor().getMentorJobList())
                 .createDateTime(post.getCreatedDate())
                 .updateDateTime(post.getModifiedDate())
                 .introduce(post.getUser().getMentor().getContents())
-                .mentorId(post.getUser().getMentor().getId())
-                .reviewCnt(post.getReviews().size())
                 .grade(post.getGrade())
                 .reviews(list)
                 .build();
