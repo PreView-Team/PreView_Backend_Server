@@ -95,8 +95,6 @@ public class PostsService {
     public List<PostsGetByCategoryResponseDto> findRecommendedPostsByCategoryName(long kakaoId, String name, Pageable pageable) {
         User user = userRepository.findByKakaoId(kakaoId).orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
 
-        postsRepository.findAll(pageable);
-
         List<Post> posts = postsRepository.findPostByCategoryName(name, pageable).stream().filter(post -> post.getDeletedDate() == null &&
                 user.isExistedJob(post.getCategory().getName()) == true).collect(Collectors.toList());
 
@@ -107,6 +105,35 @@ public class PostsService {
         for (Post s : posts) {
             like = postLikeRepository.existsPostLikeByUserIdAndPostId(user.getId(), s.getId());
             list.add(PostsGetByCategoryResponseDto.from(s, like));
+        }
+
+        return list;
+    }
+
+    @Transactional
+    public List<PostGetAtHomeResponseDto> findPostsByNewMentor(Pageable pageable){
+        List<Post> posts = postsRepository.findAll(pageable).stream().filter(post -> post.getDeletedDate() == null).collect(Collectors.toList());
+
+        List<PostGetAtHomeResponseDto> list = new ArrayList<>();
+
+        for (Post post:posts){
+            list.add(PostGetAtHomeResponseDto.from(post));
+        }
+
+        return list;
+    }
+
+    @Transactional
+    public List<PostGetAtHomeResponseDto> findPostsByRecommendMentor(long kakaoId, Pageable pageable){
+        User user = userRepository.findByKakaoId(kakaoId).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
+
+        List<Post> posts = postsRepository.findAll(pageable).stream().filter(post -> post.getDeletedDate() == null &&
+                user.isExistedJob(post.getCategory().getName()) == true).collect(Collectors.toList());
+
+        List<PostGetAtHomeResponseDto> list = new ArrayList<>();
+
+        for (Post post:posts){
+            list.add(PostGetAtHomeResponseDto.from(post));
         }
 
         return list;

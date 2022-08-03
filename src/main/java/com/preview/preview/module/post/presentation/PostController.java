@@ -76,9 +76,6 @@ public class PostController {
                 return null;
         }
 
-
-
-
         @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
         @PostMapping("/api/post/like")
         public ResponseEntity<PostLikeResponseDto> likePost(
@@ -96,7 +93,21 @@ public class PostController {
         }
 
         // home 신규 멘토 주기
-
+        @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+        @GetMapping("/api/home/post")
+        public ResponseEntity<List<PostGetAtHomeResponseDto>> getPostsByHome(
+                @RequestParam("status") String status,
+                @AuthenticationPrincipal User user,
+                Pageable pageable
+                ){
+                switch (status){
+                        case "recommendation":
+                                return ResponseEntity.ok(postsService.findPostsByRecommendMentor(user.getKakaoId(), pageable));
+                        case "new":
+                                return ResponseEntity.ok(postsService.findPostsByNewMentor(pageable));
+                }
+                return null;
+        }
         // home 추천 멘토 주기
 
         // 정렬 기능
