@@ -51,14 +51,6 @@ public class PostController {
                 return ResponseEntity.ok(postsService.update(user.getKakaoId(), postsUpdateRequestDto));
         }
 
-        @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-        @GetMapping("/api/post")
-        public ResponseEntity<List<PostsGetByMentorIdResponseDto>> getPosts(
-                @AuthenticationPrincipal User user
-        ){
-                return ResponseEntity.ok(postsService.getPostsBykakaoId(user.getKakaoId()));
-        }
-
 
         @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
         @DeleteMapping("/api/post/{postId}")

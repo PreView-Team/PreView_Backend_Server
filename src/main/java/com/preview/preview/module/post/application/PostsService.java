@@ -134,4 +134,10 @@ public class PostsService {
         return list;
     }
 
+    @Transactional
+    public PostGetByMentorResponseDto getPostByMentor(long postId){
+        Post post = postsRepository.findById(postId).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_POST_ID));
+        return PostGetByMentorResponseDto.from(post);
+    }
+
 }
