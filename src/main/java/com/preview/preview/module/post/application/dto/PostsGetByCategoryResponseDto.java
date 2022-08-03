@@ -4,6 +4,7 @@ import com.preview.preview.module.post.domain.Post;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Setter
 @Getter
@@ -14,7 +15,7 @@ public class PostsGetByCategoryResponseDto {
     private Long postId;
     private String contents;
     private LocalDateTime createdAt;
-    private String category;
+    private List<String> jobList;
     private String nickname; // 맨토 닉네임
     private String title; // 한 줄 소개
     private boolean like; // 좋아요 여부
@@ -27,7 +28,7 @@ public class PostsGetByCategoryResponseDto {
                 .postId(post.getId())
                 .contents(post.getContent())
                 .createdAt(post.getCreatedDate())
-                .category(post.getCategory().getName())
+                .jobList(post.getUser().getMentor().getMentorJobList())
                 .nickname(post.getUser().getMentor().getNickname())
                 .title(post.getTitle())
                 .like(like)

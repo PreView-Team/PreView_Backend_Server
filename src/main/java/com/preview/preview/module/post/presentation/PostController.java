@@ -42,13 +42,6 @@ public class PostController {
                 return ResponseEntity.ok(postsService.findById(user.getKakaoId(), postId));
         }
 
-        @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-        @GetMapping("/posts")
-        public Page<Post> getAllPost(){
-                PageRequest pageRequest = PageRequest.of(0, 5);
-                return postRepository.findAll(pageRequest);
-        }
-
 
         @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
         @PutMapping("/api/post")
@@ -58,7 +51,16 @@ public class PostController {
                 return ResponseEntity.ok(postsService.update(user.getKakaoId(), postsUpdateRequestDto));
         }
 
-        @PreAuthorize("hasAnyRole('ROLE_USER')")
+        @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+        @GetMapping("/api/post")
+        public ResponseEntity<List<PostsGetByMentorIdResponseDto>> getPosts(
+                @AuthenticationPrincipal User user
+        ){
+                return ResponseEntity.ok(postsService.getPostsBykakaoId(user.getKakaoId()));
+        }
+
+
+        @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
         @DeleteMapping("/api/post/{postId}")
         public ResponseEntity<PostDeleteResponseDto> deletePost(
                 @AuthenticationPrincipal User user,
@@ -81,6 +83,8 @@ public class PostController {
                 }
                 return null;
         }
+
+
 
 
         @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")

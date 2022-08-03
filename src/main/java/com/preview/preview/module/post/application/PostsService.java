@@ -123,4 +123,15 @@ public class PostsService {
                 }).orElseThrow(() -> new CustomException(ErrorCode.NOT_DELETE_POST_RESOURCE));
     }
 
+    @Transactional
+    public List<PostsGetByMentorIdResponseDto> getPostsBykakaoId(long kakaoId){
+        User user = userRepository.findByKakaoId(kakaoId).orElseThrow(()-> new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
+        List<Post> posts = postsRepository.findPostByUserId(user.getId()).stream().filter(post -> post.getDeletedDate() != null).collect(Collectors.toList());
+        List<PostsGetByMentorIdResponseDto> list = new ArrayList<>();
+        for (Post post: posts){
+            list.add(PostsGetByMentorIdResponseDto.from(post));
+        }
+        return list;
+    }
+
 }
