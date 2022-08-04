@@ -1,6 +1,7 @@
 package com.preview.preview.module.form.application.dto;
 
 import com.preview.preview.module.form.domain.Form;
+import com.preview.preview.module.form.domain.MentorForm;
 import com.preview.preview.module.job.domain.Job;
 import com.preview.preview.module.user.domain.User;
 import lombok.Builder;
@@ -29,7 +30,7 @@ public class FormGetResponseDto {
         if (form == null) return null;
         return FormGetResponseDto.builder()
                 .formId(form.getId())
-                .mentorNickname(form.getUser().getNickname())
+                .mentorNickname(form.getMentorNicname())
                 .createTime(form.getCreatedDate())
                 .name(form.getName())
                 .phoneNumber(form.getPhoneNumber())

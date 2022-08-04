@@ -41,24 +41,31 @@ public class MentorController {
     public ResponseEntity<MentorGetResponseDto> getMentor(@PathVariable long mentorId){
         return ResponseEntity.ok(mentorService.getMentorProfile(mentorId));
     }
+
+    @GetMapping("/mentor")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    public ResponseEntity<MentorGetResponseDto> getMentorInfo(@AuthenticationPrincipal User user){
+        return ResponseEntity.ok(mentorService.getMentorInfo(user.getKakaoId()));
+    }
+
     // 업데이트
     @PutMapping("/mentor")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     public ResponseEntity<MentorUpdateResponseDto> updateMentor(@AuthenticationPrincipal User user,
                                                                 @RequestBody MentorUpdateRequestDto mentorUpdateRequestDto){
         return ResponseEntity.ok(mentorService.updateMentorProfile(user.getKakaoId(), mentorUpdateRequestDto));
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    @GetMapping("/api/mentor/post")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    @GetMapping("/mentor/post")
     public ResponseEntity<List<PostsGetByMentorIdResponseDto>> getPosts(
             @AuthenticationPrincipal User user
     ){
         return ResponseEntity.ok(postsService.getPostsBykakaoId(user.getKakaoId()));
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    @GetMapping("/api/mentor/post/{postId}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    @GetMapping("/mentor/post/{postId}")
     public ResponseEntity<PostGetByMentorResponseDto> getPost(
             @PathVariable Long postId
     ){

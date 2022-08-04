@@ -5,6 +5,8 @@ import com.preview.preview.core.exception.ErrorCode;
 import com.preview.preview.module.form.application.dto.*;
 import com.preview.preview.module.form.domain.Form;
 import com.preview.preview.module.form.domain.FormRepository;
+import com.preview.preview.module.form.domain.MentorForm;
+import com.preview.preview.module.form.domain.MentorFormRepository;
 import com.preview.preview.module.post.domain.Post;
 import com.preview.preview.module.post.domain.PostRepository;
 import com.preview.preview.module.user.domain.User;
@@ -14,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class FormService{
@@ -22,11 +23,13 @@ public class FormService{
     private final FormRepository formRepository;
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+    private final MentorFormRepository mentorFormRepository;
 
-    public FormService(FormRepository formRepository, PostRepository postRepository, UserRepository userRepository) {
+    public FormService(FormRepository formRepository, PostRepository postRepository, UserRepository userRepository, MentorFormRepository mentorFormRepository) {
         this.formRepository = formRepository;
         this.postRepository = postRepository;
         this.userRepository = userRepository;
+        this.mentorFormRepository = mentorFormRepository;
     }
 
     @Transactional
@@ -41,12 +44,25 @@ public class FormService{
         Form form = Form.builder()
                 .user(user)
                 .post(post)
+                .mentorNicname(post.getUser().getMentor().getNickname())
                 .status("대기")
                 .name(formCreateRequestDto.getName())
                 .content(formCreateRequestDto.getContents())
-                .content(formCreateRequestDto.getLocal())
+                .local(formCreateRequestDto.getLocal())
                 .phoneNumber(formCreateRequestDto.getPhoneNumber())
                 .build();
+
+        MentorForm mentorForm = MentorForm.builder()
+                .user(post.getUser())
+                .post(post)
+                .status("대기")
+                .name(formCreateRequestDto.getName())
+                .content(formCreateRequestDto.getContents())
+                .local(formCreateRequestDto.getLocal())
+                .phoneNumber(formCreateRequestDto.getPhoneNumber())
+                .build();
+
+        mentorFormRepository.save(mentorForm);
 
         return FormCreateResponseDto.from(formRepository.save(form));
     }
@@ -77,6 +93,7 @@ public class FormService{
     public FormUpdateResponseDto formUpdate(long kakaoId, long formId, FormUpdateRequestDto formUpdateRequestDto) {
         User user = userRepository.findByKakaoId(kakaoId).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
         Form form = formRepository.findById(formId).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_FORM_ID));
+        MentorForm mentorForm = mentorFormRepository.findById(formId).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_FORM_ID));
 
         if (form.getUser().getId() != user.getId())
             throw new CustomException(ErrorCode.NOT_EQUAL_FORM_RESOURCE);
@@ -86,6 +103,12 @@ public class FormService{
         form.setName(formUpdateRequestDto.getName());
         form.setLocal(formUpdateRequestDto.getLocal());
 
+        mentorForm.setContent(formUpdateRequestDto.getContents());
+        mentorForm.setPhoneNumber(formUpdateRequestDto.getPhoneNumber());
+        mentorForm.setName(formUpdateRequestDto.getName());
+        mentorForm.setLocal(formUpdateRequestDto.getLocal());
+        mentorFormRepository.save(mentorForm);
+
         return FormUpdateResponseDto.from(formRepository.save(form));
     }
 
@@ -93,6 +116,7 @@ public class FormService{
     public FormDeleteResponseDto formDelete(long kakaoId, long formId){
         User user = userRepository.findByKakaoId(kakaoId).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
         Form form = formRepository.findById(formId).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_FORM_ID));
+        MentorForm mentorForm = mentorFormRepository.findById(formId).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_FORM_ID));
 
         if (user.getId() != form.getUser().getId()){
             throw new CustomException(ErrorCode.NOT_EQUAL_FORM_RESOURCE);
@@ -100,6 +124,8 @@ public class FormService{
 
         form.setDeleteTime();
         formRepository.delete(form);
+        mentorForm.setDeleteTime();
+        mentorFormRepository.delete(mentorForm);
         return FormDeleteResponseDto.builder().result("삭제 성공하였습니다.").build();
     }
 

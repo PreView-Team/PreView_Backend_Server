@@ -43,6 +43,7 @@ public class PostController {
         }
 
 
+
         @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
         @PutMapping("/api/post")
         public ResponseEntity<PostUpdateResponseDto> updatePost(
@@ -51,8 +52,7 @@ public class PostController {
                 return ResponseEntity.ok(postsService.update(user.getKakaoId(), postsUpdateRequestDto));
         }
 
-
-        @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+        @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
         @DeleteMapping("/api/post/{postId}")
         public ResponseEntity<PostDeleteResponseDto> deletePost(
                 @AuthenticationPrincipal User user,

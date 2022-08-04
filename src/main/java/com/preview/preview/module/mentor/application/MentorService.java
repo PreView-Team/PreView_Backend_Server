@@ -14,6 +14,8 @@ import com.preview.preview.module.user.domain.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 public class MentorService{
 
@@ -46,6 +48,15 @@ public class MentorService{
     public MentorGetResponseDto getMentorProfile(long mentorId){
         Mentor mentor = mentorRepository.findMentorById(mentorId).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_MENTOR_ID));
         return MentorGetResponseDto.from(mentor);
+    }
+
+    @Transactional
+    public MentorGetResponseDto getMentorInfo(long kakaoId){
+        User user = userRepository.findByKakaoId(kakaoId).orElseThrow(()-> new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
+        Optional<Mentor> mentor = Optional.ofNullable(user.getMentor());
+        if (mentor.isEmpty()) throw new CustomException(ErrorCode.NOT_EXISTED_MENTOR_ID);
+
+        return MentorGetResponseDto.from(user.getMentor());
     }
 
     @Transactional

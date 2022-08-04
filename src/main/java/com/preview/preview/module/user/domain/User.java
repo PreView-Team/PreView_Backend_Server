@@ -3,6 +3,7 @@ package com.preview.preview.module.user.domain;
 import com.preview.preview.module.auth.domain.Authority;
 import com.preview.preview.module.enterprise.domain.Enterprise;
 import com.preview.preview.module.form.domain.Form;
+import com.preview.preview.module.form.domain.MentorForm;
 import com.preview.preview.module.job.domain.Job;
 import com.preview.preview.module.mentor.domain.Mentor;
 import com.preview.preview.module.review.domain.Review;
@@ -77,6 +78,9 @@ public class User extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private final List<Form> forms = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private final List<MentorForm> mentorForms = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private final List<Review> reviews = new ArrayList<>();

@@ -10,7 +10,7 @@ import java.util.List;
 @Getter
 public class PostGetAtHomeResponseDto {
     private String nickname;
-    private List<String> jobList;
+    private String categoryName;
     private String title;
     private int likeCnt;
     private int commentCnt;
@@ -22,7 +22,7 @@ public class PostGetAtHomeResponseDto {
                 .nickname(post.getUser().getNickname())
                 .title(post.getTitle())
                 .likeCnt(post.getPostLikes().size())
-                .jobList(post.getUser().getMentor().getMentorJobList())
+                .categoryName(post.getCategory().getName())
                 .build();
     }
 }

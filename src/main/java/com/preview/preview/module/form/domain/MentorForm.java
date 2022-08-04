@@ -16,8 +16,8 @@ import java.util.Set;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "form")
-public class Form extends BaseTimeEntity {
+@Table(name = "mentor_form")
+public class MentorForm extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,14 +26,11 @@ public class Form extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false, foreignKey = @ForeignKey(name = "fk_form_to_user"))
-    private User user; // 멘티
+    private User user; // 멘토
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id", referencedColumnName = "post_id", nullable = false, foreignKey = @ForeignKey(name = "fk_form_to_post"))
     private Post post;
-
-    @Setter
-    private String mentorNicname;
 
     @Setter
     private String name;

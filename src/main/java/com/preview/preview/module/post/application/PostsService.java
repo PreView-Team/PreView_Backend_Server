@@ -60,7 +60,9 @@ public class PostsService {
         User user = userRepository.findByKakaoId(kakaoId).orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
 
         // kakao id, post에 있는 user id 비교 다를 시 예외처리
-        if (post.getUser().getId() != user.getId()) new CustomException(ErrorCode.NOT_EQUAL_USER_RESOURCE);
+        if (post.getUser().getId() != user.getId()) {
+            throw new CustomException(ErrorCode.NOT_EQUAL_USER_RESOURCE);
+        }
 
         post.setTitle(requestDto.getTitle());
         post.setContent(requestDto.getContents());
@@ -153,7 +155,7 @@ public class PostsService {
     @Transactional
     public List<PostsGetByMentorIdResponseDto> getPostsBykakaoId(long kakaoId){
         User user = userRepository.findByKakaoId(kakaoId).orElseThrow(()-> new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
-        List<Post> posts = postsRepository.findPostByUserId(user.getId()).stream().filter(post -> post.getDeletedDate() != null).collect(Collectors.toList());
+        List<Post> posts = postsRepository.findPostByUserId(user.getId()).stream().filter(post -> post.getDeletedDate() == null).collect(Collectors.toList());
         List<PostsGetByMentorIdResponseDto> list = new ArrayList<>();
         for (Post post: posts){
             list.add(PostsGetByMentorIdResponseDto.from(post));
