@@ -8,6 +8,8 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -50,7 +52,14 @@ public class Form extends BaseTimeEntity {
     @Setter
     private String status; // 상태 정보
 
+    private String fcmToken;
+
+    @Setter
+    private String likeJobs;
+
     public void setDeleteTime(){
         this.deletedDate =  LocalDateTime.now();
     }
+
+
 }

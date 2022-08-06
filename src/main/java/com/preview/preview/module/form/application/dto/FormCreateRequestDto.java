@@ -14,4 +14,6 @@ public class FormCreateRequestDto {
     private String phoneNumber;
     private String contents;
     private String local;
+    private String fcmToken;
+    private String jobNames;
 }

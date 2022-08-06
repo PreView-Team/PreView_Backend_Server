@@ -1,11 +1,13 @@
 package com.preview.preview.module.form.application.dto;
 
 import com.preview.preview.module.form.domain.Form;
+import com.preview.preview.module.form.domain.MentorForm;
 import com.preview.preview.module.job.domain.Job;
 import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -15,17 +17,22 @@ public class FormByMentorGetResponseDto {
     private LocalDateTime createTime;
     private String username;
     private String phoneNumber;
-    private Set<Job> jobNames;
+    private String jobNames;
     private String contents; // 상담 받고 싶은 내용
+    private String fcmToken;
+    private String local;
 
-    public static FormByMentorGetResponseDto form(Form form){
+    public static FormByMentorGetResponseDto form(MentorForm form){
         if (form == null) return null;
         return FormByMentorGetResponseDto.builder()
                 .contents(form.getContent())
                 .createTime(form.getCreatedDate())
                 .phoneNumber(form.getPhoneNumber())
                 .username(form.getName())
-                .jobNames(form.getUser().getLikedJobs())
+                .jobNames(form.getLikedJobs())
+                .fcmToken(form.getFcmToken())
+                .local(form.getLocal())
                 .status(form.getStatus()).build();
+
     }
 }

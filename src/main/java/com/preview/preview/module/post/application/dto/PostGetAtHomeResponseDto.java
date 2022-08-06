@@ -1,14 +1,17 @@
 package com.preview.preview.module.post.application.dto;
 
 import com.preview.preview.module.post.domain.Post;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 import java.util.List;
 
-@Builder
+@Setter
 @Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class PostGetAtHomeResponseDto {
+    private long postId;
     private String nickname;
     private String categoryName;
     private String title;
@@ -18,6 +21,7 @@ public class PostGetAtHomeResponseDto {
     public static PostGetAtHomeResponseDto from(Post post){
         if (post==null) return null;
         return PostGetAtHomeResponseDto.builder()
+                .postId(post.getId())
                 .commentCnt(post.getReviews().size())
                 .nickname(post.getUser().getNickname())
                 .title(post.getTitle())

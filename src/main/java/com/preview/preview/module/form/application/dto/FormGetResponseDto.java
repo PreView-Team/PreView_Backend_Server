@@ -21,12 +21,13 @@ public class FormGetResponseDto {
     private LocalDateTime createTime;
     private String name;
     private String phoneNumber;
-    private Set<Job> jobNames;
+    private String jobNames;
     private String contents; // 상담 받고 싶은 내용
     private String local;
     private String status;
+    private String fcmToken;
 
-    public static FormGetResponseDto from(Form form, User user){
+    public static FormGetResponseDto from(Form form){
         if (form == null) return null;
         return FormGetResponseDto.builder()
                 .formId(form.getId())
@@ -34,10 +35,11 @@ public class FormGetResponseDto {
                 .createTime(form.getCreatedDate())
                 .name(form.getName())
                 .phoneNumber(form.getPhoneNumber())
-                .jobNames(user.getLikedJobs())
+                .jobNames(form.getLikeJobs())
                 .contents(form.getContent())
                 .status(form.getStatus())
                 .local(form.getLocal())
+                .fcmToken(form.getFcmToken())
                 .build();
     }
 }

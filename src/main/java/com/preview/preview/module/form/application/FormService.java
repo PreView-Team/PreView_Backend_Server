@@ -7,6 +7,8 @@ import com.preview.preview.module.form.domain.Form;
 import com.preview.preview.module.form.domain.FormRepository;
 import com.preview.preview.module.form.domain.MentorForm;
 import com.preview.preview.module.form.domain.MentorFormRepository;
+import com.preview.preview.module.job.application.dto.JobDto;
+import com.preview.preview.module.job.domain.Job;
 import com.preview.preview.module.post.domain.Post;
 import com.preview.preview.module.post.domain.PostRepository;
 import com.preview.preview.module.user.domain.User;
@@ -15,7 +17,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class FormService{
@@ -49,7 +53,9 @@ public class FormService{
                 .name(formCreateRequestDto.getName())
                 .content(formCreateRequestDto.getContents())
                 .local(formCreateRequestDto.getLocal())
+                .likeJobs(formCreateRequestDto.getJobNames())
                 .phoneNumber(formCreateRequestDto.getPhoneNumber())
+                .fcmToken(formCreateRequestDto.getFcmToken())
                 .build();
 
         MentorForm mentorForm = MentorForm.builder()
@@ -59,6 +65,8 @@ public class FormService{
                 .name(formCreateRequestDto.getName())
                 .content(formCreateRequestDto.getContents())
                 .local(formCreateRequestDto.getLocal())
+                .likedJobs(formCreateRequestDto.getJobNames())
+                .fcmToken(formCreateRequestDto.getFcmToken())
                 .phoneNumber(formCreateRequestDto.getPhoneNumber())
                 .build();
 
@@ -71,8 +79,8 @@ public class FormService{
     public FormGetResponseDto getForm(long kakaoId, long formId) {
         User user = userRepository.findByKakaoId(kakaoId).orElseThrow(()-> new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
         Form form = formRepository.findById(formId).orElseThrow(()-> new CustomException(ErrorCode.NOT_EXISTED_FORM_ID));
-
-        return FormGetResponseDto.from(form,user);
+        if (form.getUser().getId() != user.getId()) throw new CustomException(ErrorCode.NOT_EQUAL_FORM_RESOURCE);
+        return FormGetResponseDto.from(form);
     }
 
     @Transactional
@@ -102,11 +110,14 @@ public class FormService{
         form.setPhoneNumber(formUpdateRequestDto.getPhoneNumber());
         form.setName(formUpdateRequestDto.getName());
         form.setLocal(formUpdateRequestDto.getLocal());
+        form.setLikeJobs(formUpdateRequestDto.getJobNames());
 
         mentorForm.setContent(formUpdateRequestDto.getContents());
         mentorForm.setPhoneNumber(formUpdateRequestDto.getPhoneNumber());
         mentorForm.setName(formUpdateRequestDto.getName());
         mentorForm.setLocal(formUpdateRequestDto.getLocal());
+        mentorForm.setLikedJobs(formUpdateRequestDto.getJobNames());
+
         mentorFormRepository.save(mentorForm);
 
         return FormUpdateResponseDto.from(formRepository.save(form));

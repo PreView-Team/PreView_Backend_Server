@@ -86,13 +86,12 @@ public class FormByMentorService {
     @Transactional
     public FormByMentorGetResponseDto getForm(long formId, long kakaoId){
         User user = userRepository.findByKakaoId(kakaoId).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
-        Form form = formRepository.findById(formId).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_FORM_ID));
         MentorForm mentorForm = mentorFormRepository.findById(formId).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_FORM_ID));
 
         if (user.getId() != mentorForm.getUser().getId()){
             throw new CustomException(ErrorCode.NOT_EQUAL_FORM_RESOURCE);
         }
-        return FormByMentorGetResponseDto.form(form);
+        return FormByMentorGetResponseDto.form(mentorForm);
     }
 
 }
