@@ -94,6 +94,21 @@ public class PostsService {
     }
 
     @Transactional
+    public List<PostsGetByCategoryResponseDto> search(long kakaoId, String keyword, String category , Pageable pageable){
+        List<Post> posts = postsRepository.findPostByCategoryNameAndContentContainingOrTitleContaining(category, keyword, keyword, pageable).stream().filter(post -> post.getDeletedDate() == null).collect(Collectors.toList());
+        User user = userRepository.findByKakaoId(kakaoId).orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
+        List<PostsGetByCategoryResponseDto> list = new ArrayList<>();
+
+        boolean like;
+
+        for (Post s : posts) {
+            like = postLikeRepository.existsPostLikeByUserIdAndPostId(user.getId(), s.getId());
+            list.add(PostsGetByCategoryResponseDto.from(s, like));
+        }
+        return list;
+    }
+
+    @Transactional
     public List<PostsGetByCategoryResponseDto> findRecommendedPostsByCategoryName(long kakaoId, String name, Pageable pageable) {
         User user = userRepository.findByKakaoId(kakaoId).orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
 

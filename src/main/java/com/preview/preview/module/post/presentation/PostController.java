@@ -109,9 +109,11 @@ public class PostController {
                 }
                 return null;
         }
-        // home 추천 멘토 주기
 
-        // 정렬 기능
-
+        @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+        @GetMapping("/api/post/search")
+        public ResponseEntity<List<PostsGetByCategoryResponseDto>> search(@RequestParam(value = "keyword") String keyword,@RequestParam(value = "category") String category, Pageable pageable, @AuthenticationPrincipal User user){
+                return ResponseEntity.ok(postsService.search(user.getKakaoId(),keyword, category, pageable));
+        }
 
 }
