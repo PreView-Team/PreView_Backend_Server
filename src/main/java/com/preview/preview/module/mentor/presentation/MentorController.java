@@ -7,6 +7,8 @@ import com.preview.preview.module.mentor.application.dto.MentorUpdateResponseDto
 import com.preview.preview.module.post.application.PostsService;
 import com.preview.preview.module.post.application.dto.PostGetByMentorResponseDto;
 import com.preview.preview.module.post.application.dto.PostsGetByMentorIdResponseDto;
+import com.preview.preview.module.user.application.dto.UserDto;
+import com.preview.preview.module.user.application.dto.VaildedNicknameDto;
 import com.preview.preview.module.user.domain.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -70,6 +72,12 @@ public class MentorController {
             @PathVariable Long postId
     ){
         return ResponseEntity.ok(postsService.getPostByMentor(postId));
+    }
+
+    @GetMapping("/mentor/nickname/{nickname}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    public ResponseEntity<VaildedNicknameDto> isValidMentorNickname(@AuthenticationPrincipal User user, @PathVariable String nickname){
+        return ResponseEntity.ok(mentorService.checkValidedNickname(user.getKakaoId(), nickname));
     }
 
 }

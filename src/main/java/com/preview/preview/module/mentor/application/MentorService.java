@@ -9,6 +9,7 @@ import com.preview.preview.module.mentor.application.dto.MentorUpdateResponseDto
 import com.preview.preview.module.mentor.domain.Mentor;
 import com.preview.preview.module.mentor.domain.MentorRepository;
 import com.preview.preview.module.mentor.application.dto.MentorResponseDto;
+import com.preview.preview.module.user.application.dto.VaildedNicknameDto;
 import com.preview.preview.module.user.domain.User;
 import com.preview.preview.module.user.domain.UserRepository;
 import org.springframework.stereotype.Service;
@@ -57,6 +58,15 @@ public class MentorService{
         if (mentor.isEmpty()) throw new CustomException(ErrorCode.NOT_EXISTED_MENTOR_ID);
 
         return MentorGetResponseDto.from(user.getMentor());
+    }
+
+    @Transactional
+    public VaildedNicknameDto checkValidedNickname(Long kakaoId, String username){
+        User user = userRepository.findByKakaoId(kakaoId).orElseThrow(()-> new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
+
+        if(user.getNickname().equals(username) == false && userRepository.existsByNickname(username)) return VaildedNicknameDto.from(true);
+        else if (mentorRepository.existsMentorByNickname(username)) return VaildedNicknameDto.from(true);
+        return VaildedNicknameDto.from(false);
     }
 
     @Transactional
