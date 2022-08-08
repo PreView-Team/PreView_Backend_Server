@@ -1,5 +1,6 @@
 package com.preview.preview.module.form.application.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.preview.preview.module.form.domain.Form;
 import com.preview.preview.module.form.domain.MentorForm;
 import com.preview.preview.module.job.domain.Job;
@@ -14,6 +15,7 @@ import java.util.Set;
 @Builder
 public class FormByMentorGetResponseDto {
     private String status;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM.dd", timezone = "Asia/Seoul")
     private LocalDateTime createTime;
     private String username;
     private String phoneNumber;

@@ -1,4 +1,5 @@
 package com.preview.preview.module.post.application.dto;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.preview.preview.module.post.domain.Post;
 import com.preview.preview.module.review.application.dto.ReviewDto;
 import com.preview.preview.module.review.domain.Review;
@@ -19,7 +20,9 @@ public class PostGetResponseDto {
     private String title;
     private String nickname;
     private List<String> jobList;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM.dd", timezone = "Asia/Seoul")
     private LocalDateTime createDateTime;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM.dd", timezone = "Asia/Seoul")
     private LocalDateTime updateDateTime;
     private String introduce;
     private List<ReviewDto> reviews;

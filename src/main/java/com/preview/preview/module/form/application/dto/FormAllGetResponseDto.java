@@ -1,6 +1,7 @@
 package com.preview.preview.module.form.application.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.preview.preview.module.form.domain.Form;
 import com.preview.preview.module.form.domain.MentorForm;
 import lombok.Builder;
@@ -15,6 +16,8 @@ import java.time.LocalDateTime;
 public class FormAllGetResponseDto {
     private long formId;
     private String mentorNickname;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM.dd", timezone = "Asia/Seoul")
     private LocalDateTime createTime;
     private String status;
 

@@ -1,5 +1,6 @@
 package com.preview.preview.module.post.application.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.preview.preview.module.post.domain.Post;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 @Builder
 public class PostsGetByMentorIdResponseDto {
     private long postId;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM.dd", timezone = "Asia/Seoul")
     private LocalDateTime createTime;
     private String title;
 

@@ -1,5 +1,6 @@
 package com.preview.preview.module.review.application.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.preview.preview.module.review.domain.Review;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 public class ReviewDto {
 
     private String nickname;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM.dd", timezone = "Asia/Seoul")
     private LocalDateTime createTime;
     private String contents;
     private float grade;

@@ -1,7 +1,9 @@
 package com.preview.preview.module.post.application.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.preview.preview.module.post.domain.Post;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,6 +16,8 @@ import java.util.List;
 public class PostsGetByCategoryResponseDto {
     private Long postId;
     private String contents;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM.dd", timezone = "Asia/Seoul")
     private LocalDateTime createdAt;
     private List<String> jobList;
     private String nickname; // 맨토 닉네임
