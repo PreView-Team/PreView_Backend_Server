@@ -21,12 +21,12 @@ public class Review extends BaseTimeEntity {
 
     @Setter
     @Getter
-    @Column(name = "contents")
+    @Column(name = "contents", nullable = true)
     private String contents;
 
     @Setter
     @Getter
-    @Column(name = "grade")
+    @Column(name = "grade", nullable = false)
     private float grade; // 평점
 
     @Getter

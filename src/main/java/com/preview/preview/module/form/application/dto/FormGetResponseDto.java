@@ -17,7 +17,7 @@ import java.util.Set;
 @Setter
 @Builder
 public class FormGetResponseDto {
-    private long formId;
+    private long postId;
     private String mentorNickname;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM.dd", timezone = "Asia/Seoul")
     private LocalDateTime createTime;
@@ -32,7 +32,7 @@ public class FormGetResponseDto {
     public static FormGetResponseDto from(Form form){
         if (form == null) return null;
         return FormGetResponseDto.builder()
-                .formId(form.getId())
+                .postId(form.getPost().getId())
                 .mentorNickname(form.getMentorNicname())
                 .createTime(form.getCreatedDate())
                 .name(form.getName())

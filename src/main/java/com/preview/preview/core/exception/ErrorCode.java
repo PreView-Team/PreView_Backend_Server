@@ -8,6 +8,7 @@ public enum ErrorCode {
 
     DUPLICATE_SIGNUP_RESOURCE(HttpStatus.CONFLICT,"P001", "이미 가입된 계정입니다."),
     UNAUTHORIZED_KAKAO_LOGIN(HttpStatus.UNAUTHORIZED,"P002", "잘못된 토큰입니다."),
+
     NOT_EXISTED_USER_ID(HttpStatus.BAD_REQUEST, "P003", "가입되지 않은 계정입니다."),
     DUPLICATE_AUTHORITY_RESOURCE(HttpStatus.CONFLICT,"P004", "이미 등록된 멘토입니다."),
     NOT_EXISTED_CATEGORY_ID(HttpStatus.BAD_REQUEST, "P005", "등록되지 않은 카테고리입니다."),
@@ -24,7 +25,9 @@ public enum ErrorCode {
     NOT_EQUAL_FORM_RESOURCE(HttpStatus.FORBIDDEN, "P016", "수정할 권한이 없는 계정입니다."),
     NOT_EXISTED_REVIEW_ID(HttpStatus.FORBIDDEN, "P017", "존재하지 않는 리뷰입니다."),
     DUPLICATE_REVIEW_RESOURCE(HttpStatus.CONFLICT,"P018", "이미 등록이 된 리뷰입니다."),
-    NOT_EXISTED_MENTOR_ID(HttpStatus.BAD_REQUEST, "P019", "등록되지 않은 멘토입니다.")
+    NOT_EXISTED_MENTOR_ID(HttpStatus.BAD_REQUEST, "P019", "등록되지 않은 멘토입니다."),
+
+    INVALIDED_VALUE(HttpStatus.BAD_REQUEST, "PO20", "요청 변수 값이 비어 있습니다.")
     ;
 
     private final HttpStatus httpStatus;

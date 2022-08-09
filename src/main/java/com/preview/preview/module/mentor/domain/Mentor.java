@@ -23,8 +23,10 @@ public class Mentor {
     @Column(name = "mentor_id", nullable = false)
     private Long id;
 
+    @Column(name = "nickname", nullable = true)
     private String nickname; // 닉네임
 
+    @Column(name = "contents", nullable = true)
     private String contents; // 소개
 
     @Setter

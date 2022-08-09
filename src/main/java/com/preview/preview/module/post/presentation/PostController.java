@@ -25,7 +25,6 @@ public class PostController {
 
         private final PostsService postsService;
         private final PostLikeService postLikeService;
-        private final PostRepository postRepository;
 
         @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
         @PostMapping("/api/post")
@@ -42,8 +41,6 @@ public class PostController {
                 @PathVariable Long postId){
                 return ResponseEntity.ok(postsService.findById(user.getKakaoId(), postId));
         }
-
-
 
         @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
         @PutMapping("/api/post")

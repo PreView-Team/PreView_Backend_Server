@@ -65,7 +65,7 @@ spring:
 #  http2:
 #    enabled: true
 #  port: 8080
-#
+
 
 #spring.jpa.show-sql=true
 #spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
