@@ -122,20 +122,17 @@ public class User extends BaseTimeEntity {
         this.nickname = nickname;
     }
 
-    public List<String> getLikedJobsInProfile(){
+    public List<String> getLikedJobsInProfile() {
         Iterator<Job> iterator = likedJobs.iterator();
         List<String> list = new ArrayList<>();
 
-        while (iterator.hasNext()){
+        while (iterator.hasNext()) {
             Job job = iterator.next();
             list.add(job.getName());
         }
 
         return list;
     }
-
-
-
 
     /*
     @JsonManagedReference

@@ -3,6 +3,7 @@ package com.preview.preview.module.mentor.application;
 import com.preview.preview.core.exception.CustomException;
 import com.preview.preview.core.exception.ErrorCode;
 import com.preview.preview.module.auth.domain.Authority;
+import com.preview.preview.module.job.domain.MentorJobRepository;
 import com.preview.preview.module.mentor.application.dto.MentorGetResponseDto;
 import com.preview.preview.module.mentor.application.dto.MentorUpdateRequestDto;
 import com.preview.preview.module.mentor.application.dto.MentorUpdateResponseDto;
@@ -12,6 +13,7 @@ import com.preview.preview.module.mentor.application.dto.MentorResponseDto;
 import com.preview.preview.module.user.application.dto.VaildedNicknameDto;
 import com.preview.preview.module.user.domain.User;
 import com.preview.preview.module.user.domain.UserRepository;
+import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -73,9 +75,15 @@ public class MentorService{
     public MentorUpdateResponseDto updateMentorProfile(long kakaoId, MentorUpdateRequestDto mentorUpdateRequestDto){
         User user = userRepository.findByKakaoId(kakaoId).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
         Mentor mentor = mentorRepository.findMentorById(user.getMentor().getId()).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_MENTOR_ID));
+
         mentor.setLikedJobs(mentorUpdateRequestDto.getJobDtoSet());
         mentor.setContents(mentorUpdateRequestDto.getContents());
         mentor.setNickname(mentorUpdateRequestDto.getNickname());
-        return MentorUpdateResponseDto.from(mentorRepository.save(mentor));
+
+        try {
+            return MentorUpdateResponseDto.from(mentorRepository.save(mentor));
+        }catch (JpaObjectRetrievalFailureException ex){
+            throw new CustomException(ErrorCode.NOT_EXISTED_LIKE_JOB);
+        }
     }
 }
