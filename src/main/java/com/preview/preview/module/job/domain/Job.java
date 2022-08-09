@@ -17,7 +17,6 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Job {
-
     @Id
     @Column(name = "job_name")
     private String name;

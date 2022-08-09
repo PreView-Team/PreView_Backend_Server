@@ -180,7 +180,7 @@ public class PostsService {
 
     @Transactional
     public PostGetByMentorResponseDto getPostByMentor(long postId){
-        Post post = postsRepository.findById(postId).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_POST_ID));
+        Post post = postsRepository.findById(postId).filter(post1 -> post1.getDeletedDate() == null).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_POST_ID));
         return PostGetByMentorResponseDto.from(post);
     }
 
