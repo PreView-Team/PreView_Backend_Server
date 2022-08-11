@@ -140,7 +140,7 @@ public class PostsService {
 
     @Transactional
     public List<PostGetAtHomeResponseDto> findPostsByNewMentor(Pageable pageable){
-        List<Post> posts = postsRepository.findAll(pageable).stream().filter(post -> post.getDeletedDate() == null).collect(Collectors.toList());
+        List<Post> posts = postsRepository.findPostByDeletedDateIsNull(pageable).toList();
 
         List<PostGetAtHomeResponseDto> list = new ArrayList<>();
 
@@ -155,8 +155,7 @@ public class PostsService {
     public List<PostGetAtHomeResponseDto> findPostsByRecommendMentor(long kakaoId, Pageable pageable){
         User user = userRepository.findByKakaoId(kakaoId).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
 
-        List<Post> posts = postsRepository.findAll(pageable).stream().filter(post -> post.getDeletedDate() == null &&
-                user.isExistedJob(post.getCategory().getName()) == true).collect(Collectors.toList());
+        List<Post> posts = postsRepository.findPostByCategoryNameAndDeletedDateIsNull(user.getLikedJobsInProfile().get(0), pageable).toList();
 
         List<PostGetAtHomeResponseDto> list = new ArrayList<>();
 

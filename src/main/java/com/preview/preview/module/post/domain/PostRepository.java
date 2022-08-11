@@ -24,5 +24,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     Page<Post> findPostByCategoryNameAndDeletedDateIsNullAndContentContainingOrTitleContaining(String name, String keyword, String keyword2, Pageable pageable);
 
+    Page<Post> findPostByDeletedDateIsNull(Pageable pageable);
+
     //List<Post> findPostsByCategoryName(@Param("userId") Long userId);
 }
