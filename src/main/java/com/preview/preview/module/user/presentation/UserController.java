@@ -1,6 +1,6 @@
 package com.preview.preview.module.user.presentation;
 
-import com.preview.preview.module.user.application.KakaoServiceImpl;
+import com.preview.preview.module.auth.application.KakaoServiceImpl;
 import com.preview.preview.module.user.application.UserServiceImpl;
 import com.preview.preview.module.user.application.dto.*;
 import com.preview.preview.module.user.application.dto.social.kakao.KakaoLoginInfoDto;

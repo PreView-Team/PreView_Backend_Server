@@ -78,7 +78,7 @@ public class ReviewService {
     @Transactional
     public List<ReviewDto> getReviews(long postId, Pageable pageable){
         Post post = postRepository.findById(postId).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_POST_ID));
-        List<Review> list = reviewRepository.findReviewByPostId(post.getId(), pageable).stream().filter(review -> review.getDeletedDate()==null).collect(Collectors.toList());
+        List<Review> list = reviewRepository.findReviewByPostIdAndDeletedDateIsNull(post.getId(), pageable).toList();
         List<ReviewDto> lists = new ArrayList<>();
         for (Review s : list){
             lists.add(ReviewDto.from(s));

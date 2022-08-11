@@ -27,7 +27,9 @@ public enum ErrorCode {
     DUPLICATE_REVIEW_RESOURCE(HttpStatus.CONFLICT,"P018", "이미 등록이 된 리뷰입니다."),
     NOT_EXISTED_MENTOR_ID(HttpStatus.BAD_REQUEST, "P019", "등록되지 않은 멘토입니다."),
 
-    INVALIDED_VALUE(HttpStatus.BAD_REQUEST, "PO20", "요청 변수 값이 비어 있습니다.")
+    INVALIDED_VALUE(HttpStatus.BAD_REQUEST, "PO20", "요청 변수 값이 비어 있습니다."),
+
+    NOT_EXISTED_MENTOR_JOB(HttpStatus.BAD_REQUEST, "PO21", "멘토 관심 직무 등록해주세요.")
     ;
 
     private final HttpStatus httpStatus;

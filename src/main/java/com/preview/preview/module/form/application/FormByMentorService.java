@@ -64,6 +64,8 @@ public class FormByMentorService {
         return FormAcceptStatusResponseDto.builder().status(form.getStatus()).build();
     }
 
+
+
     @Transactional
     public FormAcceptStatusResponseDto rejectForm(long formId, long kakaoId) {
         User user = userRepository.findByKakaoId(kakaoId).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_USER_ID));

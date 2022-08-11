@@ -51,5 +51,4 @@ public class FormByMentorController {
             @AuthenticationPrincipal User user){
         return ResponseEntity.ok(formByMentorService.getForm(formId, user.getKakaoId()));
     }
-
 }

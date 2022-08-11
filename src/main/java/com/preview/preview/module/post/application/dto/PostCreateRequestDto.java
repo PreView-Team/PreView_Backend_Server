@@ -7,7 +7,6 @@ import com.preview.preview.core.exception.ErrorCode;
 public class PostCreateRequestDto {
     private String contents;
     private String title;
-    private String categoryName;
 
     public String getContents(){
         if (contents == null) throw new CustomException(ErrorCode.INVALIDED_VALUE);
@@ -19,8 +18,4 @@ public class PostCreateRequestDto {
         return title;
     }
 
-    public String getCategoryName(){
-        if (categoryName == null) throw new CustomException(ErrorCode.INVALIDED_VALUE);
-        return categoryName;
-    }
 }

@@ -140,4 +140,21 @@ public class FormService{
         return FormDeleteResponseDto.builder().result("삭제 성공하였습니다.").build();
     }
 
+    @Transactional
+    public FormAcceptStatusResponseDto finishForm(long formId, long kakaoId) {
+        User user = userRepository.findByKakaoId(kakaoId).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
+        Form form = formRepository.findById(formId).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_FORM_ID));
+        MentorForm mentorForm = mentorFormRepository.findById(formId).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_FORM_ID));
+
+        if (form.getUser().getId().equals(user.getId())){
+            throw new CustomException(ErrorCode.NOT_EQUAL_FORM_RESOURCE);
+        }
+
+        form.setStatus("완료");
+        mentorForm.setStatus("완료");
+        formRepository.save(form);
+        mentorFormRepository.save(mentorForm);
+        return FormAcceptStatusResponseDto.builder().status(form.getStatus()).build();
+    }
+
 }

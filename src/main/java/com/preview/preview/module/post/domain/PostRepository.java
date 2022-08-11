@@ -18,11 +18,11 @@ import java.util.Optional;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
 
-    Page<Post> findPostByCategoryName(String name, Pageable pageable);
+    Page<Post> findPostByCategoryNameAndDeletedDateIsNull(String name, Pageable pageable);
 
     List<Post> findPostByUserId(Long userId);
 
-    Page<Post> findPostByCategoryNameAndContentContainingOrTitleContaining(String name, String keyword, String keyword2, Pageable pageable);
+    Page<Post> findPostByCategoryNameAndDeletedDateIsNullAndContentContainingOrTitleContaining(String name, String keyword, String keyword2, Pageable pageable);
 
     //List<Post> findPostsByCategoryName(@Param("userId") Long userId);
 }

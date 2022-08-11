@@ -1,4 +1,4 @@
-package com.preview.preview.module.user.application;
+package com.preview.preview.module.auth.application;
 
 
 import com.google.gson.Gson;
@@ -25,6 +25,7 @@ public class KakaoServiceImpl{
 
     // token만 가지고 정보 얻을 수 있음.
     public KakaoLoginInfoDto getProfile(String token) {
+        token = refreshToken(token);
         ResponseEntity<String> response = null;
         HttpHeaders header = new HttpHeaders(); 
         header.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -44,6 +45,21 @@ public class KakaoServiceImpl{
     }
 
     public String refreshToken(String token) {
+        ResponseEntity<String> response = null;
+        HttpHeaders header = new HttpHeaders();
+        header.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        header.set("Authorization", "Bearer " + token);
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(null, header);
+
+        try {
+            response = restTemplate.exchange(KAKAO_USER_INFO_URL,HttpMethod.GET,request, String.class);
+        } catch (HttpClientErrorException e){
+            if (e.getStatusCode() == HttpStatus.UNAUTHORIZED){
+                throw new CustomException(ErrorCode.UNAUTHORIZED_KAKAO_LOGIN);
+            }
+        }
+
         return null;
     }
 }

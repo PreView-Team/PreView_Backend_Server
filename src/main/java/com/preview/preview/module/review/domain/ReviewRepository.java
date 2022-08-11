@@ -9,6 +9,6 @@ import java.util.Optional;
 public interface ReviewRepository extends JpaRepository<Review, Long> {
     Optional<Review> findReviewById(long id);
     boolean existsReviewByUserIdAndPostId(long userId, long postId);
-    Page<Review> findReviewByPostId(long postId, Pageable pageable);
+    Page<Review> findReviewByPostIdAndDeletedDateIsNull(long postId, Pageable pageable);
 
 }

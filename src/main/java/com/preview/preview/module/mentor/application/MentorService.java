@@ -66,9 +66,9 @@ public class MentorService{
     public VaildedNicknameDto checkValidedNickname(Long kakaoId, String username){
         User user = userRepository.findByKakaoId(kakaoId).orElseThrow(()-> new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
 
-        if(user.getNickname().equals(username) == false && userRepository.existsByNickname(username)) return VaildedNicknameDto.from(true);
-        else if (mentorRepository.existsMentorByNickname(username)) return VaildedNicknameDto.from(true);
-        return VaildedNicknameDto.from(false);
+        if(user.getNickname().equals(username) == false && userRepository.existsByNickname(username)) return VaildedNicknameDto.from(false);
+        else if (mentorRepository.existsMentorByNickname(username)) return VaildedNicknameDto.from(false);
+        return VaildedNicknameDto.from(true);
     }
 
     @Transactional
