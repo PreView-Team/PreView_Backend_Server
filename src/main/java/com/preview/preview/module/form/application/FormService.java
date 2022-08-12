@@ -1,14 +1,11 @@
 package com.preview.preview.module.form.application;
 
 import com.preview.preview.core.exception.CustomException;
-import com.preview.preview.core.exception.ErrorCode;
 import com.preview.preview.module.form.application.dto.*;
 import com.preview.preview.module.form.domain.Form;
 import com.preview.preview.module.form.domain.FormRepository;
 import com.preview.preview.module.form.domain.MentorForm;
 import com.preview.preview.module.form.domain.MentorFormRepository;
-import com.preview.preview.module.job.application.dto.JobDto;
-import com.preview.preview.module.job.domain.Job;
 import com.preview.preview.module.post.domain.Post;
 import com.preview.preview.module.post.domain.PostRepository;
 import com.preview.preview.module.user.domain.User;
@@ -17,9 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class FormService{
@@ -138,6 +133,23 @@ public class FormService{
         mentorForm.setDeleteTime();
         mentorFormRepository.delete(mentorForm);
         return FormDeleteResponseDto.builder().result("삭제 성공하였습니다.").build();
+    }
+
+    @Transactional
+    public FormAcceptStatusResponseDto finishForm(long formId, long kakaoId) {
+        User user = userRepository.findByKakaoId(kakaoId).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
+        Form form = formRepository.findById(formId).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_FORM_ID));
+        MentorForm mentorForm = mentorFormRepository.findById(formId).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_FORM_ID));
+
+        if (form.getUser().getId().equals(user.getId())){
+            throw new CustomException(ErrorCode.NOT_EQUAL_FORM_RESOURCE);
+        }
+
+        form.setStatus("완료");
+        mentorForm.setStatus("완료");
+        formRepository.save(form);
+        mentorFormRepository.save(mentorForm);
+        return FormAcceptStatusResponseDto.builder().status(form.getStatus()).build();
     }
 
 }

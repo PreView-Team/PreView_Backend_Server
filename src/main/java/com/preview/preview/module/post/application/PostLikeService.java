@@ -1,7 +1,6 @@
 package com.preview.preview.module.post.application;
 
 import com.preview.preview.core.exception.CustomException;
-import com.preview.preview.core.exception.ErrorCode;
 import com.preview.preview.module.post.application.dto.PostLikeRequestDto;
 import com.preview.preview.module.post.application.dto.PostLikeResponseDto;
 import com.preview.preview.module.post.application.dto.PostUnLikeResponseDto;

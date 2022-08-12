@@ -33,9 +33,11 @@ public class PostGetResponseDto {
 
         List<ReviewDto> list = new ArrayList<>();
         int cnt=0;
+        int size = post.getReviews().size();
+
         for (Review review: post.getReviews()){
-            cnt++;
             list.add(ReviewDto.from(review));
+            cnt++;
             if (cnt == 10) break;
         }
 

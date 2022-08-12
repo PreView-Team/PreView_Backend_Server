@@ -60,4 +60,11 @@ public class FormController {
         return ResponseEntity.ok(formService.formDelete(user.getKakaoId(), formId));
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    @PutMapping("/{formId}/finish")
+    public ResponseEntity<FormAcceptStatusResponseDto> finishForm(
+            @PathVariable long formId,
+            @AuthenticationPrincipal User user){
+        return ResponseEntity.ok(formService.finishForm(formId, user.getKakaoId()));
+    }
 }

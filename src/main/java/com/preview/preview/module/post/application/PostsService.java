@@ -2,10 +2,9 @@ package com.preview.preview.module.post.application;
 
 
 import com.preview.preview.core.exception.CustomException;
-import com.preview.preview.core.exception.ErrorCode;
 import com.preview.preview.module.category.domain.Category;
 import com.preview.preview.module.category.domain.CategoryRepository;
-import com.preview.preview.module.job.domain.Job;
+import com.preview.preview.module.mentor.domain.MentorRepository;
 import com.preview.preview.module.post.application.dto.*;
 import com.preview.preview.module.post.domain.Post;
 import com.preview.preview.module.post.domain.PostLikeRepository;
@@ -13,13 +12,11 @@ import com.preview.preview.module.post.domain.PostRepository;
 import com.preview.preview.module.user.domain.User;
 import com.preview.preview.module.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,18 +25,28 @@ import java.util.stream.Collectors;
 public class PostsService {
     private final PostRepository postsRepository;
     private final UserRepository userRepository;
+
+    private final MentorRepository mentorRepository;
     private final CategoryRepository categoryRepository;
     private final PostLikeRepository postLikeRepository;
 
     @Transactional
     public PostCreateResponseDto save(long kakaoID, PostCreateRequestDto requestDto) {
 
-        Category category = categoryRepository.findCategoryByName(requestDto.getCategoryName()).orElseThrow(() -> {
-            throw new CustomException(ErrorCode.NOT_EXISTED_CATEGORY_ID);
-        });
-
         User user = userRepository.findByKakaoId(kakaoID).orElseThrow(() -> {
             throw new CustomException(ErrorCode.NOT_EXISTED_USER_ID);
+        });
+
+        if (user.getMentor() == null){
+            throw new CustomException(ErrorCode.NOT_EQUAL_USER_RESOURCE);
+        }
+
+        if (user.getMentor().getMentorJobList().size() == 0){
+            throw new CustomException(ErrorCode.NOT_EXISTED_MENTOR_JOB);
+        }
+
+        Category category = categoryRepository.findCategoryByName(user.getMentor().getMentorJobList().get(0)).orElseThrow(() -> {
+            throw new CustomException(ErrorCode.NOT_EXISTED_CATEGORY_ID);
         });
 
         if (user.getAuthorities().size() == 1) throw new CustomException(ErrorCode.NOT_EQUAL_USER_RESOURCE);
@@ -80,7 +87,7 @@ public class PostsService {
     @Transactional
     public List<PostsGetByCategoryResponseDto> findPostsByCategoryName(long kakaoId, String name, Pageable pageable) {
         User user = userRepository.findByKakaoId(kakaoId).orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
-        List<Post> posts = postsRepository.findPostByCategoryName(name, pageable).stream().filter(post -> post.getDeletedDate() == null).collect(Collectors.toList());
+        List<Post> posts = postsRepository.findPostByCategoryNameAndDeletedDateIsNull(name, pageable).toList();
         boolean like;
 
         List<PostsGetByCategoryResponseDto> list = new ArrayList<>();
@@ -95,7 +102,7 @@ public class PostsService {
 
     @Transactional
     public List<PostsGetByCategoryResponseDto> search(long kakaoId, String keyword, String category , Pageable pageable){
-        List<Post> posts = postsRepository.findPostByCategoryNameAndContentContainingOrTitleContaining(category, keyword, keyword, pageable).stream().filter(post -> post.getDeletedDate() == null).collect(Collectors.toList());
+        List<Post> posts = postsRepository.findPostByCategoryNameAndDeletedDateIsNullAndContentContainingOrTitleContaining(category, keyword, keyword, pageable).toList();
         User user = userRepository.findByKakaoId(kakaoId).orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
         List<PostsGetByCategoryResponseDto> list = new ArrayList<>();
 
@@ -112,9 +119,9 @@ public class PostsService {
     public List<PostsGetByCategoryResponseDto> findRecommendedPostsByCategoryName(long kakaoId, String name, Pageable pageable) {
         User user = userRepository.findByKakaoId(kakaoId).orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
 
-        List<Post> posts = postsRepository.findPostByCategoryName(name, pageable).stream().filter(post -> post.getDeletedDate() == null &&
+        List<Post> posts = postsRepository.findPostByCategoryNameAndDeletedDateIsNull(name, pageable).stream().filter(
+                post ->
                 user.isExistedJob(post.getCategory().getName()) == true).collect(Collectors.toList());
-
         boolean like;
 
         List<PostsGetByCategoryResponseDto> list = new ArrayList<>();
@@ -129,7 +136,7 @@ public class PostsService {
 
     @Transactional
     public List<PostGetAtHomeResponseDto> findPostsByNewMentor(Pageable pageable){
-        List<Post> posts = postsRepository.findAll(pageable).stream().filter(post -> post.getDeletedDate() == null).collect(Collectors.toList());
+        List<Post> posts = postsRepository.findPostByDeletedDateIsNull(pageable).toList();
 
         List<PostGetAtHomeResponseDto> list = new ArrayList<>();
 
@@ -144,8 +151,7 @@ public class PostsService {
     public List<PostGetAtHomeResponseDto> findPostsByRecommendMentor(long kakaoId, Pageable pageable){
         User user = userRepository.findByKakaoId(kakaoId).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
 
-        List<Post> posts = postsRepository.findAll(pageable).stream().filter(post -> post.getDeletedDate() == null &&
-                user.isExistedJob(post.getCategory().getName()) == true).collect(Collectors.toList());
+        List<Post> posts = postsRepository.findPostByCategoryNameAndDeletedDateIsNull(user.getLikedJobsInProfile().get(0), pageable).toList();
 
         List<PostGetAtHomeResponseDto> list = new ArrayList<>();
 

@@ -1,12 +1,6 @@
 package com.preview.preview.module.form.application.dto;
 
 import com.preview.preview.core.exception.CustomException;
-import com.preview.preview.core.exception.ErrorCode;
-import com.preview.preview.module.job.application.dto.JobDto;
-import lombok.Getter;
-import lombok.Setter;
-
-import java.util.List;
 
 
 public class FormCreateRequestDto {

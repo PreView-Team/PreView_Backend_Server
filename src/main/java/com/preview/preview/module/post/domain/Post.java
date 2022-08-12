@@ -5,6 +5,7 @@ import com.preview.preview.module.review.domain.Review;
 import com.preview.preview.module.user.domain.User;
 import com.preview.preview.util.BaseTimeEntity;
 import lombok.*;
+import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -45,6 +46,10 @@ public class Post extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private final List<Review> reviews = new ArrayList<>();
+
+    @Formula("(SELECT count(1) FROM review r WHERE r.post_id = post_id)")
+    private int reviewCnt;
+
 
     public Long deletePost(){
         deletedDate = LocalDateTime.now();

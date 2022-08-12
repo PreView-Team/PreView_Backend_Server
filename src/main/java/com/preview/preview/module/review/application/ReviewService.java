@@ -1,7 +1,6 @@
 package com.preview.preview.module.review.application;
 
 import com.preview.preview.core.exception.CustomException;
-import com.preview.preview.core.exception.ErrorCode;
 import com.preview.preview.module.post.domain.Post;
 import com.preview.preview.module.post.domain.PostRepository;
 import com.preview.preview.module.review.application.dto.*;
@@ -9,14 +8,12 @@ import com.preview.preview.module.review.domain.Review;
 import com.preview.preview.module.review.domain.ReviewRepository;
 import com.preview.preview.module.user.domain.User;
 import com.preview.preview.module.user.domain.UserRepository;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ReviewService {
@@ -78,7 +75,7 @@ public class ReviewService {
     @Transactional
     public List<ReviewDto> getReviews(long postId, Pageable pageable){
         Post post = postRepository.findById(postId).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_POST_ID));
-        List<Review> list = reviewRepository.findReviewByPostId(post.getId(), pageable).stream().filter(review -> review.getDeletedDate()==null).collect(Collectors.toList());
+        List<Review> list = reviewRepository.findReviewByPostIdAndDeletedDateIsNull(post.getId(), pageable).toList();
         List<ReviewDto> lists = new ArrayList<>();
         for (Review s : list){
             lists.add(ReviewDto.from(s));

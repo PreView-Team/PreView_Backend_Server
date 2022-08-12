@@ -1,12 +1,7 @@
 package com.preview.preview.module.user.application.dto.social.kakao;
 import com.preview.preview.core.exception.CustomException;
-import com.preview.preview.core.exception.ErrorCode;
 import com.preview.preview.module.job.application.dto.JobDto;
-import lombok.Getter;
-import lombok.NonNull;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 public class KakaoSignupRequestDto {

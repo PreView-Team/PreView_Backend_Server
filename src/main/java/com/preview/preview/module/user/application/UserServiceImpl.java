@@ -1,7 +1,6 @@
 package com.preview.preview.module.user.application;
 
 import com.preview.preview.core.exception.CustomException;
-import com.preview.preview.core.exception.ErrorCode;
 import com.preview.preview.module.auth.domain.Authority;
 import com.preview.preview.module.job.application.dto.JobDto;
 import com.preview.preview.module.job.domain.Job;
@@ -10,7 +9,6 @@ import com.preview.preview.module.user.application.dto.social.kakao.KakaoLoginIn
 import com.preview.preview.module.user.application.dto.social.kakao.KakaoSignupRequestDto;
 import com.preview.preview.module.user.domain.User;
 import com.preview.preview.module.user.domain.UserRepository;
-import com.preview.preview.util.SecurityUtil;
 import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
