@@ -4,9 +4,9 @@ import com.preview.preview.core.exception.CustomException;
 import com.preview.preview.core.exception.ErrorCode;
 
 public class KakaoLoginRequestDto {
-    private String kakaoAccessToken;
-    public String getKakaoAccessToken(){
-        if (kakaoAccessToken == null) throw new CustomException(ErrorCode.INVALIDED_VALUE);
-        return kakaoAccessToken;
+    private String kakaoRefreshToken;
+    public String getKakaoRefreshToken(){
+        if (kakaoRefreshToken == null) throw new CustomException(ErrorCode.INVALIDED_VALUE);
+        return kakaoRefreshToken;
     }
 }

@@ -43,7 +43,7 @@ public class AuthRestController {
     @PostMapping("/login")
     public ResponseEntity<TokenDto> authorize(@Valid @RequestBody KakaoLoginRequestDto kakaoLoginRequestDto){
 
-        KakaoLoginInfoDto kakaoLoginInfoDto = kakaoService.getProfile(kakaoLoginRequestDto.getKakaoAccessToken());
+        KakaoLoginInfoDto kakaoLoginInfoDto = kakaoService.getProfile(kakaoLoginRequestDto.getKakaoRefreshToken());
 
         if (userService.findByKakaoId(kakaoLoginInfoDto.getId()).get().getDeletedDate() != null){
             throw new CustomException(ErrorCode.DELETE_USER_RESOURCE);

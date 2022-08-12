@@ -9,6 +9,7 @@ import com.preview.preview.core.exception.ErrorCode;
 import com.preview.preview.module.user.application.dto.social.kakao.KakaoLoginInfoDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
@@ -33,10 +34,12 @@ public class KakaoServiceImpl{
     private final String KAKAO_USER_INFO_URL = "https://kapi.kakao.com/v2/user/me";
     private final String KAKAO_USER_REFRESH_URL = "https://kauth.kakao.com/oauth/token";
 
+    @Value("${external.api.client_id}")
+    private String clientId;
 
     // token만 가지고 정보 얻을 수 있음.
     public KakaoLoginInfoDto getProfile(String token) {
-        //token = refreshToken(token);
+        token = refreshToken(token);
         ResponseEntity<String> response = null;
         HttpHeaders header = new HttpHeaders(); 
         header.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -64,13 +67,12 @@ public class KakaoServiceImpl{
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
             StringBuilder sb = new StringBuilder();
             sb.append("grant_type=refresh_token");
-            sb.append("&client_id=34823c5be90dd70daad2336c35529bfb");
+            sb.append("&client_id="+clientId);
             sb.append("&refresh_token="+token);
             bw.write(sb.toString());
             bw.flush();
             //결과 코드가 200이라면 성공
             int responseCode = conn.getResponseCode();
-            System.out.println("responseCode : " + responseCode);
 
             //요청을 통해 얻은 JSON타입의 Response 메세지 읽어오기
             BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
@@ -80,8 +82,6 @@ public class KakaoServiceImpl{
             while ((line = br.readLine()) != null) {
                 result += line;
             }
-            System.out.println("response body : " + result);
-
             //Gson 라이브러리에 포함된 클래스로 JSON파싱 객체 생성
             JsonParser parser = new JsonParser();
             JsonElement element = parser.parse(result);
@@ -90,7 +90,7 @@ public class KakaoServiceImpl{
             token = element.getAsJsonObject().get("access_token").getAsString();
 
         } catch (Exception exception){
-
+            throw new CustomException(ErrorCode.UNAUTHORIZED_KAKAO_REFRESH_TOKEN);
         }
         return token;
     }

@@ -51,8 +51,6 @@ public class PostsService {
             throw new CustomException(ErrorCode.NOT_EXISTED_CATEGORY_ID);
         });
 
-        if (user.getAuthorities().size() == 1) throw new CustomException(ErrorCode.NOT_EQUAL_USER_RESOURCE);
-
         Post post = Post.builder()
                 .category(category)
                 .user(user)
@@ -166,13 +164,17 @@ public class PostsService {
 
     @Transactional
     public PostDeleteResponseDto delete(long kakaoId, long postId) {
-        return postsRepository.findById(postId)
-                .filter(unidentifiedPost -> unidentifiedPost.getDeletedDate() == null && unidentifiedPost.getUser().getKakaoId() == kakaoId)
-                .map(post -> {
-                    post.deletePost();
-                    postsRepository.save(post);
-                    return PostDeleteResponseDto.from(post);
-                }).orElseThrow(() -> new CustomException(ErrorCode.NOT_DELETE_POST_RESOURCE));
+
+        Post post = postsRepository.findById(postId).filter(getPost -> getPost.getDeletedDate() == null).orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTED_POST_ID));
+        User user = userRepository.findByKakaoId(kakaoId).orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
+
+        // kakao id, post에 있는 user id 비교 다를 시 예외처리
+        if (post.getUser().getId() != user.getId()) {
+            throw new CustomException(ErrorCode.NOT_EQUAL_USER_RESOURCE);
+        }
+        post.deletePost();
+        postsRepository.save(post);
+        return PostDeleteResponseDto.from(post);
     }
 
     @Transactional

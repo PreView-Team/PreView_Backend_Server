@@ -25,21 +25,11 @@ public class PostGetResponseDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM.dd", timezone = "Asia/Seoul")
     private LocalDateTime updateDateTime;
     private String introduce;
-    private List<ReviewDto> reviews;
+    private int reviewCnt;
     private double grade;
 
     public static PostGetResponseDto from(Post post) {
         if (post == null) return null;
-
-        List<ReviewDto> list = new ArrayList<>();
-        int cnt=0;
-        int size = post.getReviews().size();
-
-        for (Review review: post.getReviews()){
-            list.add(ReviewDto.from(review));
-            cnt++;
-            if (cnt == 10) break;
-        }
 
         return PostGetResponseDto.builder()
                 .postId(post.getId())
@@ -50,8 +40,8 @@ public class PostGetResponseDto {
                 .createDateTime(post.getCreatedDate())
                 .updateDateTime(post.getModifiedDate())
                 .introduce(post.getUser().getMentor().getContents())
+                .reviewCnt(post.getReviewCnt())
                 .grade(post.getGrade())
-                .reviews(list)
                 .build();
     }
 }

@@ -9,14 +9,12 @@ import lombok.Setter;
 @Setter
 @Builder
 public class PostUpdateResponseDto {
-    private Long id;
     private String result;
 
     public static PostUpdateResponseDto from (Post post){
         if (post == null) return null;
         return PostUpdateResponseDto.builder()
-                .id(post.getId())
-                .result("수정되었습니다.").build();
+                .result("성공").build();
     }
 
 }

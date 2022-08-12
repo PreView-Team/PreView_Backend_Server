@@ -81,3 +81,8 @@ server:
 #server.ssl.key-store-type=PKCS12
 #server.ssl.key-store-password=1234
 #server.http2.enabled=true
+
+external:
+  api:
+    name: kakao
+    client_id: 34823c5be90dd70daad2336c35529bfb
