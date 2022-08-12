@@ -13,7 +13,7 @@ public class PostUnLikeResponseDto {
     public static PostUnLikeResponseDto from(PostLike postLike){
         if (postLike == null) return null;
         return PostUnLikeResponseDto.builder()
-                .result("좋아요 취소 성공")
+                .result("성공")
                 .build();
     }
 }

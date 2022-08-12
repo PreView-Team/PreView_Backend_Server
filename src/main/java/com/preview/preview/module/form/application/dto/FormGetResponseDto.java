@@ -33,7 +33,7 @@ public class FormGetResponseDto {
         if (form == null) return null;
         return FormGetResponseDto.builder()
                 .postId(form.getPost().getId())
-                .mentorNickname(form.getMentorNicname())
+                .mentorNickname(form.getPost().getUser().getMentor().getNickname())
                 .createTime(form.getCreatedDate())
                 .name(form.getName())
                 .phoneNumber(form.getPhoneNumber())

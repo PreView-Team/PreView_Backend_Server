@@ -13,7 +13,7 @@ public class ReviewDeleteResponseDto {
 
     public static ReviewDeleteResponseDto from(Review review){
         if (review == null) return null;
-        return ReviewDeleteResponseDto.builder().result("리뷰 삭제 성공").build();
+        return ReviewDeleteResponseDto.builder().result("성공").build();
     }
 
 }

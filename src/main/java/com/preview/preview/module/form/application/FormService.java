@@ -35,7 +35,8 @@ public class FormService{
     @Transactional
     public FormCreateResponseDto createForm(long kakaoId, FormCreateRequestDto formCreateRequestDto) {
         User user = userRepository.findByKakaoId(kakaoId).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
-        Post post = postRepository.findById(formCreateRequestDto.getPostId()).orElseThrow(()-> new CustomException(ErrorCode.NOT_EXISTED_POST_ID));
+
+        Post post = postRepository.findById(formCreateRequestDto.getPostId()).filter(post1 -> post1.getDeletedDate() == null).orElseThrow(()-> new CustomException(ErrorCode.NOT_EXISTED_POST_ID));
 
         if (formRepository.existsFormByUserIdAndPostId(user.getId(), post.getId())){
             throw new CustomException(ErrorCode.DUPLICATE_FORM_RESOURCE);
@@ -55,6 +56,7 @@ public class FormService{
                 .build();
 
         MentorForm mentorForm = MentorForm.builder()
+                .id(form.getId())
                 .user(post.getUser())
                 .post(post)
                 .status("대기")
@@ -133,7 +135,7 @@ public class FormService{
         formRepository.delete(form);
         mentorForm.setDeleteTime();
         mentorFormRepository.delete(mentorForm);
-        return FormDeleteResponseDto.builder().result("삭제 성공하였습니다.").build();
+        return FormDeleteResponseDto.builder().result("성공").build();
     }
 
     @Transactional

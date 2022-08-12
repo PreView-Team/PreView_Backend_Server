@@ -14,7 +14,7 @@ public class FormCreateResponseDto {
     public static FormCreateResponseDto from(Form form){
         if (form == null) return null;
         return FormCreateResponseDto.builder()
-                .result("멘티 신청 완료 되었습니다.")
+                .result("성공")
                 .build();
     }
 }

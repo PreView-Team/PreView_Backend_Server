@@ -13,7 +13,7 @@ public class ReviewUpdateResponseDto {
 
     public static ReviewUpdateResponseDto from(Review review){
         if (review == null) return null;
-        return ReviewUpdateResponseDto.builder().result("리뷰 수정 성공").build();
+        return ReviewUpdateResponseDto.builder().result("성공").build();
     }
 
 }

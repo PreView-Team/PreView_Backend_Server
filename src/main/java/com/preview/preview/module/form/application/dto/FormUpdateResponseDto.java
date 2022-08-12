@@ -14,7 +14,7 @@ public class FormUpdateResponseDto {
     public static FormUpdateResponseDto from(Form form){
         if (form == null) return null;
         return FormUpdateResponseDto.builder()
-                .result("신청서 수정 성공")
+                .result("성공")
                 .build();
     }
 }

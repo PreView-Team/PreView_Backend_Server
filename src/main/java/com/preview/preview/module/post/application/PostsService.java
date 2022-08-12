@@ -180,6 +180,7 @@ public class PostsService {
     @Transactional
     public List<PostsGetByMentorIdResponseDto> getPostsBykakaoId(long kakaoId){
         User user = userRepository.findByKakaoId(kakaoId).orElseThrow(()-> new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
+
         List<Post> posts = postsRepository.findPostByUserId(user.getId()).stream().filter(post -> post.getDeletedDate() == null).collect(Collectors.toList());
         List<PostsGetByMentorIdResponseDto> list = new ArrayList<>();
         for (Post post: posts){

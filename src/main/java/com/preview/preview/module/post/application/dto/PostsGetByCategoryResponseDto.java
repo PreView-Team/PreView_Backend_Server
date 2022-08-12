@@ -16,7 +16,6 @@ import java.util.List;
 public class PostsGetByCategoryResponseDto {
     private Long postId;
     private String contents;
-
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM.dd", timezone = "Asia/Seoul")
     private LocalDateTime createdAt;
     private List<String> jobList;

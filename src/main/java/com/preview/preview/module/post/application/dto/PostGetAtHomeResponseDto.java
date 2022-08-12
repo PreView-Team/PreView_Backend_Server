@@ -22,8 +22,8 @@ public class PostGetAtHomeResponseDto {
         if (post==null) return null;
         return PostGetAtHomeResponseDto.builder()
                 .postId(post.getId())
-                .commentCnt(post.getReviews().size())
-                .nickname(post.getUser().getNickname())
+                .commentCnt(post.getReviewCnt())
+                .nickname(post.getUser().getMentor().getNickname())
                 .title(post.getTitle())
                 .likeCnt(post.getPostLikes().size())
                 .categoryName(post.getCategory().getName())

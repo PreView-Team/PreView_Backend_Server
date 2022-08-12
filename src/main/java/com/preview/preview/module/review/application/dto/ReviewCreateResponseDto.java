@@ -11,7 +11,7 @@ public class ReviewCreateResponseDto {
 
     public static ReviewCreateResponseDto from(Review review){
         if (review == null) return null;
-        return ReviewCreateResponseDto.builder().result("리뷰 작성 성공").build();
+        return ReviewCreateResponseDto.builder().result("성공").build();
     }
 
 }
