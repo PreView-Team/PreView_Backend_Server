@@ -4,6 +4,7 @@ import com.preview.preview.core.auth.jwt.JwtFilter;
 import com.preview.preview.core.auth.jwt.TokenProvider;
 import com.preview.preview.core.auth.jwt.dto.token.TokenDto;
 import com.preview.preview.core.exception.CustomException;
+import com.preview.preview.core.exception.ErrorCode;
 import com.preview.preview.module.auth.application.KakaoServiceImpl;
 import com.preview.preview.module.user.application.UserServiceImpl;
 import com.preview.preview.module.user.application.dto.social.kakao.KakaoLoginInfoDto;

@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.preview.preview.core.exception.CustomException;
+import com.preview.preview.core.exception.ErrorCode;
 import com.preview.preview.module.user.application.dto.social.kakao.KakaoLoginInfoDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
 
 @Slf4j
 @RequiredArgsConstructor

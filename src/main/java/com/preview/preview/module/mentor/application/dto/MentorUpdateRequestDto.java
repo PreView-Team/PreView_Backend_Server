@@ -1,6 +1,7 @@
 package com.preview.preview.module.mentor.application.dto;
 
 import com.preview.preview.core.exception.CustomException;
+import com.preview.preview.core.exception.ErrorCode;
 import com.preview.preview.module.job.domain.MentorJob;
 
 import java.util.Set;

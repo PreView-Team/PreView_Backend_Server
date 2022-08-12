@@ -1,6 +1,7 @@
 package com.preview.preview.module.review.application;
 
 import com.preview.preview.core.exception.CustomException;
+import com.preview.preview.core.exception.ErrorCode;
 import com.preview.preview.module.post.domain.Post;
 import com.preview.preview.module.post.domain.PostRepository;
 import com.preview.preview.module.review.application.dto.*;

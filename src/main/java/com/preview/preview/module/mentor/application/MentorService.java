@@ -1,6 +1,7 @@
 package com.preview.preview.module.mentor.application;
 
 import com.preview.preview.core.exception.CustomException;
+import com.preview.preview.core.exception.ErrorCode;
 import com.preview.preview.module.auth.domain.Authority;
 import com.preview.preview.module.mentor.application.dto.MentorGetResponseDto;
 import com.preview.preview.module.mentor.application.dto.MentorUpdateRequestDto;

@@ -2,8 +2,10 @@ package com.preview.preview.module.post.application;
 
 
 import com.preview.preview.core.exception.CustomException;
+import com.preview.preview.core.exception.ErrorCode;
 import com.preview.preview.module.category.domain.Category;
 import com.preview.preview.module.category.domain.CategoryRepository;
+import com.preview.preview.module.job.domain.Job;
 import com.preview.preview.module.mentor.domain.MentorRepository;
 import com.preview.preview.module.post.application.dto.*;
 import com.preview.preview.module.post.domain.Post;
