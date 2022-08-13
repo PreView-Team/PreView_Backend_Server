@@ -56,4 +56,19 @@ public class ReviewController {
         return ResponseEntity.ok(reviewService.deleteReview(user.getKakaoId(), reviewId));
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    @GetMapping("/api/user/review/{reviewId}")
+    public ResponseEntity<ReviewUserGetResponseDto> getMyReview(
+            @PathVariable Long reviewId,
+            @AuthenticationPrincipal User user){
+        return ResponseEntity.ok(reviewService.getMyReview(user.getKakaoId(), reviewId));
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    @GetMapping("/api/user/review")
+    public ResponseEntity<List<ReviewsGetResponseDto>> getMyReviews(
+            @AuthenticationPrincipal User user){
+        return ResponseEntity.ok(reviewService.getMyReviews(user.getKakaoId()));
+    }
+
 }

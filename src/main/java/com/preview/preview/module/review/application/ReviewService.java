@@ -65,7 +65,6 @@ public class ReviewService {
     public ReviewDeleteResponseDto deleteReview(long kakaoId, long reviewId){
         User user = userRepository.findByKakaoId(kakaoId).orElseThrow(()-> new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
         Review review = reviewRepository.findReviewById(reviewId).orElseThrow(()-> new CustomException(ErrorCode.NOT_EXISTED_REVIEW_ID));
-
         if (review.getUser().getId() != user.getId()){
             throw new CustomException(ErrorCode.NOT_EQUAL_USER_RESOURCE);
         }
@@ -82,6 +81,25 @@ public class ReviewService {
             lists.add(ReviewDto.from(s));
         }
         return lists;
+    }
+
+    @Transactional
+    public ReviewUserGetResponseDto getMyReview(long kakaoId, long reviewId){
+        User user = userRepository.findByKakaoId(kakaoId).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
+        Review review = reviewRepository.findReviewById(reviewId).orElseThrow(()-> new CustomException(ErrorCode.NOT_EXISTED_REVIEW_ID));
+        return ReviewUserGetResponseDto.from(review);
+    }
+
+    public List<ReviewsGetResponseDto> getMyReviews(long kakaoId){
+        User user = userRepository.findByKakaoId(kakaoId).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
+        List<Review> list = reviewRepository.findReviewsByUserIdAndDeletedDateIsNull(user.getId());
+        List<ReviewsGetResponseDto> reviewsGetResponseDtoList = new ArrayList<>();
+
+        for (Review review : list){
+            reviewsGetResponseDtoList.add(ReviewsGetResponseDto.from(review));
+        }
+
+        return reviewsGetResponseDtoList;
     }
 
 }
