@@ -7,6 +7,8 @@ import com.preview.preview.module.post.domain.Post;
 import com.preview.preview.module.post.domain.PostRepository;
 import com.preview.preview.module.user.domain.User;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -100,6 +102,7 @@ public class PostController {
                 ){
                 switch (status){
                         case "recommendation":
+
                                 return ResponseEntity.ok(postsService.findPostsByRecommendMentor(user.getKakaoId(), pageable));
                         case "new":
                                 return ResponseEntity.ok(postsService.findPostsByNewMentor(pageable));

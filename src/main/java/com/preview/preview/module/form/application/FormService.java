@@ -144,7 +144,7 @@ public class FormService{
         Form form = formRepository.findById(formId).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_FORM_ID));
         MentorForm mentorForm = mentorFormRepository.findById(formId).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_FORM_ID));
 
-        if (form.getUser().getId().equals(user.getId())){
+        if (!form.getUser().getId().equals(user.getId())){
             throw new CustomException(ErrorCode.NOT_EQUAL_FORM_RESOURCE);
         }
 

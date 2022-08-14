@@ -14,6 +14,8 @@ import com.preview.preview.module.post.domain.PostRepository;
 import com.preview.preview.module.user.domain.User;
 import com.preview.preview.module.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +33,8 @@ public class PostsService {
     private final MentorRepository mentorRepository;
     private final CategoryRepository categoryRepository;
     private final PostLikeRepository postLikeRepository;
+
+    private final Logger log = LoggerFactory.getLogger(this.getClass().getSimpleName());
 
     @Transactional
     public PostCreateResponseDto save(long kakaoID, PostCreateRequestDto requestDto) {

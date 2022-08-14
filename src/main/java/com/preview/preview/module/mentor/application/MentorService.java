@@ -75,6 +75,10 @@ public class MentorService{
         User user = userRepository.findByKakaoId(kakaoId).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_USER_ID));
         Mentor mentor = mentorRepository.findMentorById(user.getMentor().getId()).orElseThrow(()->new CustomException(ErrorCode.NOT_EXISTED_MENTOR_ID));
 
+        if (userRepository.existsByNickname(mentorUpdateRequestDto.getNickname()) == true && mentorUpdateRequestDto.getNickname().equals(user.getNickname()) == false) throw new CustomException(ErrorCode.DUPLICATE_NICKNAME_RESOURCE);
+
+        if (mentorRepository.existsMentorByNickname(mentorUpdateRequestDto.getNickname()) == true && mentorUpdateRequestDto.getNickname().equals(user.getNickname())) throw new CustomException(ErrorCode.DUPLICATE_NICKNAME_RESOURCE);
+
         mentor.setLikedJobs(mentorUpdateRequestDto.getJobDtoSet());
         mentor.setContents(mentorUpdateRequestDto.getContents());
         mentor.setNickname(mentorUpdateRequestDto.getNickname());

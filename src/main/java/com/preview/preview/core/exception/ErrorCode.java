@@ -16,7 +16,7 @@ public enum ErrorCode {
     NOT_EQUAL_USER_RESOURCE(HttpStatus.FORBIDDEN, "P007", "권한이 없는 계정입니다."),
     NOT_DELETE_POST_RESOURCE(HttpStatus.BAD_REQUEST, "P008", "게시글을 지울 수 없습니다."),
     NOT_DELETE_USER_RESOURCE(HttpStatus.BAD_REQUEST, "P009", "유저를 삭제할 수 없습니다."),
-    DELETE_USER_RESOURCE(HttpStatus.BAD_REQUEST, "P010", "이미 삭제된 계정입니다. 일주일 뒤에 다시 가입 바랍니다."),
+    DELETE_USER_RESOURCE(HttpStatus.NOT_FOUND, "P010", "이미 삭제된 계정입니다. 일주일 뒤에 다시 가입 바랍니다."),
     NOT_EXISTED_LIKE_JOB(HttpStatus.BAD_REQUEST, "P011","데이터 베이스에 해당 직무가 존재하지 않습니다."),
     DUPLICATE_POST_LIKE_RESOURCE(HttpStatus.CONFLICT,"P012", "이미 좋아요를 한 게시물 입니다."),
     DUPLICATE_POST_UNLIKE_RESOURCE(HttpStatus.CONFLICT,"P013", "이미 좋아요가 안된 게시물 입니다."),
@@ -32,6 +32,8 @@ public enum ErrorCode {
     NOT_EXISTED_MENTOR_JOB(HttpStatus.BAD_REQUEST, "PO21", "멘토 관심 직무 등록해주세요."),
 
     UNAUTHORIZED_KAKAO_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED,"P022", "잘못된 리프레시 토큰 입니다."),
+
+    DUPLICATE_NICKNAME_RESOURCE(HttpStatus.CONFLICT,"P023", "이미 중복된 닉네임입니다."),
     ;
 
     private final HttpStatus httpStatus;

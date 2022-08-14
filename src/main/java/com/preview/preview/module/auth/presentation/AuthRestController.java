@@ -45,7 +45,7 @@ public class AuthRestController {
 
         KakaoLoginInfoDto kakaoLoginInfoDto = kakaoService.getProfile(kakaoLoginRequestDto.getKakaoRefreshToken());
 
-        if (userService.findByKakaoId(kakaoLoginInfoDto.getId()).get().getDeletedDate() != null){
+        if (userService.findByKakaoId(kakaoLoginInfoDto.getId()) == false){
             throw new CustomException(ErrorCode.DELETE_USER_RESOURCE);
         }
 
